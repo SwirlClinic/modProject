@@ -41,6 +41,21 @@ router.route('/users')
 
     });
 
+router.route('/games')
+    .get(function(req,res) {
+
+        //console.log("Response? : " + db.getUsers());
+
+        db.any("SELECT * from game")
+            .then(function (data) {
+                res.json(data);
+        }).catch(function(err){
+                res.json(err);
+        });
+
+
+    });
+
 //Query 21: Get the list of users a person is following
 router.route('/following/:username')
 	.get(function(req,res){

@@ -3,12 +3,18 @@
 <html lang="en" ng-app="app">
 <head>
 	<meta charset="UTF-8">
-	<title>Getting Started</title>
-
+	<title>Submit Modlist</title>
+	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
 
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+	
+	<!--Angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+
+	
 </head>
 
 <body ng-controller="mainController">
@@ -27,37 +33,48 @@
 		</nav>
 	</header>
 
-	<section class="kaboom">
-		<div class='content'>
-			<h2>Welcome!</h2>
-			<p>blah blah blah</p>
-
-			<a class="btn-primary btn btn-lg">lets go bruh</a>
-		</div>
-	</section>
-
 	<main>
+		<div class="container">
 		<div class="jumbotron text-center">
-		<h1>Hello world! 🤔</h1>
-		<h1>test</h1>
-
-		<button class="btn btn-primary" onclick="changeText()">Change text</button>
+			<h1>Submit Modlist 🤔</h1>
+			</div>
 		</div>
+
+		
 
 		<div class="container">
-			<form ng-submit="saveBear(bear)">
+			<form ng-submit="savePost(modPost)">
 	          <div class="form-group">
-	            <input type="text" placeholder="Name" ng-model="bear.username" class="form-control">
-	            <input type="text" placeholder="Email" ng-model="bear.email" class="form-control">
-	            <input type="text" placeholder="Password" ng-model="bear.password" class="form-control">
+
+				<h2>Title:</h2>
+				<div class="input-group input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-pencil fa-lg"></i></span>
+					<input type="text" placeholder="Title of Modlist" ng-model="modPost.title" class="form-control input-group-lg">
+				</div>
+			
+				<h2>Game:</h2>
+				<div class="input-group input-group-lg fa-lg">
+					<span class="input-group-addon"><i class="fa fa-gamepad"></i></span>
+					<select class="form-control" ng-model="modPost.game_name" data-live-search="true">
+						<option ng-repeat="game in games | orderBy: 'name'" data-subtext = "Game" >{{game.name}}</option>
+					</select>
+				</div>
+				<h2>Description:</h2>
+				<div class="input-group input-group-lg">
+					<span class="input-group-addon" id="sizing-addon1"><i class="fa fa-pencil fa-lg"></i></span>
+					<textarea type="text" placeholder="Description" ng-model="modPost.body" class="form-control" aria-describedby="sizing-addon1" id="modDescription"> </textarea>
+				</div>
 	          </div>
+			
+
+			
+
 	          <button type="submit" class="btn btn-primary">Submit</button>
 	        </form>
 
-			<div class="jumbotron text-center" ng-repeat="bear in bears.slice().reverse()">
-				<p>Name: {{bear.username}}</p>
-			</div>
 		</div>
+		
+
 	</main>
 
 	<footer>
@@ -66,8 +83,7 @@
 
 	<!-- start javascript -->
 	<script src="/js/list.js"></script>
-
-
+	
 
 
 </body>

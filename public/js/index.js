@@ -2,35 +2,32 @@
 angular.module('app', [])
  
 .controller('mainController', function($scope, $http) {
+    $scope.formData = {};
     $http({
       method: 'GET',
-      url: '/api/games'
+      url: '/api/users'
     }).then(function successCallback(data) {
-            $scope.games = data.data;
+            $scope.bears = data.data;
             console.log(data.data);
       }, function errorCallback(data) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
       });
 
-    $scope.savePost = function(user) {
+    $scope.saveBear = function(user) {
 
-        console.log(user);
-
-        console.log($scope.games);
-
-/*        $http({
+        $http({
             method: 'POST',
             url: '/api/users',
             data: user
         }).then(function successCallback(data) {
             console.log('Success! Saved ' + data);
-            $scope.games.push(user);
+            $scope.bears.push(user);
         }, function errorCallback(data) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
-        });*/
+        });
     };
 
-
+       
 });
