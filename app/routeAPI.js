@@ -115,7 +115,7 @@ router.route('/login')
             .then(function (data) {
             	//console.log(data.password);
             	if(req.body.password == data.password.trim()) {
-            		//res.json(data);	
+            		//res.json(data);
 
             		var userInfo = {
             			username: data.username,
@@ -132,8 +132,8 @@ router.route('/login')
             		res.json({message: "Failed!"});
             	}
 
-            	
-            	
+
+
     		}).catch(function(err){
     			res.json({message: "Failed!"});
 			});
@@ -155,28 +155,29 @@ router.route('/submitpost')
     .post(function(req, res) {
         console.log(req.body.gameinfo);
 
-        
 
 
+				/*
         var date;
         date = new Date();
         var monthday = date.getUTCFullYear() + '-' +
         ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
         ('00' + date.getUTCDate()).slice(-2);
-        var time = 
+        var time =
         ('00' + date.getUTCHours()).slice(-2) + ':' +
         ('00' + date.getUTCMinutes()).slice(-2) + ':' +
         ('00' + date.getUTCSeconds()).slice(-2);
+				*/
 
         var query = "BEGIN; INSERT INTO post(username,game_name,game_release_year,title, date, time, body) VALUES('"
-         + req.body.username + "','" + req.body.gameinfo.name + "'," + req.body.gameinfo.releaseyear + ",'" + req.body.title + "','" + monthday + "','" + time + "','" + req.body.body + "');";
+         + req.body.username + "','" + req.body.gameinfo.name + "'," + req.body.gameinfo.releaseyear + ",'" + req.body.title + "'," + "current_date" + "," + "current_time" + ",'" + req.body.body + "');";
 
         query += "INSERT INTO post_features_mod(modId,title,date,time,config_importance_rating) VALUES";
-        
+
         for (var i = 0; i < req.body.modsAdded.length-1; i++) {
-            query += "(" + req.body.modsAdded[i].modid + ",'" + req.body.title + "','" + monthday + "','" + time + "'," + "10),";
+            query += "(" + req.body.modsAdded[i].modid + ",'" + req.body.title + "'," + "current_date" + "," + "current_time" + "," + "10),";
         }
-        query += "(" + req.body.modsAdded[i].modid + ",'" + req.body.title + "','" + monthday + "','" + time + "'," + "10); COMMIT;";
+        query += "(" + req.body.modsAdded[i].modid + ",'" + req.body.title + "'," + "current_date" + "," + "current_time" + "," + "10); COMMIT;";
         console.log(query);
 
 
@@ -197,7 +198,7 @@ router.route('/logout')
     	res.redirect('/login.html');
     });
 
-    
+
 
 //Query 21: Get the list of users a person is following
 router.route('/following/:username')
@@ -245,7 +246,7 @@ router.route('/followersCount/:username')
 
 router.route('/posts/latest')
     .get(function(req,res){
-        db.any("SELECT * FROM post ORDER BY date DESC limit 10")
+        db.any("SELECT * FROM post ORDER BY date DESC,time DESC limit 10")
             .then(function(data){
                 res.json(data);
             }).catch(function(err){
