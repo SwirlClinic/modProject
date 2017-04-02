@@ -23,6 +23,7 @@ angular.module('app', ['ngCookies'])
                 $window.location.href = '/login.html';
               }, function errorCallback(data) {
                     console.log(data);
+
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
               });
@@ -44,6 +45,7 @@ angular.module('app', ['ngCookies'])
                         $window.location.href = '/login.html';
                     }
                     else {
+                        $scope.errorlogin = true;
                         console.log("Mission failed, we'll get them next time.");
                     }
 /*                    if (data.data[0].password.trim() === user.password) {

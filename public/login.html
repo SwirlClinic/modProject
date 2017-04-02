@@ -41,6 +41,10 @@
 				<h1>Login</h1>
 			</div>
 
+			<div class="alert alert-danger" role="alert" ng-show="errorlogin">
+			  <strong>Login failed!</strong> Please re-enter user and pass.
+			</div>
+
 			<form ng-submit="login(user)" class="login">
 				<div class="form-group">
 					<div class="input-group input-group-lg" >

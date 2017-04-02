@@ -111,7 +111,7 @@ router.route('/login')
             	
             	
     		}).catch(function(err){
-
+    			res.json({message: "Failed!"});
 			});
 
     });
