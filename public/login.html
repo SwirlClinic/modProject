@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Login :D</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/gay.css">
+	
+	
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+	
+	<!--Angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+
+	<script src="/js/login.js"></script>
+</head>
+<body ng-controller="mainController">
+	<header>
+		<nav class="navbar navbar-inverse">
+			<a class="navbar-brand">home</a>
+			<ul class="navbar-nav nav">
+				<li>
+					<a href="/">asd</a>
+				</li>
+				<li>
+					<a href="/">Dar</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<div class="container">
+			<div class="jumbotron text-center">
+				<h1>Login</h1>
+			</div>
+
+			<form ng-submit="login(user)">
+				<div class="form-group">
+					<div class="input-group input-group-lg" >
+						<span class="input-group-addon"><i class="fa fa-user fa-lg"></i></span>
+						<input type="text" placeholder="Username" ng-model="user.username" class="form-control input-group-lg">
+					</div>
+
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon"><i class="fa fa-key fa-lg"></i></span>
+						<input type="text" placeholder="Password" ng-model="user.password" class="form-control input-group-lg">
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Login</button>
+			</form>
+		</div>
+	</main>
+
+	<footer>
+	<p>hi</p>
+	</footer>
+</body>
+</html>

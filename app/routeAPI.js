@@ -10,6 +10,7 @@ router.use(function(req, res, next) {
 	next();
 });
 
+
 router.route('/users')
     .get(function(req,res) {
 
@@ -68,6 +69,28 @@ router.route('/modfor/:game_name')
                 res.json(err);
         });
 
+
+    });
+
+router.route('/login')
+    .post(function(req, res) {
+    	//console.log(req.body.username);
+        db.one("SELECT * FROM website_user WHERE username = $1", [req.body.username])
+            .then(function (data) {
+            	//console.log(data.password);
+            	if(req.body.password == data.password.trim()) {
+            		//res.json(data);	
+            		res.json({message: "Success!"});
+            	}
+            	else {
+            		res.json({message: "Failed!"});
+            	}
+
+            	
+            	
+    		}).catch(function(err){
+
+			});
 
     });
 
