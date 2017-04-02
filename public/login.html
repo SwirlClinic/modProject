@@ -23,13 +23,16 @@
 <body ng-controller="mainController">
 	<header>
 		<nav class="navbar navbar-inverse">
-			<a class="navbar-brand">home</a>
+			<a class="navbar-brand">Mods R Us</a>
 			<ul class="navbar-nav nav">
 				<li>
-					<a href="/">asd</a>
+					<a href="/">Home</a>
 				</li>
 				<li>
-					<a href="/">Dar</a>
+					<a href="/login.html">Login</a>
+				</li>
+				<li>
+					<a href="/list.html">Submit a Modlist!</a>
 				</li>
 			</ul>
 		</nav>
@@ -59,6 +62,7 @@
 				</div>
 
 				<button type="submit" class="btn btn-primary">Login</button>
+				<a href="signup.html">Not a user? Register now!</a>
 			</form>
 
 			<div ng-repeat="info in userInfo" class="userInfo">

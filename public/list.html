@@ -16,6 +16,7 @@
 	
 	<!--Angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
 
 	
 </head>
@@ -24,13 +25,16 @@
 
 	<header>
 		<nav class="navbar navbar-inverse">
-			<a class="navbar-brand">home</a>
+			<a class="navbar-brand">Mods R Us</a>
 			<ul class="navbar-nav nav">
 				<li>
-					<a href="/">asd</a>
+					<a href="/">Home</a>
 				</li>
 				<li>
-					<a href="/">Dar</a>
+					<a href="/login.html">Login</a>
+				</li>
+				<li>
+					<a href="/list.html">Submit a Modlist!</a>
 				</li>
 			</ul>
 		</nav>
@@ -40,13 +44,18 @@
 		<div class="container">
 		<div class="jumbotron text-center">
 			<h1>Submit Modlist 🤔</h1>
-			</div>
+		</div>
+
+		<div class="alert alert-danger" role="alert" ng-show="errorlogin">
+			 <strong>You must be logged in first!</strong> Please login <a href="/login.html" class="btn btn-primary"> HERE </a>
+		</div>
+		<div class="alert alert-success" role="alert" ng-show="successpost">
+			 <strong>Success!</strong> You have submitted a new post!
 		</div>
 
 		
 
-		<div class="container">
-			<form ng-submit="savePost(modPost)">
+			<form ng-submit="savePost(modPost)" ng-show="!errorlogin">
 	          <div class="form-group">
 
 				<h2>Title:</h2>

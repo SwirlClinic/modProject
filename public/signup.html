@@ -30,27 +30,25 @@
 		</nav>
 	</header>
 
-	<section class="kaboom">
-		<div class='content'>
-			<h2>Welcome to Mods R Us</h2>
-			<p>Please enjoy your stay!</p>
-		</div>
-	</section>
-
 	<main>
 
 		<div class="container">
-			<h1>Latest Mod Posts:</h1>
 
-			<div class="jumbotron text-center" ng-repeat="post in modposts">
-				<p>Title: {{post.title}}</p>
-				<p>Author: {{post.username}}</p>
-				<p>Date: {{post.date}}</p>
-				<p>Time: {{post.time}}</p>
-				<p>Game: {{post.game_name}}</p>
-				<p>Body: {{post.body}}</p>
-
+			<div class="jumbotron text-center">
+				<h1>Register Account</h1>
 			</div>
+			<div class="alert alert-success" role="alert" ng-show="errorlogin">
+				  <strong>Done!</strong> Please login now <a href="/login.html" class="btn btn-primary">Login</a>
+			</div>
+
+			<form ng-submit="saveBear(bear)">
+	          <div class="form-group">
+	            <input type="text" placeholder="Name" ng-model="bear.username" class="form-control">
+	            <input type="text" placeholder="Email" ng-model="bear.email" class="form-control">
+	            <input type="text" placeholder="Password" ng-model="bear.password" class="form-control">
+	          </div>
+	          <button type="submit" class="btn btn-primary">Submit</button>
+	        </form>
 		</div>
 	</main>
 
@@ -59,7 +57,7 @@
 	</footer>
 
 	<!-- start javascript -->
-	<script src="/js/index.js"></script>
+	<script src="/js/signup.js"></script>
 
 
 

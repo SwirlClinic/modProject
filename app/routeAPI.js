@@ -45,12 +45,12 @@ router.route('/users')
 
         db.any(query)
             .then(function (data) {
-								console.log("inserted: " + req.body.username);
-                res.json(data);
+					console.log("inserted: " + req.body.username);
+                    res.json({message: "Success!"});
         		}).catch(function(err){
-							console.log(err);
-							res.json({"error": err})
-						});
+					console.log(err);
+                    res.json({message: "Failure!"});
+			});
 
     });
 
@@ -116,6 +116,57 @@ router.route('/login')
 
     });
 
+router.route('/submitpost')
+/*  Query 1: Adding a post
+	BEGIN;
+	INSERT INTO post(username,game_name,game_release_year,title,body)
+		VALUES ('Username3','Game1',2002,'Example Post Title','Example Post Body');
+
+	INSERT INTO post_features_mod(modId,title,date,time,config_importance_rating) VALUES
+		(1019,'Example Post Title',current_date,current_time,7),
+	    (1020,'Example Post Title',current_date,current_time,9),
+	    (1022,'Example Post Title',current_date,current_time,4);
+	COMMIT;
+*/
+    .post(function(req, res) {
+        console.log(req.body.gameinfo);
+
+        
+
+
+        var date;
+        date = new Date();
+        var monthday = date.getUTCFullYear() + '-' +
+        ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
+        ('00' + date.getUTCDate()).slice(-2);
+        var time = 
+        ('00' + date.getUTCHours()).slice(-2) + ':' +
+        ('00' + date.getUTCMinutes()).slice(-2) + ':' +
+        ('00' + date.getUTCSeconds()).slice(-2);
+
+        var query = "BEGIN; INSERT INTO post(username,game_name,game_release_year,title, date, time, body) VALUES('"
+         + req.body.username + "','" + req.body.gameinfo.name + "'," + req.body.gameinfo.releaseyear + ",'" + req.body.title + "','" + monthday + "','" + time + "','" + req.body.body + "');";
+
+        query += "INSERT INTO post_features_mod(modId,title,date,time,config_importance_rating) VALUES";
+        
+        for (var i = 0; i < req.body.modsAdded.length-1; i++) {
+            query += "(" + req.body.modsAdded[i].modid + ",'" + req.body.title + "','" + monthday + "','" + time + "'," + "10),";
+        }
+        query += "(" + req.body.modsAdded[i].modid + ",'" + req.body.title + "','" + monthday + "','" + time + "'," + "10); COMMIT;";
+        console.log(query);
+
+
+        db.any(query)
+            .then(function (data) {
+					console.log("inserted: " + req.body.title);
+                res.json({message: "Added post!"});
+        		}).catch(function(err){
+							console.log(err);
+							res.json({message: "Failed!"});
+						});
+
+    });
+
 router.route('/logout')
     .get(function(req, res) {
     	res.clearCookie('access_token');
@@ -167,5 +218,16 @@ router.route('/followersCount/:username')
 				res.json({"error": err})
 			});
 	});
+
+router.route('/posts/latest')
+    .get(function(req,res){
+        db.any("SELECT * FROM post ORDER BY date DESC limit 10")
+            .then(function(data){
+                res.json(data);
+            }).catch(function(err){
+                res.json({"error": err})
+            });
+    });
+
 
 module.exports = router;

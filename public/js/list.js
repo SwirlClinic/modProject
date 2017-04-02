@@ -1,8 +1,18 @@
 
-angular.module('app', [])
+angular.module('app', ['ngCookies'])
  
-.controller('mainController', function($scope, $http) {
+.controller('mainController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
+
+    var myUser = $cookies.get('access_token');
+
+    $scope.errorlogin = false;
+
+    if (myUser == null) {
+        $scope.errorlogin = true;
+    }
+
     var gameSelected = "";
+
     $scope.modsAdded = [];
 
     $(".modsSelected").hide();
@@ -18,27 +28,36 @@ angular.module('app', [])
         // or server returns response with an error status.
       });
 
-    $scope.savePost = function(user) {
+    $scope.savePost = function(data) {
 
-        console.log(user);
+        for(var i = 0; i < $scope.games.length; i++) {
+            if ($scope.games[i].name == gameSelected) {
+                data.gameinfo = $scope.games[i];
+                break;
+            }
+        }
 
-        console.log($scope.games);
-
+        data.username = myUser;
+        data.modsAdded = $scope.modsAdded;
+        console.log(data);
         
-
-
-
-/*        $http({
+        $http({
             method: 'POST',
-            url: '/api/users',
-            data: user
+            url: '/api/submitpost',
+            data: data
         }).then(function successCallback(data) {
-            console.log('Success! Saved ' + data);
-            $scope.games.push(user);
+            if (data.data.message != "Failed!") {
+                console.log('Success! Saved ' + data);
+                $scope.successpost = true;
+            }
+            else {
+                $scope.successpost = false;
+            }
+            
         }, function errorCallback(data) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
-        });*/
+        });
     };
 
     $( ".gameSelect" ).change(function() {
@@ -85,4 +104,4 @@ angular.module('app', [])
         //console.log(this.value);
     });
 
-});
+}]);
