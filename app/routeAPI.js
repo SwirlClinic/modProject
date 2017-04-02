@@ -56,6 +56,21 @@ router.route('/games')
 
     });
 
+router.route('/modfor/:game_name')
+    .get(function(req,res) {
+
+        //console.log("Response? : " + db.getUsers());
+
+        db.any("SELECT * from mod_for_game WHERE game_name = $1", [req.params.game_name])
+            .then(function (data) {
+                res.json(data);
+        }).catch(function(err){
+                res.json(err);
+        });
+
+
+    });
+
 //Query 21: Get the list of users a person is following
 router.route('/following/:username')
 	.get(function(req,res){

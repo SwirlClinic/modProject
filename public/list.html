@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
 
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
 	<!--FontAwesome -->
 	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
 	
@@ -55,9 +58,25 @@
 				<h2>Game:</h2>
 				<div class="input-group input-group-lg fa-lg">
 					<span class="input-group-addon"><i class="fa fa-gamepad"></i></span>
-					<select class="form-control" ng-model="modPost.game_name" data-live-search="true">
-						<option ng-repeat="game in games | orderBy: 'name'" data-subtext = "Game" >{{game.name}}</option>
+					<select class="form-control gameSelect" ng-model="modPost.game_name" data-live-search="true">
+						<option ng-repeat="game in games | orderBy: 'name'">{{game.name}}</option>
 					</select>
+				</div>
+
+				<div class="modsSelected">
+					<h2>Mods:</h2>
+					<div class="input-group input-group-lg fa-lg">
+						<span class="input-group-addon"><i class="fa fa-puzzle-piece"></i></span>
+						<select class="form-control modSelect" ng-model="modSelected.name" data-live-search="true">
+							<option ng-repeat="mod in modsForGame | orderBy: 'name'" >{{mod.name}}</option>
+						</select>
+					</div>
+					<div class="jumbotron">
+						<div class="row">
+							<div class="col" ng-repeat="mods in modsAdded"> {{mods.name}} </div>
+						</div>
+
+					</div>
 				</div>
 				<h2>Description:</h2>
 				<div class="input-group input-group-lg">
