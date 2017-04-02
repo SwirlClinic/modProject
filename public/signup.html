@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
 
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 </head>
 
@@ -43,9 +46,20 @@
 
 			<form ng-submit="saveBear(bear)">
 	          <div class="form-group">
-	            <input type="text" placeholder="Name" ng-model="bear.username" class="form-control">
-	            <input type="text" placeholder="Email" ng-model="bear.email" class="form-control">
-	            <input type="text" placeholder="Password" ng-model="bear.password" class="form-control">
+	          		<div class="input-group input-group-lg" >
+						<span class="input-group-addon"><i class="fa fa-user fa-lg"></i></span>
+						<input type="text" placeholder="Username" ng-model="bear.username" class="form-control input-group-lg">
+					</div>
+
+					<div class="input-group input-group-lg" >
+						<span class="input-group-addon"><i class="fa fa-envelope-o fa-lg"></i></span>
+						<input type="text" placeholder="Email" ng-model="bear.email" class="form-control input-group-lg">
+					</div>
+
+					<div class="input-group input-group-lg" >
+						<span class="input-group-addon"><i class="fa fa-key fa-lg"></i></span>
+						<input type="text" placeholder="Password" ng-model="bear.password" class="form-control input-group-lg">
+					</div>
 	          </div>
 	          <button type="submit" class="btn btn-primary">Submit</button>
 	        </form>

@@ -23,6 +23,30 @@ router.get('/secretcookies', function(req,res, next) {
 	}
 });
 
+router.route('/users/:username')
+    .get(function(req,res) {
+
+        db.any("SELECT * from website_user WHERE username = $1", [req.params.username])
+            .then(function (data) {
+            res.json(data);
+        }).catch(function(err){
+            res.json(err);
+        });
+
+    })
+    .post(function(req, res) {
+
+        db.any("UPDATE website_user SET email = $1 WHERE username = $2", [req.body.email, req.body.username])
+            .then(function (data) {
+                    console.log("Updated: " + req.body.username);
+                    res.json({message: "Success!"});
+                }).catch(function(err){
+                    console.log(err);
+                    res.json({message: "Failure!"});
+            });
+
+    });
+
 router.route('/users')
     .get(function(req,res) {
 

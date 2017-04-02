@@ -66,7 +66,17 @@
 			</form>
 
 			<div ng-repeat="info in userInfo" class="userInfo">
-				<p>Hello {{info}}!</p>
+				<p>Hello {{info.username}}!</p>
+				<p>Here's your email: {{info.email}}</p>
+				<form ng-submit="changeEmail(newEmail)">
+					<div class="input-group input-group-lg" >
+						<span class="input-group-addon"><i class="fa fa-envelope-o fa-lg"></i></span>
+						<input type="text" placeholder="Change email" ng-model="newEmail.email" class="form-control input-group-lg">
+
+					</div>
+					<button type="submit" class="btn btn-primary">Change email</button>
+				</form>
+
 				<form ng-submit="logout()" class="logout">
 					<button type="submit" class="btn btn-primary">Log out</button>
 				</form>
