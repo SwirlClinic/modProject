@@ -1,7 +1,33 @@
 
-angular.module('app', [])
+angular.module('app', ['ngCookies'])
  
-.controller('mainController', function($scope, $http) {
+.controller('mainController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
+    //$(".userInfo").hide();
+    $scope.userInfo = [];
+
+    var myUser = $cookies.get('access_token');
+
+    if (myUser != null) {
+        $(".login").hide();
+        $(".userInfo").show();
+
+        $scope.userInfo.push(myUser);
+        console.log($scope.userInfo);
+    }
+
+    $scope.logout = function() {
+        $http({
+              method: 'GET',
+              url: '/api/logout'
+            }).then(function successCallback(data) {
+                $window.location.href = '/login.html';
+              }, function errorCallback(data) {
+                    console.log(data);
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+              });
+    };
+
     $scope.login = function(user) {
 
         $http({
@@ -15,6 +41,7 @@ angular.module('app', [])
 
                     if (data.data.message == "Success!") {
                         console.log("We did it reddit!");
+                        $window.location.href = '/login.html';
                     }
                     else {
                         console.log("Mission failed, we'll get them next time.");
@@ -37,4 +64,4 @@ angular.module('app', [])
 
     };
 
-});
+}]);

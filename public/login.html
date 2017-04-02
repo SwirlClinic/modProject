@@ -7,13 +7,16 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
 	
-	
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
 	<!--FontAwesome -->
 	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
 	
 	<!--Angular -->
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
 
 	<script src="/js/login.js"></script>
 </head>
@@ -38,7 +41,7 @@
 				<h1>Login</h1>
 			</div>
 
-			<form ng-submit="login(user)">
+			<form ng-submit="login(user)" class="login">
 				<div class="form-group">
 					<div class="input-group input-group-lg" >
 						<span class="input-group-addon"><i class="fa fa-user fa-lg"></i></span>
@@ -53,6 +56,13 @@
 
 				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
+
+			<div ng-repeat="info in userInfo" class="userInfo">
+				<p>Hello {{info}}!</p>
+				<form ng-submit="logout()" class="logout">
+					<button type="submit" class="btn btn-primary">Log out</button>
+				</form>
+			</div>
 		</div>
 	</main>
 

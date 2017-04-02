@@ -2,14 +2,26 @@
 var express = require('express');
 var db = require('./connection');
 
+
 //Routes for the api
 var router = express.Router();
 
-router.use(function(req, res, next) {
+
+/*router.use(function(req, res, next) {
 	console.log("something is happenin");
 	next();
-});
+});*/
 
+router.get('/secretcookies', function(req,res, next) {
+	console.log(req.cookies.access_token);
+	if (!req.cookies.access_token) {
+		res.redirect('/login.html');
+		//res.json({message: "no cookies?"});
+	}
+	else {
+		res.json({message: req.cookies.access_token});
+	}
+});
 
 router.route('/users')
     .get(function(req,res) {
@@ -80,7 +92,17 @@ router.route('/login')
             	//console.log(data.password);
             	if(req.body.password == data.password.trim()) {
             		//res.json(data);	
+
+            		var userInfo = {
+            			username: data.username,
+            			email: data.email
+            		};
+
+            		res.cookie('access_token', data.username);
+            		console.log("Hello world!");
+            		console.log(req.cookies);
             		res.json({message: "Success!"});
+
             	}
             	else {
             		res.json({message: "Failed!"});
@@ -93,6 +115,14 @@ router.route('/login')
 			});
 
     });
+
+router.route('/logout')
+    .get(function(req, res) {
+    	res.clearCookie('access_token');
+    	res.redirect('/login.html');
+    });
+
+    
 
 //Query 21: Get the list of users a person is following
 router.route('/following/:username')
