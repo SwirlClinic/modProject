@@ -63,7 +63,7 @@ router.route('/users')
     })
     .post(function(req, res) {
         var query = "INSERT INTO website_user (username,email,password) VALUES ('"
-         + req.body.username + "','" + req.body.email + "','" + req.body.password + "')"
+         + req.body.username + "','" + req.body.email + "','" + req.body.password + "')";
 
         //console.log(query);
 
@@ -123,8 +123,8 @@ router.route('/login')
             		};
 
             		res.cookie('access_token', data.username);
-            		console.log("Hello world!");
-            		console.log(req.cookies);
+            		/*console.log("Hello world!");
+            		console.log(req.cookies);*/
             		res.json({message: "Success!"});
 
             	}
@@ -255,4 +255,26 @@ router.route('/posts/latest')
     });
 
 
+/*
+--Query 8: Adding a New Mod to the Website
+
+INSERT INTO mod_for_game(game_name, game_release_year, name, link, description)
+    VALUES ('Game2', 1981, 'Cool Mod for Cool People', 'http://example.com/coolmod', 'Example Description');
+*/
+
+router.route('/submitmod')
+    .post(function(req, res) {
+
+         var query = "INSERT INTO mod_for_game(game_name, game_release_year, name, link, description) VALUES ('"
+         + req.body.gameinfo.name + "'," + req.body.gameinfo.releaseyear + ",'" + req.body.name + "','" + req.body.link + "','" + req.body.description + "');";
+
+         db.any(query)
+            .then(function (data) {
+                    console.log("Submitted mod: " + req.body.name + " for game " + req.body.gameinfo.name);
+                    res.json({message: "Success!"});
+                }).catch(function(err){
+                    console.log(err);
+                    res.json({message: "Failure!"});
+            });
+    });
 module.exports = router;
