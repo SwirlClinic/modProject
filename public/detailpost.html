@@ -45,18 +45,34 @@
 
 	<section class="kaboom">
 		<div class='content'>
-			<h2>Welcome to Mods R Us</h2>
-			<p>Please enjoy your stay!</p>
+			<div ng-repeat="details in modinfo">
+					
+					<h2>{{details.title}}</h2>
+				
+				
+					<p>Date: {{details.date}}</p>
+
+					<p>Time: {{details.time}}</p>
+				
+				
+			</div>
+
 		</div>
 	</section>
 
 	<main>
+		
+		<div class="container">
 
-		<h1>Latest Mod Posts:</h1>
-
-		<div class="jumbotron text-center" ng-repeat="post in modposts">
-			<p>Title: {{post.modid}}</p>
 			
+			<h1>Modlist:</h1>
+			<div class="jumbotron text-center" >
+				<div ng-repeat="post in modposts">
+					<p>Mod ID: {{post.modid}}</p>
+					
+
+				</div>
+			</div>
 
 		</div>
 	</main>

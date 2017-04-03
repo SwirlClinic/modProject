@@ -21,8 +21,14 @@ var date = getUrlParameter('date');
 angular.module('app', ['ngCookies'])
  
 .controller('mainController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
-    //$(".userInfo").hide();
-    $scope.userInfo = [];
+    
+    var postinfo = {};
+        postinfo.title = title;
+        postinfo.time = time;
+        postinfo.date = date;
+    console.log(postinfo);
+
+    $scope.modinfo = [postinfo];
 
         $http({
               method: 'GET',
