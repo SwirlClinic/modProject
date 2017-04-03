@@ -357,4 +357,20 @@ router.route('/getfollowmods/:username')
 
     });    
 
+    router.route('/posts/:title/:time/:date')
+    .get(function(req,res){
+
+        var params = [req.params.title, req.params.date, req.params.time];
+
+        db.any("SELECT * FROM post_features_mod WHERE title = $1 AND date = $2 AND time = $3", params)
+
+        
+
+            .then(function(data){
+                res.json(data);
+            }).catch(function(err){
+                res.json({"error": err})
+            });
+    });
+
 module.exports = router;

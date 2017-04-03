@@ -1,0 +1,41 @@
+
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
+var title = getUrlParameter('title');
+var time = getUrlParameter('time');
+var date = getUrlParameter('date'); 
+
+angular.module('app', ['ngCookies'])
+ 
+.controller('mainController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
+    //$(".userInfo").hide();
+    $scope.userInfo = [];
+
+        $http({
+              method: 'GET',
+              url: '/api/posts/' + title + '/' + time + '/' + date
+            }).then(function successCallback(data) {
+                console.log(data.data);
+                $scope.modposts = data.data;
+              }, function errorCallback(data) {
+                    console.log(data);
+
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+              });
+
+
+}]);
