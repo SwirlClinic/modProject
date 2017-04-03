@@ -323,4 +323,38 @@ router.route('/submitmod')
                     res.json({message: "Failure!"});
             });
     });
+
+
+/*
+SELECT post.username, post.game_name, post.game_release_year, post.title, post.date, post.time, post.body
+FROM post, follows
+WHERE post.username = follows.is_followed
+AND follower = 'Username0'
+ORDER BY post.date DESC, post.time DESC, post.title DESC
+LIMIT 10 OFFSET 0;
+*/
+
+router.route('/getfollowmods/:username')
+    .get(function(req,res) {
+
+        //console.log("Response? : " + db.getUsers());
+
+        var query = "SELECT post.username, post.game_name, post.game_release_year, post.title, post.date, post.time, post.body FROM post, follows WHERE post.username = follows.is_followed"
+        query += " AND follower = $1 ORDER BY post.date DESC, post.time DESC, post.title DESC LIMIT 10 OFFSET 0;"
+
+
+
+        var params = [req.params.username]
+
+        
+        db.any(query,params)
+            .then(function (data) {
+                res.json(data);
+        }).catch(function(err){
+                res.json(err);
+        });
+
+
+    });    
+
 module.exports = router;

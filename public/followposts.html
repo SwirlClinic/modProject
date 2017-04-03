@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Getting Started</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/gay.css">
+
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+	
+	<!--Angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+</head>
+
+<body ng-controller="mainController">
+
+	<header>
+		<nav class="navbar navbar-inverse">
+			<a class="navbar-brand">Mods R Us</a>
+			<ul class="navbar-nav nav">
+				<li>
+					<a href="/">Home</a>
+				</li>
+				<li>
+					<a href="/login.html">Login</a>
+				</li>
+				<li>
+					<a href="/list.html">Submit a Modlist!</a>
+				</li>
+				<li>
+					<a href="/newmod.html">Submit Mod for Game</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<section class="kaboom">
+		<div class='content'>
+			<h2>Welcome to Mods R Us</h2>
+			<p>Please enjoy your stay!</p>
+		</div>
+	</section>
+
+	<main>
+
+		<h1>Latest Mod Posts Followed:</h1>
+
+		<div class="jumbotron text-center" ng-repeat="post in modposts">
+			<p>Title: {{post.title}}</p>
+			<p>Author: {{post.username}}</p>
+			<p>Date: {{post.date}}</p>
+			<p>Time: {{post.time}}</p>
+			<p>Game: {{post.game_name}}</p>
+			<p>Body: {{post.body}}</p>
+
+			
+
+		</div>
+	</main>
+
+	<footer>
+	<p>hi</p>
+	</footer>
+
+	<!-- start javascript -->
+	<script src="/js/followposts.js"></script>
+
+
+
+
+</body>
+
+</html>
