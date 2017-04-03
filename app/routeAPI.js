@@ -360,14 +360,40 @@ router.route('/getfollowmods/:username')
     router.route('/posts/:title/:time/:date')
     .get(function(req,res){
 
-        var params = [req.params.title, req.params.date, req.params.time];
+        /*
+        SELECT m.name, m.link, m.description,ad.hours_added, ad.num_new_items,
+       gm.resolution, gm.fps, uopm.version, m.modid
+        FROM mod_for_game m
+        LEFT OUTER JOIN add_on_mod ad ON m.modid = ad.modid
+        LEFT OUTER JOIN graphical_mod gm ON m.modid = gm.modid
+        LEFT OUTER JOIN unofficial_patch_mod uopm ON m.modid = uopm.modid
+        INNER JOIN post_features_mod p ON p.modid = m.modid
+        WHERE p.title = 'gah'
+    AND p.date = '2017-04-03T04:00:00.000Z'
+    AND p.time = '14:39:09.850278';
+        */
 
-        db.any("SELECT * FROM post_features_mod WHERE title = $1 AND date = $2 AND time = $3", params)
+
+
+        //var query = "SELECT * FROM post_features_mod WHERE title = $1 AND date = $2 AND time = $3";
+        var query = "SELECT m.name, m.link, m.description,ad.hours_added, ad.num_new_items,"
+        + " gm.resolution, gm.fps, uopm.version, m.modid"
+        + " FROM mod_for_game m"
+        + " LEFT OUTER JOIN add_on_mod ad ON m.modid = ad.modid"
+        + " LEFT OUTER JOIN graphical_mod gm ON m.modid = gm.modid"
+        + " LEFT OUTER JOIN unofficial_patch_mod uopm ON m.modid = uopm.modid"
+        + " INNER JOIN post_features_mod p ON p.modid = m.modid"
+        + " WHERE p.title = $1 AND p.date = $2 AND p.time = $3;";
+        var params = [req.params.title, req.params.date, req.params.time];
+        console.log(query);
+        console.log("Params " + params);
+        db.any(query, params)
 
         
 
             .then(function(data){
                 res.json(data);
+
             }).catch(function(err){
                 res.json({"error": err})
             });
