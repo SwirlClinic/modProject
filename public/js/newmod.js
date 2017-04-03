@@ -43,14 +43,17 @@ angular.module('app', ['ngCookies'])
             url: '/api/submitmod',
             data: data
         }).then(function successCallback(data) {
-            if (data.data.message != "Failed!") {
+            
+            if (data.data.message != "Failure!") {
                 console.log('Success! Saved ' + data);
                 $scope.successpost = true;
+                $scope.submiterror = false;
             }
             else {
 
                 console.log('it didnt work!');
                 $scope.successpost = false;
+                $scope.submiterror = true;
             }
             
         }, function errorCallback(data) {

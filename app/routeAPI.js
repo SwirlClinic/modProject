@@ -274,6 +274,7 @@ router.route('/submitmod')
                     res.json({message: "Success!"});
                 }).catch(function(err){
                     console.log(err);
+                    console.log('why is this not giving failure');
                     res.json({message: "Failure!"});
             });
     });

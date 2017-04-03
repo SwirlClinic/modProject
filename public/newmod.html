@@ -36,6 +36,9 @@
 				<li>
 					<a href="/list.html">Submit a Modlist!</a>
 				</li>
+				<li>
+					<a href="/newmod.html">Submit Mod for Game</a>
+				</li>
 			</ul>
 		</nav>
 	</header>
@@ -43,7 +46,7 @@
 	<main>
 		<div class="container">
 		<div class="jumbotron text-center">
-			<h1>Submit For Game</h1>
+			<h1>Submit Mod for Game</h1>
 		</div>
 
 		<div class="alert alert-danger" role="alert" ng-show="errorlogin">
@@ -51,6 +54,9 @@
 		</div>
 		<div class="alert alert-success" role="alert" ng-show="successpost">
 			 <strong>Success!</strong> You have submitted a new mod!
+		</div>
+		<div class="alert alert-danger" role="alert" ng-show="submiterror">
+			 <strong>Failed to add mod!</strong> Please try again.
 		</div>
 
 		
