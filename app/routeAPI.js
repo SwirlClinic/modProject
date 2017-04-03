@@ -11,7 +11,7 @@ var router = express.Router();
 	console.log("something is happenin");
 	next();
 });*/
-
+/*
 router.get('/secretcookies', function(req,res, next) {
 	console.log(req.cookies.access_token);
 	if (!req.cookies.access_token) {
@@ -22,6 +22,22 @@ router.get('/secretcookies', function(req,res, next) {
 		res.json({message: req.cookies.access_token});
 	}
 });
+*/
+
+
+router.get('/secretcookies', function(req,res, next) {
+
+    var query = "SELECT * from website_user WHERE username = $1";
+    
+    db.any(query, "Fullsteel")
+        .then(function (data) {
+            res.json(data);
+    }).catch(function(err){
+            res.json(err);
+    });
+
+});
+
 
 router.route('/users/:username')
     .get(function(req,res) {
@@ -62,12 +78,13 @@ router.route('/users')
 
     })
     .post(function(req, res) {
-        var query = "INSERT INTO website_user (username,email,password) VALUES ('"
-         + req.body.username + "','" + req.body.email + "','" + req.body.password + "')";
+        var query = "INSERT INTO website_user (username,email,password) VALUES ($1, $2, $3);";
 
         //console.log(query);
 
-        db.any(query)
+        var params = [req.body.username, req.body.email, req.body.password];
+
+        db.any(query, params)
             .then(function (data) {
 					console.log("inserted: " + req.body.username);
                     res.json({message: "Success!"});
@@ -168,7 +185,7 @@ router.route('/submitpost')
         ('00' + date.getUTCMinutes()).slice(-2) + ':' +
         ('00' + date.getUTCSeconds()).slice(-2);
 				*/
-
+/* Not good! We need to sanitize this
         var query = "BEGIN; INSERT INTO post(username,game_name,game_release_year,title, date, time, body) VALUES('"
          + req.body.username + "','" + req.body.gameinfo.name + "'," + req.body.gameinfo.releaseyear + ",'" + req.body.title + "'," + "current_date" + "," + "current_time" + ",'" + req.body.body + "');";
 
@@ -179,9 +196,36 @@ router.route('/submitpost')
         }
         query += "(" + req.body.modsAdded[i].modid + ",'" + req.body.title + "'," + "current_date" + "," + "current_time" + "," + "10); COMMIT;";
         console.log(query);
+*/
+        var query = "BEGIN; INSERT INTO post(username,game_name,game_release_year,title, date, time, body) VALUES"
+            + "($1, $2, $3, $4, current_date, current_time, $5);"
 
+            + "INSERT INTO post_features_mod(modId,title,date,time,config_importance_rating) VALUES";
+            
+        var parameters = [req.body.username, req.body.gameinfo.name, req.body.gameinfo.releaseyear, req.body.title, req.body.body];
 
-        db.any(query)
+        var paramidx = 6;
+        var i;
+
+        for (i = 0; i < req.body.modsAdded.length-1; i++) {
+            parameters.push(req.body.modsAdded[i].modid);
+            parameters.push(req.body.title);
+
+            query += "($" + paramidx;
+            paramidx++;
+            query += ", $" + paramidx;
+            paramidx++;
+            query += ", current_date, current_time, 10),";
+        }
+        parameters.push(req.body.modsAdded[i].modid);
+        parameters.push(req.body.title);
+        query += "($" + paramidx;
+        paramidx++;
+        query += ", $" + paramidx;
+        query += ", current_date, current_time, 10); COMMIT;";
+        
+
+        db.any(query, parameters)
             .then(function (data) {
 					console.log("inserted: " + req.body.title);
                 res.json({message: "Added post!"});
@@ -265,10 +309,11 @@ INSERT INTO mod_for_game(game_name, game_release_year, name, link, description)
 router.route('/submitmod')
     .post(function(req, res) {
 
-         var query = "INSERT INTO mod_for_game(game_name, game_release_year, name, link, description) VALUES ('"
-         + req.body.gameinfo.name + "'," + req.body.gameinfo.releaseyear + ",'" + req.body.name + "','" + req.body.link + "','" + req.body.description + "');";
+         var query = "INSERT INTO mod_for_game(game_name, game_release_year, name, link, description) VALUES ($1, $2, $3, $4, $5);"
 
-         db.any(query)
+         var params = [req.body.gameinfo.name, req.body.gameinfo.releaseyear, req.body.name, req.body.link, req.body.description];
+
+         db.any(query, params)
             .then(function (data) {
                     console.log("Submitted mod: " + req.body.name + " for game " + req.body.gameinfo.name);
                     res.json({message: "Success!"});
