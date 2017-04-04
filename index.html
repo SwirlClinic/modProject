@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Getting Started</title>
 
-	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
@@ -47,20 +47,27 @@
 
 
 			
-			<h1>Latest Mod Posts:</h1>
+			
 			<!-- <div class="card card-outline-primary mb-3" ng-repeat="post in modposts"> -->
 			<div class="container">
-				<div class="card" ng-repeat="post in modposts">
-					<div class="card-block">
-						<a href = "./detailpost.html?title={{post.title}}%26time={{post.time}}%26date={{post.date}}"><h4 class="card-title">Title: {{post.title}}</h4></a>
-						<p class="card-subtitle mb-2 text-muted">Author: {{post.username}}</p>
-						<p class="card-subtitle mb-2 text-muted">Date: {{post.date}}</p>
-						<p class="card-subtitle mb-2 text-muted">Time: {{post.time}}</p>
-						<p class="card-text">Game: {{post.game_name}}</p>
-						<p class="card-text">Body: {{post.body}}</p>
+				<h2>Latest Mod Posts:</h2>
+				<div class="panel panel-default" ng-repeat="post in modposts">
+					
+						<div class="panel-heading">
+							<a href = "./detailpost.html?title={{post.title}}%26time={{post.time}}%26date={{post.date}}">{{post.title}}</a>
+						</div>
+						<div class="panel-body">
+							<p>Author: {{post.username}}</p>
+							<p>Date: {{post.date}}</p>
+							<p>Time: {{post.time}}</p>
+							<p>Game: {{post.game_name}}</p>
+							<p>Description: {{post.body}}</p>
+						</div>
 						
 						
-					</div>
+					
+		
+		
 				</div>
 			</div>
 		</div>
