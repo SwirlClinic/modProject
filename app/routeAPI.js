@@ -357,8 +357,8 @@ router.route('/getfollowmods/:username')
 
     });    
 
-    router.route('/posts/:title/:time/:date')
-    .get(function(req,res){
+    router.route('/posts/details')
+    .post(function(req,res){
 
         /*
         SELECT m.name, m.link, m.description,ad.hours_added, ad.num_new_items,
@@ -384,9 +384,9 @@ router.route('/getfollowmods/:username')
         + " LEFT OUTER JOIN unofficial_patch_mod uopm ON m.modid = uopm.modid"
         + " INNER JOIN post_features_mod p ON p.modid = m.modid"
         + " WHERE p.title = $1 AND p.date = $2 AND p.time = $3;";
-        var params = [req.params.title, req.params.date, req.params.time];
-        console.log(query);
-        console.log("Params " + params);
+        var params = [req.body.title, req.body.date, req.body.time];
+        //console.log(query);
+        //console.log("Params " + params);
         db.any(query, params)
 
         
@@ -395,7 +395,8 @@ router.route('/getfollowmods/:username')
                 res.json(data);
 
             }).catch(function(err){
-                res.json({"error": err})
+                console.log(err);
+                res.json({message: "Failure!"});
             });
     });
 

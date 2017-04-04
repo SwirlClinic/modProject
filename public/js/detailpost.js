@@ -26,13 +26,14 @@ angular.module('app', ['ngCookies'])
         postinfo.title = title;
         postinfo.time = time;
         postinfo.date = date;
-    console.log(postinfo);
+    //console.log(postinfo);
 
     $scope.modinfo = [postinfo];
 
         $http({
-              method: 'GET',
-              url: '/api/posts/' + title + '/' + time + '/' + date
+              method: 'POST',
+              url: '/api/posts/details',
+              data: postinfo
             }).then(function successCallback(data) {
                 console.log(data.data);
                 $scope.modposts = data.data;
