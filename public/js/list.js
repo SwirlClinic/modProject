@@ -1,6 +1,6 @@
 
 angular.module('app', ['ngCookies'])
- 
+
 .controller('mainController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
 
     var myUser = $cookies.get('access_token');
@@ -40,7 +40,7 @@ angular.module('app', ['ngCookies'])
         data.username = myUser;
         data.modsAdded = $scope.modsAdded;
         console.log(data);
-        
+
         $http({
             method: 'POST',
             url: '/api/submitpost',
@@ -53,7 +53,7 @@ angular.module('app', ['ngCookies'])
             else {
                 $scope.successpost = false;
             }
-            
+
         }, function errorCallback(data) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
@@ -84,7 +84,7 @@ angular.module('app', ['ngCookies'])
         else {
             $(".modsSelected").hide();
         }
-        
+
     });
 
     $( ".modSelect" ).change(function() {
@@ -98,9 +98,9 @@ angular.module('app', ['ngCookies'])
                 }
             }
         }
-            
-            
-        
+
+
+
         //console.log(this.value);
     });
 

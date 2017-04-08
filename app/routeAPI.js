@@ -28,7 +28,7 @@ router.get('/secretcookies', function(req,res, next) {
 router.get('/secretcookies', function(req,res, next) {
 
     var query = "SELECT * from website_user WHERE username = $1";
-    
+    //Query 28: Get specific user data
     db.any(query, "Fullsteel")
         .then(function (data) {
             res.json(data);
@@ -41,8 +41,8 @@ router.get('/secretcookies', function(req,res, next) {
 
 router.route('/users/:username')
     .get(function(req,res) {
-
-        db.any("SELECT * from website_user WHERE username = $1", [req.params.username])
+        //Query 28: Get specific user data
+        db.any("SELECT * FROM website_user WHERE username = $1", [req.params.username])
             .then(function (data) {
             res.json(data);
         }).catch(function(err){
@@ -51,7 +51,7 @@ router.route('/users/:username')
 
     })
     .post(function(req, res) {
-
+        //Query 10: Updating Email Address for the User
         db.any("UPDATE website_user SET email = $1 WHERE username = $2", [req.body.email, req.body.username])
             .then(function (data) {
                     console.log("Updated: " + req.body.username);
@@ -67,8 +67,8 @@ router.route('/users')
     .get(function(req,res) {
 
     	//console.log("Response? : " + db.getUsers());
-
-    	db.any("SELECT * from website_user")
+      //Query 27: Get all user data
+    	db.any("SELECT * FROM website_user")
 			.then(function (data) {
 				res.json(data);
 		}).catch(function(err){
@@ -78,6 +78,7 @@ router.route('/users')
 
     })
     .post(function(req, res) {
+        //Query 6: Creating a New User on the Website
         var query = "INSERT INTO website_user (username,email,password) VALUES ($1, $2, $3);";
 
         //console.log(query);
@@ -99,7 +100,7 @@ router.route('/games')
     .get(function(req,res) {
 
         //console.log("Response? : " + db.getUsers());
-
+        //Query 29: Get a list of all games
         db.any("SELECT * from game")
             .then(function (data) {
                 res.json(data);
@@ -114,8 +115,8 @@ router.route('/modfor/:game_name')
     .get(function(req,res) {
 
         //console.log("Response? : " + db.getUsers());
-
-        db.any("SELECT * from mod_for_game WHERE game_name = $1", [req.params.game_name])
+        //Query 30: Get a list of mods for a game (needs to include game release year)
+        db.any("SELECT * FROM mod_for_game WHERE game_name = $1", [req.params.game_name])
             .then(function (data) {
                 res.json(data);
         }).catch(function(err){
@@ -128,6 +129,7 @@ router.route('/modfor/:game_name')
 router.route('/login')
     .post(function(req, res) {
     	//console.log(req.body.username);
+        //Query 28: Get specific user data
         db.one("SELECT * FROM website_user WHERE username = $1", [req.body.username])
             .then(function (data) {
             	//console.log(data.password);
@@ -201,7 +203,7 @@ router.route('/submitpost')
             + "($1, $2, $3, $4, current_date, current_time, $5);"
 
             + "INSERT INTO post_features_mod(modId,title,date,time,config_importance_rating) VALUES";
-            
+
         var parameters = [req.body.username, req.body.gameinfo.name, req.body.gameinfo.releaseyear, req.body.title, req.body.body];
 
         var paramidx = 6;
@@ -223,7 +225,7 @@ router.route('/submitpost')
         paramidx++;
         query += ", $" + paramidx;
         query += ", current_date, current_time, 10); COMMIT;";
-        
+
 
         db.any(query, parameters)
             .then(function (data) {
@@ -288,9 +290,10 @@ router.route('/followersCount/:username')
 			});
 	});
 
+
 router.route('/posts/latest')
     .get(function(req,res){
-        db.any("SELECT * FROM post ORDER BY date DESC,time DESC limit 10")
+        db.any("SELECT * FROM post ORDER BY date DESC,time DESC LIMIT 10")
             .then(function(data){
                 res.json(data);
             }).catch(function(err){
@@ -324,8 +327,32 @@ router.route('/submitmod')
             });
     });
 
+//Query 4: Most Visited Posts for a Game
+router.route('/mostVisitedPostsForGame')
+  .post(function(req,res){
+    var query = "SELECT p.title, p.date, p.time, p.username, n.visit_count "
+                + "FROM post p, number_of_visits_for_post n "
+                + "WHERE p.title = n.title "
+	              + "AND p.date = n.date "
+                + "AND p.time = n.time "
+                + "AND p.game_name = $1 "
+                + "AND p.game_release_year = $2 "
+                + "ORDER BY n.visit_count DESC ";
+
+    var params = [req.body.name,req.body.year];
+    db.any(query,params)
+      .then(function(data){
+        res.json(data);
+      }).catch(function(err){
+        console.log("Issue with most visited posts for game")
+        console.log(err);
+        res.json({message: "Failure!"});
+      });
+  });
 
 /*
+Query 5
+
 SELECT post.username, post.game_name, post.game_release_year, post.title, post.date, post.time, post.body
 FROM post, follows
 WHERE post.username = follows.is_followed
@@ -346,7 +373,7 @@ router.route('/getfollowmods/:username')
 
         var params = [req.params.username]
 
-        
+
         db.any(query,params)
             .then(function (data) {
                 res.json(data);
@@ -355,9 +382,10 @@ router.route('/getfollowmods/:username')
         });
 
 
-    });    
+    });
 
-    router.route('/posts/details')
+//Query 24: Get Data for Post Page
+router.route('/posts/details')
     .post(function(req,res){
 
         /*
@@ -389,7 +417,7 @@ router.route('/getfollowmods/:username')
         //console.log("Params " + params);
         db.any(query, params)
 
-        
+
 
             .then(function(data){
                 res.json(data);
@@ -399,5 +427,48 @@ router.route('/getfollowmods/:username')
                 res.json({message: "Failure!"});
             });
     });
+
+//Query 3: Leaderboard of Users with the Most Favorited Posts
+router.route('/userFavoritesLeaderboard')
+  .get(function(req,res){
+    var query = "SELECT u.username, (SELECT COUNT(wu.username) "
+                + " FROM post p, website_user wu, favorites f "
+                + " WHERE wu.username = p.username"
+                + " AND f.title = p.title"
+                + " AND f.date = p.date"
+                + " AND f.time = p.time"
+                + " AND u.username = wu.username) AS favorite_count"
+                + " FROM website_user u"
+                + " ORDER BY favorite_count DESC";
+
+    db.any(query,[])
+      .then(function(data){
+        res.json(data);
+      }).catch(function(err){
+        console.log(err);
+        res.json(err);
+      });
+  });
+
+//Example Query 2: Most Posted About Games
+router.route('/mostPostedAboutGames')
+  .get(function(req,res){
+    var query = "SELECT g.name, g.releaseyear, (SELECT COUNT(*)"
+                + " FROM post p"
+                + " WHERE g.releaseyear = p.game_release_year"
+                + " AND g.name = p.game_name) AS post_count"
+                + " FROM game g"
+                + " ORDER BY post_count desc"
+                + " limit 10";
+
+    db.any(query,[])
+      .then(function(data){
+        res.json(data);
+      }).catch(function(err){
+        res.json(err);
+      });
+  });
+
+
 
 module.exports = router;

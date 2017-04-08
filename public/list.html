@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Submit Modlist</title>
-	
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
 
@@ -13,12 +13,12 @@
 
 	<!--FontAwesome -->
 	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
-	
+
 	<!--Angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
 
-	
+
 </head>
 
 <body ng-controller="mainController">
@@ -56,7 +56,7 @@
 			 <strong>Success!</strong> You have submitted a new post!
 		</div>
 
-		
+
 
 			<form ng-submit="savePost(modPost)" ng-show="!errorlogin">
 	          <div class="form-group">
@@ -66,7 +66,7 @@
 					<span class="input-group-addon"><i class="fa fa-pencil fa-lg"></i></span>
 					<input type="text" placeholder="Title of Modlist" ng-model="modPost.title" class="form-control input-group-lg">
 				</div>
-			
+
 				<h2>Game:</h2>
 				<div class="input-group input-group-lg fa-lg">
 					<span class="input-group-addon"><i class="fa fa-gamepad"></i></span>
@@ -96,15 +96,15 @@
 					<textarea type="text" placeholder="Description" ng-model="modPost.body" class="form-control" aria-describedby="sizing-addon1" id="modDescription"> </textarea>
 				</div>
 	          </div>
-			
 
-			
+
+
 
 	          <button type="submit" class="btn btn-primary">Submit</button>
 	        </form>
 
 		</div>
-		
+
 
 	</main>
 
@@ -114,7 +114,7 @@
 
 	<!-- start javascript -->
 	<script src="/js/list.js"></script>
-	
+
 
 
 </body>
