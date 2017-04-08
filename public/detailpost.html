@@ -13,58 +13,40 @@
 
 	<!--FontAwesome -->
 	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
-	
+
 	<!--Angular -->
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
-	
+
 </head>
 
 <body ng-controller="mainController">
 
-	<header>
-		<nav class="navbar navbar-inverse">
-			<a class="navbar-brand">Mods R Us</a>
-			<ul class="navbar-nav nav">
-				<li>
-					<a href="/">Home</a>
-				</li>
-				<li>
-					<a href="/login.html">Login</a>
-				</li>
-				<li>
-					<a href="/list.html">Submit a Modlist!</a>
-				</li>
-				<li>
-					<a href="/newmod.html">Submit Mod for Game</a>
-				</li>
-			</ul>
-		</nav>
-	</header>
+	<header ng-include="'/header.html'"></header>
 
 	<section class="kaboom">
 		<div class='content'>
 			<div ng-repeat="details in modinfo">
-					
+
 					<h2>{{details.title}}</h2>
-				
-				
+
+
 					<p>Date: {{details.date}}</p>
 
 					<p>Time: {{details.time}}</p>
-				
-				
+
+
 			</div>
 
 		</div>
 	</section>
 
 	<main>
-		
+
 		<div class="container">
 
-			
+
 			<h1>Modlist:</h1>
 			<div class="container" >
 				<div class = "jumbotron" ng-repeat="post in modposts">
@@ -72,7 +54,7 @@
 					<p>Link: {{post.link}}</p>
 					<p>Description: {{post.description}}</p>
 					<p>Mod ID: {{post.modid}}</p>
-					
+
 
 				</div>
 			</div>

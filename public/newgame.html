@@ -3,7 +3,7 @@
 <html lang="en" ng-app="app">
 <head>
 	<meta charset="UTF-8">
-	<title>Submit Mod for Game</title>
+	<title>Submit a Game</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
@@ -28,50 +28,48 @@
 	<main>
 		<div class="container">
 		<div class="jumbotron text-center">
-			<h1>Submit Mod for Game</h1>
+			<h1>Submit a Game</h1>
 		</div>
 
 		<div class="alert alert-danger" role="alert" ng-show="errorlogin">
 			 <strong>You must be logged in first!</strong> Please login <a href="/login.html" class="btn btn-primary"> HERE </a>
 		</div>
 		<div class="alert alert-success" role="alert" ng-show="successpost">
-			 <strong>Success!</strong> You have submitted a new mod!
+			 <strong>Success!</strong> You have submitted a new game!
 		</div>
 		<div class="alert alert-danger" role="alert" ng-show="submiterror">
-			 <strong>Failed to add mod!</strong> Please try again.
+			 <strong>Failed to add the game!</strong> Check if the game already exists or try again.
 		</div>
 
 
 
-			<form ng-submit="savePost(modPost)" ng-show="!errorlogin">
+			<form ng-submit="saveGame(gamePost)" ng-show="!errorlogin">
 	          <div class="form-group">
 
-				<h2>Game:</h2>
-				<div class="input-group input-group-lg fa-lg">
-					<span class="input-group-addon"><i class="fa fa-gamepad"></i></span>
-					<select class="form-control gameSelect" ng-model="modPost.game_name" data-live-search="true">
-						<option ng-repeat="game in games | orderBy: 'name'">{{game.name}}</option>
-					</select>
+				<h2>Name of Game:</h2>
+				<div class="input-group input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-gamepad fa-lg"></i></span>
+					<input type="text" placeholder="Name of Game" ng-model="gamePost.name" class="form-control input-group-lg">
 				</div>
 
 
-				<h2>Name of Mod:</h2>
+				<h2>Release Year of Game:</h2>
 				<div class="input-group input-group-lg">
-					<span class="input-group-addon"><i class="fa fa-pencil fa-lg"></i></span>
-					<input type="text" placeholder="Title of Modlist" ng-model="modPost.name" class="form-control input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span>
+					<input type="text" placeholder="Release Year of Game" ng-model="gamePost.releaseyear" class="form-control input-group-lg">
 				</div>
 
 
-				<h2>Link to Mod:</h2>
+				<h2>Genre:</h2>
 				<div class="input-group input-group-lg">
-					<span class="input-group-addon"><i class="fa fa-pencil fa-lg"></i></span>
-					<input type="text" placeholder="Title of Modlist" ng-model="modPost.link" class="form-control input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-star fa-lg"></i></span>
+					<input type="text" placeholder="Genre" ng-model="gamePost.genre" class="form-control input-group-lg">
 				</div>
 
 				<h2>Description:</h2>
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon" id="sizing-addon1"><i class="fa fa-pencil fa-lg"></i></span>
-					<textarea type="text" placeholder="Description" ng-model="modPost.description" class="form-control" aria-describedby="sizing-addon1" id="modDescription"> </textarea>
+					<textarea type="text" placeholder="Description" ng-model="gamePost.description" class="form-control" aria-describedby="sizing-addon1" id="modDescription"> </textarea>
 				</div>
 	          </div>
 
@@ -91,7 +89,7 @@
 	</footer>
 
 	<!-- start javascript -->
-	<script src="/js/newmod.js"></script>
+	<script src="/js/newgame.js"></script>
 
 
 

@@ -301,10 +301,33 @@ router.route('/posts/latest')
             });
     });
 
+//Query 9: Adding a New Game
+router.route('/submitGame')
+      .post(function(req,res){
+        var query = "INSERT INTO game(name,releaseyear,description,genre)"
+                    + " VALUES($1, $2, $3, $4)";
+        if(parseInt(req.body.releaseyear,10)){
+          var params = [req.body.name, parseInt(req.body.releaseyear,10), req.body.description, req.body.genre];
+        }
+        else{
+          res.json({message: "Failure!"});
+        }
+
+
+        db.any(query,params)
+          .then(function(data){
+            console.log("New game "+req.body.name+" released on "+req.body.releaseyear.toString()
+                        +" has been added to the database");
+            res.json({message: "Success!"});
+          }).catch(function(err){
+            console.log(err);
+            res.json({message: "Failure!"});
+          });
+      });
 
 /*
 --Query 8: Adding a New Mod to the Website
-
+//TODO: Insert different mod info
 INSERT INTO mod_for_game(game_name, game_release_year, name, link, description)
     VALUES ('Game2', 1981, 'Cool Mod for Cool People', 'http://example.com/coolmod', 'Example Description');
 */

@@ -14,25 +14,7 @@
 <body ng-controller="mainController">
 
 
-	<header>
-		<nav class="navbar navbar-inverse">
-			<a class="navbar-brand">Mods R Us</a>
-			<ul class="navbar-nav nav">
-				<li>
-					<a href="/">Home</a>
-				</li>
-				<li>
-					<a href="/login.html">Login</a>
-				</li>
-				<li>
-					<a href="/list.html">Submit a Modlist!</a>
-				</li>
-				<li>
-					<a href="/newmod.html">Submit Mod for Game</a>
-				</li>
-			</ul>
-		</nav>
-	</header>
+<header ng-include="'/header.html'"></header>
 
 	<section class="kaboom">
 		<div class='content'>
@@ -42,17 +24,17 @@
 	</section>
 
 	<main>
-		
+
 		<div class="container">
 
 
-			
-			
+
+
 			<!-- <div class="card card-outline-primary mb-3" ng-repeat="post in modposts"> -->
 			<div class="container">
 				<h2>Latest Mod Posts:</h2>
 				<div class="panel panel-default" ng-repeat="post in modposts">
-					
+
 						<div class="panel-heading">
 							<a href = "./detailpost.html?title={{post.title}}%26time={{post.time}}%26date={{post.date}}">{{post.title}}</a>
 						</div>
@@ -63,11 +45,11 @@
 							<p>Game: {{post.game_name}}</p>
 							<p>Description: {{post.body}}</p>
 						</div>
-						
-						
-					
-		
-		
+
+
+
+
+
 				</div>
 			</div>
 		</div>
