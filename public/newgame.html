@@ -5,11 +5,12 @@
 	<meta charset="UTF-8">
 	<title>Submit a Game</title>
 
+  <!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
 
-	<!--jQuery-->
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
 	<!--FontAwesome -->
 	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
@@ -31,13 +32,16 @@
 			<h1>Submit a Game</h1>
 		</div>
 
-		<div class="alert alert-danger" role="alert" ng-show="errorlogin">
+		<div class="alert alert-danger alert-dismissable" role="alert" ng-show="errorlogin">
+       <button href="#" class="close" data-dismiss="alert" aria-label="close">&times;</button>
 			 <strong>You must be logged in first!</strong> Please login <a href="/login.html" class="btn btn-primary"> HERE </a>
 		</div>
-		<div class="alert alert-success" role="alert" ng-show="successpost">
+		<div class="alert alert-success alert-dismissable" role="alert" ng-show="successpost">
+       <button href="#" class="close" data-dismiss="alert" aria-label="close">&times;</button>
 			 <strong>Success!</strong> You have submitted a new game!
 		</div>
-		<div class="alert alert-danger" role="alert" ng-show="submiterror">
+		<div class="alert alert-danger alert-dismissable" role="alert" ng-show="submiterror">
+       <button href="#" class="close" data-dismiss="alert" aria-label="close">&times;</button>
 			 <strong>Failed to add the game!</strong> Check if the game already exists or try again.
 		</div>
 

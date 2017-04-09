@@ -316,7 +316,7 @@ router.route('/submitGame')
 
         db.any(query,params)
           .then(function(data){
-            console.log("New game "+req.body.name+" released on "+req.body.releaseyear.toString()
+            console.log("New game "+req.body.name+" released in "+req.body.releaseyear.toString()
                         +" has been added to the database");
             res.json({message: "Success!"});
           }).catch(function(err){

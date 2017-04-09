@@ -16,12 +16,12 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 var title = getUrlParameter('title');
 var time = getUrlParameter('time');
-var date = getUrlParameter('date'); 
+var date = getUrlParameter('date');
 
 angular.module('app', ['ngCookies'])
- 
+
 .controller('mainController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
-    
+
     var postinfo = {};
         postinfo.title = title;
         postinfo.time = time;
@@ -35,8 +35,13 @@ angular.module('app', ['ngCookies'])
               url: '/api/posts/details',
               data: postinfo
             }).then(function successCallback(data) {
-                console.log(data.data);
-                $scope.modposts = data.data;
+                if(data.data.length > 0){
+                  console.log(data.data);
+                  $scope.modposts = data.data;
+                }
+                else{
+                  $window.location.href = "/404.html";
+                }
               }, function errorCallback(data) {
                     console.log(data);
 

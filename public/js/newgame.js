@@ -22,7 +22,6 @@ angular.module('app',['ngCookies'])
       }
 
       else {
-
           console.log('it didnt work!');
           $scope.successpost = false;
           $scope.submiterror = true;
