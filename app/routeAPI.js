@@ -246,6 +246,40 @@ router.route('/logout')
 
 
 
+//Query 22: Follow a user
+router.route('/follow')
+  .post(function(req,res){
+    var query = "INSERT INTO follows(is_followed, follower)"
+                +" VALUES($1, $2)";
+    var params = [req.body.is_followed, req.body.follower];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log(req.body.follower + " is now following "+req.body.is_followed+"!");
+        res.json({message: "Success!"});
+      }).catch(function(err){
+        res.json({message: "Failure!"});
+      });
+  });
+
+//Query 23: Unfollow a user
+router.route('/unfollow')
+  .post(function(req,res){
+    var query = "DELETE FROM follows"
+                + " WHERE is_followed = $1"
+	              + " AND follower = $2";
+    var params = [req.body.is_followed, req.body.follower];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log(req.body.follower + " unfollowed "+req.body.is_followed);
+        res.json({message: "Success!"});
+      }).catch(function(err){
+        res.json({message: "Failure!"});
+      });
+
+  });
+
 //Query 21: Get the list of users a person is following
 router.route('/following/:username')
 	.get(function(req,res){
