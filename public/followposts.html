@@ -32,18 +32,33 @@
 
 	<main>
 
-		<h1>Latest Mod Posts Followed:</h1>
-
-		<div class="jumbotron text-center" ng-repeat="post in modposts">
-			<p>Title: {{post.title}}</p>
-			<p>Author: {{post.username}}</p>
-			<p>Date: {{post.date}}</p>
-			<p>Time: {{post.time}}</p>
-			<p>Game: {{post.game_name}}</p>
-			<p>Body: {{post.body}}</p>
+		<div class="container">
 
 
 
+
+			<!-- <div class="card card-outline-primary mb-3" ng-repeat="post in modposts"> -->
+			<div class="container">
+				<h2>Latest Mod Posts From Followed Users:</h2>
+				<div class="panel panel-default" ng-repeat="post in modposts">
+
+						<div class="panel-heading">
+							<a href = "./detailpost.html?title={{post.title}}%26time={{post.time}}%26date={{post.date}}">{{post.title}}</a>
+						</div>
+						<div class="panel-body">
+							<p>Author: {{post.username}}</p>
+							<p>Date: {{post.date}}</p>
+							<p>Time: {{post.time}}</p>
+							<p>Game: {{post.game_name}}</p>
+							<p>Description: {{post.body}}</p>
+						</div>
+
+
+
+
+
+				</div>
+			</div>
 		</div>
 	</main>
 
