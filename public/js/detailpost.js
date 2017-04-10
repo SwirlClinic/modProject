@@ -49,23 +49,41 @@ angular.module('app', ['ngCookies'])
                 // or server returns response with an error status.
               });
 
-              $http({
-                    method: 'POST',
-                    url: '/api/posts/mainPostContent',
-                    data: postinfo
-                  }).then(function successCallback(data) {
-                      if(data.data.length > 0){
-                        console.log(data.data);
-                        $scope.postMainContent = data.data;
-                      }
-                      else{
-                        $window.location.href = "/404.html";
-                      }
-                    }, function errorCallback(data) {
-                          console.log(data);
+        $http({
+              method: 'POST',
+              url: '/api/posts/mainPostContent',
+              data: postinfo
+            }).then(function successCallback(data) {
+                if(data.data.length > 0){
+                  console.log(data.data);
+                  $scope.postMainContent = data.data;
+                }
+                else{
+                  $window.location.href = "/404.html";
+                }
+              }, function errorCallback(data) {
+                    console.log(data);
 
-                      // called asynchronously if an error occurs
-                      // or server returns response with an error status.
-                    });
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+              });
+
+        var getComments = {};
+        getComments.post_title = title;
+        getComments.post_time = time;
+        getComments.post_date = date;
+        $http({
+              method: 'POST',
+              url: '/api/comments',
+              data: getComments
+            }).then(function successCallback(data) {
+                  console.log(data.data);
+                  $scope.comments = data.data;
+              }, function errorCallback(data) {
+                    console.log(data);
+
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+              });
 
 }]);
