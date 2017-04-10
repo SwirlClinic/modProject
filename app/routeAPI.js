@@ -428,7 +428,7 @@ router.route('/getfollowmods/:username')
 
 
 
-        var params = [req.params.username]
+        var params = [req.params.username];
 
 
         db.any(query,params)
@@ -441,7 +441,27 @@ router.route('/getfollowmods/:username')
 
     });
 
-//Query 24: Get Data for Post Page
+//Query 24: Get Content for Post Page
+router.route('/posts/mainPostContent')
+  .post(function(req,res){
+    var query = "SELECT *"
+                + " FROM post"
+                + " WHERE title = $1"
+                + " AND date = $2"
+                + " AND time = $3";
+    var params = [req.body.title, req.body.date, req.body.time];
+
+    db.any(query, params)
+        .then(function(data){
+            console.log("Getting post content for post titled "+req.body.title);
+            res.json(data);
+        }).catch(function(err){
+            console.log(err);
+            res.json({message: "Failure!"});
+        });
+  });
+
+//Query 24: Get mods for a Post Page
 router.route('/posts/details')
     .post(function(req,res){
 
@@ -537,7 +557,7 @@ router.route('/makeComment')
     db.any(query,params)
       .then(function(data){
         console.log(req.body.username + " just made a comment on a post titled " + req.body.post_title);
-        res.json(data);
+        res.json({message: "Success!"});
       }).catch(function(err){
         console.log(err);
         res.json({message: "Failure!"});
@@ -565,5 +585,106 @@ router.route('/comments')
         res.json({message: "Failure!"});
       });
   });
+
+//Query 13: Favoriting a post
+router.route('/favorite')
+  .post(function(req,res){
+    var query = "INSERT INTO favorites(username, title, date, time)"
+                + " VALUES($1, $2, $3, $4)";
+
+    var params = [req.body.username,req.body.title,req.body.date,req.body.time];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log(req.body.username + " favorited a post titled " + req.body.title);
+        res.json({message: "Success!"});
+      }).catch(function(err){
+        console.log(err);
+        res.json({message: "Failure!"});
+      });
+
+  });
+
+//Query 14: Unfavorite a post
+router.route('/unfavorite')
+  .post(function(req,res){
+    var query = "DELETE FROM favorites"
+                + " WHERE username = $1"
+    	          + " AND title = $2"
+                + " AND date = $3"
+                + " AND time = $4";
+    var params = [req.body.username,req.body.title,req.body.date,req.body.time];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log(req.body.username + " unfavorited a post titled " + req.body.title);
+        res.json({message: "Success!"});
+      }).catch(function(err){
+        console.log(err);
+        res.json({message: "Failure!"});
+      });
+  });
+
+//Query 15: View a user's favorited posts
+router.route('/favorites/:username')
+  .get(function(req,res){
+    var query = "SELECT title, date, time, favorite_date, favorite_time"
+                + " FROM favorites"
+                + " WHERE username = $1"
+                + " ORDER BY date DESC, time DESC";
+    var params = [req.params.username];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log("Getting favorites for "+req.params.username);
+        res.json(data);
+      }).catch(function(err){
+        console.log(err);
+        res.json({message: "Failure!"});
+      });
+  });
+
+//TODO: Query 16
+
+//Query 17: View a User's Visited Posts
+router.route('/postsVisited/:username')
+  .get(function(req,res){
+  var query = "SELECT title, date, time, most_recent_visit_date"
+              + " FROM visits"
+              + " WHERE username = $1"
+              + " ORDER BY most_recent_visit_date DESC";
+  var params = [req.params.username];
+
+  db.any(query,params)
+    .then(function(data){
+      console.log("Getting pages "+req.params.username + " has visited.");
+      res.json(data);
+    }).catch(function(err){
+      console.log(err);
+      res.json({message: "Failure!"});
+    });
+});
+
+//Query 25: Get a list of posts written by a user
+router.route('/postsWrittenBy/:username')
+  .get(function(req,res){
+    var query = "SELECT title, date, time"
+                + " FROM post"
+                + " WHERE username = $1"
+                + " ORDER BY date DESC, time DESC";
+    var params = [req.params.username];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log("Getting pages written by "+req.params.username);
+        res.json(data);
+      }).catch(function(err){
+        console.log(err);
+        res.json({message: "Failure!"});
+      });
+  });
+
+//TODO: Query 26: "Delete" a User from the database
+
 
 module.exports = router;
