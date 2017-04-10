@@ -526,6 +526,44 @@ router.route('/mostPostedAboutGames')
       });
   });
 
+//Query 11 Adding a comment to a post
+router.route('/makeComment')
+  .post(function(req,res){
+    var query = "INSERT INTO comment_for_post(post_title, post_date, post_time, comment_body, username)"
+                +" VALUES($1, $2, $3, $4, $5)";
 
+    var params = [req.body.post_title,req.body.post_date,req.body.post_time,req.body.comment_body,req.body.username];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log(req.body.username + " just made a comment on a post titled " + req.body.post_title);
+        res.json(data);
+      }).catch(function(err){
+        console.log(err);
+        res.json({message: "Failure!"});
+      });
+
+  });
+
+//Query 12: Get Comments for a post
+router.route('/comments')
+  .post(function(req,res){
+    var query = "SELECT com.comment_date, com.comment_time, com.comment_body, com.username"
+                + " FROM comment_for_post com"
+                + " WHERE com.post_title = $1"
+	              + " AND com.post_date = $2"
+	              + " AND com.post_time = $3"
+                + " ORDER BY com.comment_date DESC, com.comment_time DESC";
+    var params = [req.body.post_title,req.body.post_date,req.body.post_time];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log("Getting comments for a post titled " + req.body.post_title);
+        res.json(data);
+      }).catch(function(err){
+        console.log(err);
+        res.json({message: "Failure!"});
+      });
+  });
 
 module.exports = router;

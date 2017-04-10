@@ -155,6 +155,7 @@ WHERE username = 'exampleUsername'
     AND isdeleted = false;
 
 --Query 8: Adding a New Mod to the Website
+--TODO
 
 INSERT INTO mod_for_game(game_name, game_release_year, name, link, description)
     VALUES ('Game2', 1981, 'Cool Mod for Cool People', 'http://example.com/coolmod', 'Example Description');
