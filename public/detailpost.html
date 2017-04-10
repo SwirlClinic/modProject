@@ -18,13 +18,13 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
-
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
 </head>
 
 <body ng-controller="mainController">
 
 	<header ng-include="'/header.html'"></header>
-
+	<div class='notifications bottom-right'></div>
 	<section class="kaboom">
 		<div class='content'>
 			<div ng-repeat="details in modinfo">
@@ -62,6 +62,18 @@
 					<p>Mod ID: {{post.modid}}</p>
 
 
+				</div>
+			</div>
+
+			<h1>Comments:</h1>
+			<div class="container">
+				<textarea type="text" placeholder="Make a Comment" ng-model="userPostComment.comment_body" class="form-control" aria-describedby="sizing-addon1"></textarea>
+				<button ng-click="postComment(userPostComment)">Post Comment</button>
+				<div style="word-wrap: break-word;" class = "jumbotron" ng-repeat="comment in comments track by $index">
+					<p>Username: {{comment.username}}</p>
+					<p>Date of Comment: {{comment.comment_date}}</p>
+					<p>Time of Comment: {{comment.comment_time}}</p>
+					<p>Comment: {{comment.comment_body}}</p>
 				</div>
 			</div>
 

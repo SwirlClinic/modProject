@@ -28,6 +28,14 @@ angular.module('app', ['ngCookies'])
         postinfo.date = date;
     //console.log(postinfo);
 
+    var myUser = $cookies.get('access_token');
+
+    $scope.errorlogin = false;
+
+    if (myUser == null) {
+        $scope.errorlogin = true;
+    }
+
     $scope.modinfo = [postinfo];
 
         $http({
@@ -85,5 +93,43 @@ angular.module('app', ['ngCookies'])
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
               });
+
+        $scope.postComment = function(data){
+          if($scope.errorlogin){
+            $.notify('You need to login in order to post','error');
+          }
+          else if(data.comment_body.trim() === "" ){
+            $.notify('Comment needs to have actual content in order to post','error');
+          }
+          else{
+            data.username = myUser;
+            data.post_title = title;
+            data.post_time = time;
+            data.post_date = date;
+
+            $http({
+                method: 'POST',
+                url: '/api/makeComment',
+                data: data
+            }).then(function successCallback(returnData) {
+                if (returnData.data.message != "Failure!") {
+                    $.notify("Your comment was successfully posted.",'success');
+                    commentToAppend = {};
+                    commentToAppend.comment_date = "Today";
+                    commentToAppend.comment_time = "Just Now";
+                    commentToAppend.username = data.username;
+                    commentToAppend.comment_body = data.comment_body
+                    $scope.comments.unshift(commentToAppend);
+                }
+                else {
+                    $.notify("An issue occurred when trying to post your comment.",'error');
+                }
+              }, function errorCallback(data) {
+              // called asynchronously if an error occurs
+              // or server returns response with an error status.
+              $.notify("An issue occurred when trying to post your comment.",'error');
+              });
+          }
+        };
 
 }]);
