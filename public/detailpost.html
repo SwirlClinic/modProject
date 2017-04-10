@@ -45,11 +45,17 @@
 	<main>
 
 		<div class="container">
+			<h1>Description of Modlist:</h1>
+			<div class="container">
+				<div class = "jumbotron" ng-repeat="content in postMainContent">
+					{{content.body}}
+				</div>
+			</div>
 
 
 			<h1>Modlist:</h1>
 			<div class="container" >
-				<div class = "jumbotron" ng-repeat="post in modposts">
+				<div style="word-wrap: break-word;" class = "jumbotron" ng-repeat="post in modposts">
 					<p>Mod: {{post.name}}</p>
 					<p>Link: {{post.link}}</p>
 					<p>Description: {{post.description}}</p>
