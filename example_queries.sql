@@ -113,8 +113,8 @@ SELECT x.title as post_title, x.date as post_date, x.time as post_time, x.name a
        x.resolution, x.fps, x.version
 FROM
 (
-SELECT pfm.title, pfm.date, pfm.config_importance_rating, pfm.time, mod_for_game.name, 
-	   mod_for_game.link, mod_for_game.description, ad.hours_added, ad.num_new_items, 
+SELECT pfm.title, pfm.date, pfm.config_importance_rating, pfm.time, mod_for_game.name,
+	   mod_for_game.link, mod_for_game.description, ad.hours_added, ad.num_new_items,
        gm.resolution, gm.fps, uopm.version
 FROM mod_for_game
 LEFT JOIN add_on_mod ad ON mod_for_game.modid = ad.modid
@@ -316,12 +316,12 @@ SET isdeleted = true
 WHERE username = 'Username9';
 
 --Query 27: Get all user data
-SELECT * 
+SELECT *
 FROM website_user;
 
 --Query 28: Get specific user data
-SELECT * 
-FROM website_user 
+SELECT *
+FROM website_user
 WHERE username = 'Username1';
 
 --Query 29: Get a list of all games
@@ -329,13 +329,21 @@ SELECT *
 FROM game;
 
 --Query 30: Get a list of mods for a game
-SELECT * 
-FROM mod_for_game 
+SELECT *
+FROM mod_for_game
 WHERE game_name = 'Game1553'
 AND game_release_year = 1982;
 
 --Query 31: List of the most recent posts
-SELECT * 
-FROM post 
-ORDER BY date DESC,time DESC 
+SELECT *
+FROM post
+ORDER BY date DESC,time DESC
 LIMIT 10;
+
+--Query 32: Check if user is following another user
+CREATE INDEX following_index on follows(is_followed,follower);
+
+SELECT EXISTS(SELECT 1
+	from follows
+	where is_followed = 'Username1'
+	and follower = 'Username0') AS result;

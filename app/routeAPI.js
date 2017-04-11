@@ -686,5 +686,23 @@ router.route('/postsWrittenBy/:username')
 
 //TODO: Query 26: "Delete" a User from the database
 
+//Query 32: Check if one user follows another user
+router.route('/doesFollow')
+  .post(function(req,res){
+    var query = "SELECT EXISTS(SELECT 1"
+    	          + " from follows"
+    	          + " where is_followed = $1"
+    	          + " and follower = $2) AS result";
+    var params = [req.body.is_followed, req.body.follower];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log("Checking if "+req.body.follower+" follows "+req.body.is_followed);
+        res.json(data);
+      }).catch(function(err){
+        res.json({message: "Failure!"});
+      });
+  });
+
 
 module.exports = router;

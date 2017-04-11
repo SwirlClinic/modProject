@@ -36,6 +36,15 @@ angular.module('app', ['ngCookies'])
         $scope.errorlogin = true;
     }
 
+    $scope.assignButton = function(){
+      if($scope.follows === true){
+        $scope.followingButtonText = "Unfollow"
+      }
+      else{
+        $scope.followingButtonText = "Follow"
+      }
+    };
+
     $scope.modinfo = [postinfo];
 
         $http({
@@ -57,6 +66,7 @@ angular.module('app', ['ngCookies'])
                 // or server returns response with an error status.
               });
 
+        $scope.follows = false;
         $http({
               method: 'POST',
               url: '/api/posts/mainPostContent',
@@ -65,12 +75,34 @@ angular.module('app', ['ngCookies'])
                 if(data.data.length > 0){
                   console.log(data.data);
                   $scope.postMainContent = data.data;
+
+                  if(!$scope.errorlogin){
+                    var checkFollows = {};
+                    checkFollows.follower = myUser;
+                    checkFollows.is_followed = $scope.postMainContent[0].username;
+                    $http({
+                      method: 'POST',
+                      url: '/api/doesFollow',
+                      data: checkFollows
+                    }).then(function anotherSuccess(returnData){
+                      $scope.follows = returnData.data[0].result;
+                      console.log($scope.follows);
+                      $scope.assignButton();
+                    }, function error(errorData){
+                      console.log(errorData);
+                      $scope.assignButton();
+                    });
+                  }
+                  else{
+                    $scope.assignButton();
+                  }
                 }
                 else{
                   $window.location.href = "/404.html";
                 }
               }, function errorCallback(data) {
                     console.log(data);
+                    $scope.assignButton();
 
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
@@ -131,5 +163,43 @@ angular.module('app', ['ngCookies'])
               });
           }
         };
+
+        $scope.onClickFollowButton = function(){
+          if($scope.errorlogin){
+            $.notify('You need to login in order to follow a user','error');
+          }
+          else{
+            if($scope.follows){
+              urlForPost = '/api/unfollow'
+            }
+            else{
+              urlForPost = '/api/follow'
+            }
+            var followsPost = {};
+            followsPost.follower = myUser;
+            followsPost.is_followed = $scope.postMainContent[0].username;
+            $http({
+                method: 'POST',
+                url: urlForPost,
+                data: followsPost
+            }).then(function successCallback(returnData) {
+                if (returnData.data.message != "Failure!") {
+                    $scope.follows = !$scope.follows;
+                    if($scope.follows){
+                      $.notify("You are now following "+$scope.postMainContent[0].username,'success');
+                    }
+                    else{
+                      $.notify("You have unfollowed "+$scope.postMainContent[0].username,'success');
+                    }
+                    $scope.assignButton();
+                }
+                else{
+                    $.notify("There was an issue with following. Try reloading the page and trying again.",'error');
+                }
+          }, function errorOccurred(errorData){
+            $.notify("There was an issue with following. Try reloading the page and trying again.",'error');
+          })
+        }
+      };
 
 }]);
