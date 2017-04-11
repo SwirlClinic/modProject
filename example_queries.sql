@@ -347,3 +347,11 @@ SELECT EXISTS(SELECT 1
 	from follows
 	where is_followed = 'Username1'
 	and follower = 'Username0') AS result;
+
+--Query 33: Check if user has favorited something
+SELECT EXISTS(SELECT 1
+	from favorites
+	WHERE username = 'Username1'
+		AND title = 'ESJvKqAdKZb'
+	    AND date = '1991-08-11'
+	    AND time = '16:27:29') AS result;

@@ -23,9 +23,9 @@ angular.module('app', ['ngCookies'])
 .controller('mainController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
 
     var postinfo = {};
-        postinfo.title = title;
-        postinfo.time = time;
-        postinfo.date = date;
+    postinfo.title = title;
+    postinfo.time = time;
+    postinfo.date = date;
     //console.log(postinfo);
 
     var myUser = $cookies.get('access_token');
@@ -38,13 +38,24 @@ angular.module('app', ['ngCookies'])
 
     $scope.assignButton = function(){
       if($scope.follows === true){
-        $scope.followingButtonText = "Unfollow"
+        $scope.followingButtonText = "Unfollow";
       }
       else{
-        $scope.followingButtonText = "Follow"
+        $scope.followingButtonText = "Follow";
       }
     };
 
+    $scope.assignFavoritesButton = function(){
+      if($scope.favorites === true){
+        $scope.favoritesButtonText = "Unfavorite";
+      }
+      else{
+        $scope.favoritesButtonText = "Favorite";
+      }
+    };
+
+    $scope.follows = false;
+    $scope.favorites = false;
     $scope.modinfo = [postinfo];
 
         $http({
@@ -66,7 +77,29 @@ angular.module('app', ['ngCookies'])
                 // or server returns response with an error status.
               });
 
-        $scope.follows = false;
+        if(!$scope.errorlogin){
+          var favoriteCheck = {}
+          favoriteCheck.title = title;
+          favoriteCheck.time = time;
+          favoriteCheck.date = date;
+          favoriteCheck.username = myUser;
+          console.log(favoriteCheck);
+          $http({
+            method: 'POST',
+            url: '/api/doesFavorite',
+            data: favoriteCheck
+          }).then(function successCallback(data){
+            $scope.favorites = data.data[0].result;
+            $scope.assignFavoritesButton();
+          }, function errorCallback(data){
+            $scope.assignFavoritesButton();
+          });
+        }
+        else{
+          $scope.assignFavoritesButton();
+        }
+
+
         $http({
               method: 'POST',
               url: '/api/posts/mainPostContent',
@@ -201,5 +234,45 @@ angular.module('app', ['ngCookies'])
           })
         }
       };
+
+      $scope.onClickFavoriteButton = function(){
+        if($scope.errorlogin){
+          $.notify('You need to login in order to favorite a post','error');
+        }
+        else{
+          if($scope.favorites){
+            urlForPost = '/api/unfavorite'
+          }
+          else{
+            urlForPost = '/api/favorite'
+          }
+          var favoritePost = {};
+          favoritePost.username = myUser;
+          favoritePost.title = title;
+          favoritePost.date = date;
+          favoritePost.time = time;
+          $http({
+              method: 'POST',
+              url: urlForPost,
+              data: favoritePost
+          }).then(function successCallback(returnData) {
+              if (returnData.data.message != "Failure!") {
+                  $scope.favorites = !$scope.favorites;
+                  if($scope.favorites){
+                    $.notify("You have favorited "+favoritePost.title,'success');
+                  }
+                  else{
+                    $.notify("You have unfavorited "+favoritePost.title,'success');
+                  }
+                  $scope.assignFavoritesButton();
+              }
+              else{
+                  $.notify("There was an issue with favoriting. Try reloading the page and trying again.",'error');
+              }
+        }, function errorOccurred(errorData){
+          $.notify("There was an issue with favoriting. Try reloading the page and trying again.",'error');
+        })
+      }
+    };
 
 }]);

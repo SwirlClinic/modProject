@@ -704,5 +704,26 @@ router.route('/doesFollow')
       });
   });
 
+//Query 33: Check if user has favorited something
+router.route('/doesFavorite')
+  .post(function(req,res){
+    var query = "SELECT EXISTS(SELECT 1"
+      	        + " from favorites"
+      	        + " WHERE username = $1"
+      		      + " AND title = $2"
+      	        + " AND date = $3"
+      	        + " AND time = $4) AS result";
+
+    var params = [req.body.username,req.body.title,req.body.date,req.body.time];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log("Checking if "+req.body.username+" favorited "+req.body.title);
+        res.json(data);
+      }).catch(function(err){
+        res.json({message: "Failure!"});
+      });
+  });
+
 
 module.exports = router;
