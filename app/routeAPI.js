@@ -42,7 +42,7 @@ router.get('/secretcookies', function(req,res, next) {
 router.route('/users/:username')
     .get(function(req,res) {
         //Query 28: Get specific user data
-        db.any("SELECT * FROM website_user WHERE username = $1", [req.params.username])
+        db.any("SELECT username,email FROM website_user WHERE username = $1", [req.params.username])
             .then(function (data) {
             res.json(data);
         }).catch(function(err){
