@@ -335,6 +335,16 @@ router.route('/posts/latest')
             });
     });
 
+router.route('/posts/latest/:off')
+    .get(function(req,res){
+        db.any("SELECT * FROM post ORDER BY date DESC,time DESC LIMIT 10 OFFSET $1",[parseInt(req.params.off,10)])
+            .then(function(data){
+                res.json(data);
+            }).catch(function(err){
+                res.json({"error": err})
+            });
+    });
+
 //Query 9: Adding a New Game
 router.route('/submitGame')
       .post(function(req,res){
@@ -429,6 +439,29 @@ router.route('/getfollowmods/:username')
 
 
         var params = [req.params.username];
+
+
+        db.any(query,params)
+            .then(function (data) {
+                res.json(data);
+        }).catch(function(err){
+                res.json(err);
+        });
+
+
+    });
+
+router.route('/getfollowmods/:username/:off')
+    .get(function(req,res) {
+
+        //console.log("Response? : " + db.getUsers());
+
+        var query = "SELECT post.username, post.game_name, post.game_release_year, post.title, post.date, post.time, post.body FROM post, follows WHERE post.username = follows.is_followed"
+        query += " AND follower = $1 ORDER BY post.date DESC, post.time DESC, post.title DESC LIMIT 10 OFFSET $2;"
+
+
+
+        var params = [req.params.username,parseInt(req.params.off,10)];
 
 
         db.any(query,params)
