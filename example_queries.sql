@@ -18,8 +18,8 @@ INSERT INTO post_features_mod(modId,title,date,time,config_importance_rating) VA
     (1022,'Example Post Title',current_date,current_time,4);
 COMMIT;
 
---Example Query 2: Most Posted About Games
---List the top 10 games with the most posts about them and order them by the number of posts about them.
+--Example Query 2: Most Posted About Games for a Genre
+--List the top 10 games with the most posts about them for a given genre and order them by the number of posts about them.
 --This can be used as a most talked about games section so that users can see what games a lot
 --of users are making mod configfurations for.
 CREATE INDEX post_games_index on post(game_name,game_release_year);
@@ -29,6 +29,7 @@ SELECT g.name, g.releaseyear, (SELECT COUNT(*)
                                WHERE g.releaseyear = p.game_release_year
                                AND g.name = p.game_name) AS post_count
 FROM game g
+WHERE g.genre = 'Comedy'
 ORDER BY post_count desc
 LIMIT 10;
 
@@ -355,3 +356,8 @@ SELECT EXISTS(SELECT 1
 		AND title = 'ESJvKqAdKZb'
 	    AND date = '1991-08-11'
 	    AND time = '16:27:29') AS result;
+
+
+--Query 34: Get a list of genres in the database
+SELECT DISTINCT genre
+FROM game;

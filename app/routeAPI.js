@@ -569,9 +569,29 @@ router.route('/mostPostedAboutGames')
                 + " AND g.name = p.game_name) AS post_count"
                 + " FROM game g"
                 + " ORDER BY post_count desc"
-                + " limit 10";
+                + " limit 25";
 
     db.any(query,[])
+      .then(function(data){
+        res.json(data);
+      }).catch(function(err){
+        res.json(err);
+      });
+  });
+
+//Example Query 2 (Modified): Most Posted About Games (for a specific genere)
+router.route('/mostPostedAboutGames/:genre')
+  .get(function(req,res){
+    var query = "SELECT g.name, g.releaseyear, (SELECT COUNT(*)"
+                + " FROM post p"
+                + " WHERE g.releaseyear = p.game_release_year"
+                + " AND g.name = p.game_name) AS post_count"
+                + " FROM game g"
+                + " WHERE g.genre = $1"
+                + " ORDER BY post_count desc"
+                + " limit 25";
+
+    db.any(query,[req.params.genre])
       .then(function(data){
         res.json(data);
       }).catch(function(err){
@@ -618,6 +638,18 @@ router.route('/comments')
         res.json({message: "Failure!"});
       });
   });
+
+//Query 34:
+router.route('/genres')
+.get(function(req,res){
+  db.any("select DISTINCT genre from game",[])
+    .then(function(data){
+      res.json(data);
+    }).catch(function(err){
+      console.log(err);
+      res.json({message: "Failure!"});
+    });
+});
 
 //Query 13: Favoriting a post
 router.route('/favorite')
