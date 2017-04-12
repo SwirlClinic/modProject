@@ -397,16 +397,21 @@ router.route('/submitmod')
 //Query 4: Most Visited Posts for a Game
 router.route('/mostVisitedPostsForGame')
   .post(function(req,res){
-    var query = "SELECT p.title, p.date, p.time, p.username, n.visit_count "
-                + "FROM post p, number_of_visits_for_post n "
-                + "WHERE p.title = n.title "
-	              + "AND p.date = n.date "
-                + "AND p.time = n.time "
-                + "AND p.game_name = $1 "
-                + "AND p.game_release_year = $2 "
-                + "ORDER BY n.visit_count DESC ";
+    var query = "SELECT p.title, p.date, p.time, COUNT(v.most_recent_visit_date) AS visit_count"
+                + " FROM post p"
+                + " INNER JOIN game g ON p.game_name = g.name AND p.game_release_year = g.releaseyear"
+                + " LEFT JOIN visits v ON p.title = v.title AND p.date = v.date AND p.time = v.time"
+                + " WHERE p.title LIKE $1";
+                if(req.body.genre){
+                  query +=" AND g.genre = $2";
+                }
+                query += " GROUP BY p.title, p.date, p.time"
+                + " ORDER BY visit_count DESC, p.date DESC, p.time DESC, p.title"
+                + " LIMIT 10"
+                + " OFFSET $3";
 
-    var params = [req.body.name,req.body.year];
+    var params = ["%"+req.body.name+"%",req.body.genre,req.body.offset];
+
     db.any(query,params)
       .then(function(data){
         res.json(data);

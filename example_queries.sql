@@ -65,30 +65,22 @@ SELECT u.username, (SELECT COUNT(wu.username)
 FROM website_user u
 ORDER BY favorite_count DESC;
 
---Query 4: Most Visited Posts for a Game (in Example the game is 'Game1553')
+--Query 4: Top Visited Posts for a Game With Genre Filter and Title Search (in Example the game is 'Game1553')
 --So, going off of query 2, let's assume that the most posted about game is 'Game1553'
 --with a 1982 release year and the user clicks on the game name to see all posts about that game.
 --This query will return a list of all posts (from most visited to least) and the number of
 --visits the post has received. However, it will not give the content of the post (like a search
 --result, clicking on post name will give you the post page).
 
-CREATE VIEW number_of_visits_for_post AS
-SELECT p.title, p.date, p.time, COUNT(v.title) as visit_count
+SELECT p.title, p.date, p.time, COUNT(v.most_recent_visit_date) AS visit_count
 FROM post p
-LEFT OUTER JOIN visits v
-ON p.title = v.title
-	AND p.date = v.date
-    AND p.time = v.time
-GROUP BY p.title, p.date, p.time;
-
-SELECT p.title, p.date, p.time, p.username, n.visit_count
-FROM post p, number_of_visits_for_post n
-WHERE p.title = n.title
-	AND p.date = n.date
-    AND p.time = n.time
-    AND p.game_name = 'Game1553'
-    AND p.game_release_year = 1982
-ORDER BY n.visit_count DESC;
+INNER JOIN game g ON p.game_name = g.name AND p.game_release_year = g.releaseyear
+LEFT JOIN visits v ON p.title = v.title AND p.date = v.date AND p.time = v.time
+WHERE p.title LIKE '%%' AND g.genre = 'Comedy'
+GROUP BY p.title, p.date, p.time
+ORDER BY visit_count DESC, p.date DESC, p.time DESC, p.title
+LIMIT 10
+OFFSET 0;
 
 --Query 5: Populating the users news feed
 --This query returns all posts that the logged in user will see on their news feed
@@ -361,3 +353,30 @@ SELECT EXISTS(SELECT 1
 --Query 34: Get a list of genres in the database
 SELECT DISTINCT genre
 FROM game;
+
+--Query 35: Experts for a game
+--Users who have written about all the mods for a certain game
+--with their posts
+CREATE INDEX pfm_index_for_post on post_features_mod(title,date,time);
+CREATE INDEX mod_for_game_index_for_game on mod_for_game(game_name,game_release_year);
+CREATE INDEX game_index on game(name,releaseyear);
+CREATE INDEX website_user_index on website_user(username);
+
+SELECT DISTINCT g.name, g.releaseyear, u.username
+FROM website_user u, game g
+WHERE g.name LIKE '%%'
+	AND NOT EXISTS(
+		(SELECT m.modid
+			FROM mod_for_game m
+			WHERE m.game_name = g.name
+			AND m.game_release_year = g.releaseyear)
+		EXCEPT
+		(SELECT pfm.modid
+			FROM post_features_mod pfm, post p
+			WHERE p.title = pfm.title
+					AND p.date = pfm.date
+					AND p.time = pfm.time
+					AND p.username = u.username
+					AND p.game_name = g.name
+					AND p.game_release_year = g.releaseyear)
+	);

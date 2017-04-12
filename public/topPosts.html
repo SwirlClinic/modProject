@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Getting Started</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/gay.css">
+
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+	<!--Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+
+	<!--Angular -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+</head>
+
+<body ng-controller="mainController">
+
+	<header ng-include="'/header.html'"></header>
+
+  <main>
+		<div class="container">
+			<h1>Most Unique User Visits on Posts</h1>
+      <h4>Search by Title</h4>
+			<input type="text" placeholder="Title" ng-model="currentSearch">
+      <h4>Search by Game Genre</h4>
+      <select ng-model="currentGenre">
+        <option></option>
+        <option ng-repeat="genre in genres" value="{{genre.genre}}">{{genre.genre}}</option>
+      </select>
+			<button ng-click="searchPosts()">Search</button>
+		</div>
+		<div class="container">
+			<table class="table table-hover">
+	      <thead>
+	        <tr>
+	          <th>Post Title</th>
+	          <th>Post Date</th>
+	          <th>Post Time</th>
+						<th>Unique Visit Count by Logged-In Users</th>
+	        </tr>
+	      </thead>
+	      <tbody ng-repeat="post in topPosts">
+	        <td>{{post.title}}</td>
+	        <td>{{post.date.substring(0,10)}}</td>
+	        <td>{{post.time.substring(0,5)}}</td>
+					<td>{{post.visit_count}}</td>
+	      </tbody>
+	    </table>
+		</div>
+    <button id="loadMore" ng-click="loadMore()">Load More</button>
+  </main>
+
+  <footer>
+	<p>hi</p>
+	</footer>
+
+	<!-- start javascript -->
+	<script src="/js/topPosts.js"></script>
+
+
+
+
+</body>
+
+</html>
