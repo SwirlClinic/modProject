@@ -356,27 +356,31 @@ FROM game;
 
 --Query 35: Experts for a game
 --Users who have written about all the mods for a certain game
---with their posts
-CREATE INDEX pfm_index_for_post on post_features_mod(title,date,time);
-CREATE INDEX mod_for_game_index_for_game on mod_for_game(game_name,game_release_year);
-CREATE INDEX game_index on game(name,releaseyear);
-CREATE INDEX website_user_index on website_user(username);
+--with their posts. Game search with it (so it uses user input)
 
-SELECT DISTINCT g.name, g.releaseyear, u.username
-FROM website_user u, game g
-WHERE g.name LIKE '%%'
-	AND NOT EXISTS(
-		(SELECT m.modid
-			FROM mod_for_game m
-			WHERE m.game_name = g.name
-			AND m.game_release_year = g.releaseyear)
-		EXCEPT
-		(SELECT pfm.modid
-			FROM post_features_mod pfm, post p
-			WHERE p.title = pfm.title
-					AND p.date = pfm.date
-					AND p.time = pfm.time
-					AND p.username = u.username
-					AND p.game_name = g.name
-					AND p.game_release_year = g.releaseyear)
-	);
+CREATE INDEX mod_for_game_index_for_game on mod_for_game(game_name,game_release_year);
+CREATE INDEX pfm_index_for_post on post_features_mod(title,date,time);
+CREATE INDEX post_username_index on post(username);
+CREATE INDEX post_game_index on post(game_name,game_release_year);
+
+SELECT DISTINCT p.username, p.game_name, p.game_release_year
+FROM post p
+WHERE p.game_name LIKE '%Game1%' AND
+NOT EXISTS(
+    (SELECT m.modid
+    FROM mod_for_game m
+    WHERE m.game_name = p.game_name
+        AND m.game_release_year = p.game_release_year
+    )
+    EXCEPT
+    (SELECT pfm.modid
+    FROM post_features_mod pfm, post p2
+    WHERE p2.title = pfm.title
+        AND p2.date = pfm.date
+        AND p2.time = pfm.time
+        AND p2.username = p.username
+        AND p2.game_name = p.game_name
+        AND p2.game_release_year = p.game_release_year
+    )
+)
+ORDER BY p.game_name,p.game_release_year DESC, p.username;

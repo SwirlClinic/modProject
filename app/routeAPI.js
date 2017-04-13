@@ -795,5 +795,45 @@ router.route('/doesFavorite')
       });
   });
 
+//Query 35: Experts for a game
+router.route('/experts')
+  .post(function(req,res){
+      var query = "SELECT DISTINCT p.username, p.game_name, p.game_release_year"
+                  +" FROM post p"
+                  +" WHERE p.game_name LIKE $1 AND"
+                  +" NOT EXISTS("
+                  +" (SELECT m.modid"
+                  +" FROM mod_for_game m"
+                  +" WHERE m.game_name = p.game_name"
+                  +" AND m.game_release_year = p.game_release_year"
+                  +" )"
+                  +" EXCEPT"
+                  +" (SELECT pfm.modid"
+                  +" FROM post_features_mod pfm, post p2"
+                  +" WHERE p2.title = pfm.title"
+                  +" AND p2.date = pfm.date"
+                  +" AND p2.time = pfm.time"
+                  +" AND p2.username = p.username"
+                  +" AND p2.game_name = p.game_name"
+                  +" AND p2.game_release_year = p.game_release_year"
+                  +" )"
+                  +" )"
+                  +" ORDER BY p.game_name,p.game_release_year DESC, p.username"
+                  +" LIMIT 25"
+                  +" OFFSET $2";
+
+      var params = ["%"+req.body.name+"%",req.body.offset]
+
+      db.any(query,params)
+        .then(function(data){
+          console.log("Getting experts for games");
+          res.json(data);
+        }).catch(function(err){
+          res.json({message: "Failure!"});
+        });
+});
+
+
+
 
 module.exports = router;

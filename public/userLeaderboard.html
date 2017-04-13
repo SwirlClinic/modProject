@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Getting Started</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/gay.css">
+
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+  <!--Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+
+	<!--Angular -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+</head>
+
+<body ng-controller="mainController">
+
+
+<header ng-include="'/header.html'"></header>
+
+<main>
+	<div class="container">
+		<h1>User Leaderboards</h1>
+	</div>
+	<div class="container">
+		<ul class="nav nav-pills">
+			<li class="active">
+				<a href="#experts" data-toggle="tab">Experts on a Game</a>
+			</li>
+			<li>
+				<a href="#devoted" data-toggle="tab">Devoted to a Game</a>
+			</li>
+			<li>
+				<a href="#mostFavorites" data-toggle="tab">Most Favorites</a>
+			</li>
+		</ul>
+		<div class="tab-content clearfix">
+			<div class="tab-pane active" id="experts">
+				<h2>Experts of a Game</h2>
+				<h4>Users who have posted about every mod listed for a single game</h4>
+				<p>Search game</p>
+				<input type="text" placeholder="Game Name" ng-model="currentSearchExperts">
+				<button ng-click="searchExperts()">Search</button>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>Game Name</th>
+							<th>Game Release Year</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="post in userExperts">
+						<td><a href="/user.html?username={{post.username}}">{{post.username}}</a></td>
+						<td>{{post.game_name}}</td>
+						<td>{{post.game_release_year}}</td>
+					</tbody>
+				</table>
+				<button id="loadMoreExperts" ng-click="loadMoreExperts()">Load More</button>
+			</div>
+			<div class="tab-pane" id="devoted">
+				<h1>Placeholder 2</h1>
+			</div>
+			<div class="tab-pane" id="mostFavorites">
+				<h1>Placeholder 3</h1>
+			</div>
+		</div>
+	</div>
+</main>
+
+<footer>
+<p>hi</p>
+</footer>
+
+<!-- start javascript -->
+<script src="/js/userLeaderboard.js"></script>
+
+
+
+
+</body>
+
+</html>
