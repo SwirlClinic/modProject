@@ -84,6 +84,7 @@ angular.module('app', ['ngCookies'])
           favoriteCheck.date = date;
           favoriteCheck.username = myUser;
           console.log(favoriteCheck);
+
           $http({
             method: 'POST',
             url: '/api/doesFavorite',
@@ -94,6 +95,17 @@ angular.module('app', ['ngCookies'])
           }, function errorCallback(data){
             $scope.assignFavoritesButton();
           });
+
+          $http({
+            method: 'POST',
+            url: '/api/saveVisit',
+            data: favoriteCheck
+          }).then(function successCallback(data){
+            console.log("Visit recorded.")
+          }, function errorCallback(data){
+            console.log("Error with recording visit.")
+          });
+
         }
         else{
           $scope.assignFavoritesButton();

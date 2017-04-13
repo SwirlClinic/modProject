@@ -384,3 +384,13 @@ NOT EXISTS(
     )
 )
 ORDER BY p.game_name,p.game_release_year DESC, p.username;
+
+--Query 36: Devoted to a game
+--Users who have only written about one game.
+--TODO: MAKE BETTER
+SELECT p.username, COUNT(*) as num_of_posts
+FROM post p
+GROUP BY p.username
+HAVING COUNT(DISTINCT p.game_name) = 1
+       AND COUNT(DISTINCT p.game_release_year) = 1
+ORDER BY num_of_posts DESC, username DESC;

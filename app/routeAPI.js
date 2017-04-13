@@ -714,7 +714,47 @@ router.route('/favorites/:username')
       });
   });
 
-//TODO: Query 16
+//Query 16: Recording a Visit
+router.route('/saveVisit')
+  .post(function(req,res){
+    var query1 = "SELECT COUNT(*)"
+                 +" FROM visits"
+                 +" WHERE username = $1"
+    	           +" AND title = $2"
+                 +" AND date = $3"
+                 +" AND time = $4";
+
+    var params = [req.body.username,req.body.title,req.body.date,req.body.time];
+    db.any(query1,params)
+      .then(function(data){
+        console.log("Checking if "+req.body.username+ " has visited "+req.body.title+" before.");
+        var query2 = "";
+        if(data[0].count == 0){
+          query2 = "INSERT INTO visits(username, title, date, time)"
+                  +" VALUES($1, $2, $3, $4)";
+          console.log("Creating new visit");
+        }
+        else{
+          query2 = "UPDATE visits"
+                   +" SET most_recent_visit_date = current_date"
+                   +" WHERE username = $1"
+          	        +" AND title = $2"
+                    +" AND date = $3"
+                    +" AND time = $4";
+          console.log("Updating Visit")
+        }
+        db.any(query2,params)
+          .then(function(data){
+            res.json({message: "Success!"});
+          }).catch(function(err){
+            console.log(err);
+            res.json({message: "Failure!"});
+          });
+      }).catch(function(err){
+        console.log(err);
+        res.json({message: "Failure!"});
+      });
+  });
 
 //Query 17: View a User's Visited Posts
 router.route('/postsVisited/:username')
