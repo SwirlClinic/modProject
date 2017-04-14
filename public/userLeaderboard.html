@@ -62,7 +62,7 @@
 					</thead>
 					<tbody ng-repeat="post in userExperts">
 						<td><a href="/user.html?username={{post.username}}">{{post.username}}</a></td>
-						<td>{{post.game_name}}</td>
+						<td><a href="/game.html?name={{post.game_name}}%26year={{post.game_release_year}}">{{post.game_name}}</a></td>
 						<td>{{post.game_release_year}}</td>
 					</tbody>
 				</table>

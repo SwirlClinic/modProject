@@ -46,16 +46,15 @@
 	</section>
 
 	<main>
-		<div class="container">
-			<h4><a href="/user.html?username={{postMainContent[0].username}}">{{postMainContent[0].username}}</a></h4>
-			<button ng-click="onClickFollowButton()">{{followingButtonText}}</button>
-			<button ng-click="onClickFavoriteButton()">{{favoritesButtonText}}</button>
-		</div>
+
 		<div class="container">
 			<h1>Modlist Details:</h1>
 			<div class="container">
 				<div class = "jumbotron" ng-repeat="content in postMainContent">
-					<p>Game Name: {{content.game_name}}</p>
+					<p><a href="/user.html?username={{postMainContent[0].username}}">{{postMainContent[0].username}}</a></p>
+					<button ng-click="onClickFollowButton()">{{followingButtonText}}</button>
+					<button ng-click="onClickFavoriteButton()">{{favoritesButtonText}}</button>
+					<p>Game Name: <a href="/game.html?name={{content.game_name}}%26year={{content.game_release_year}}">{{content.game_name}}</a></p>
 					<p>Game Release Year: {{content.game_release_year}}</p>
 					<p>Modlist Description: {{content.body}}</p>
 				</div>

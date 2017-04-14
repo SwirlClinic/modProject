@@ -50,7 +50,7 @@
         </tr>
       </thead>
       <tbody ng-repeat="game in mostPostedAbout">
-        <td>{{game.name}}</td>
+        <td><a href="/game.html?name={{game.name}}%26year={{game.releaseyear}}">{{game.name}}</td>
         <td>{{game.releaseyear}}</td>
         <td>{{game.post_count}}</td>
       </tbody>

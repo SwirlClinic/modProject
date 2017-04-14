@@ -53,7 +53,8 @@
 							<p>Author: <a href="/user.html?username={{post.username}}">{{post.username}}</a></p>
 							<p>Date: {{post.date.substring(0,10)}}</p>
 							<p>Time: {{post.time.substring(0,5)}}</p>
-							<p>Game: {{post.game_name}}</p>
+							<p>Game: <a href="/game.html?name={{post.game_name}}%26year={{post.game_release_year}}">{{post.game_name}}</a></p>
+							<p>Game Release Year: {{post.game_release_year}}</p>
 							<p>Description: {{post.body}}</p>
 						</div>
 

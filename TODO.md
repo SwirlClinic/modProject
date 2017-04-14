@@ -1,6 +1,5 @@
 # Stuff that Still Needs to Be Done
   * For Website
-    * Game pages that list table of mods for game and posts about the game (plan on doing this tonight)
     * When creating posts, need to be able to give mods a config_importance_rating from 1 to 10
     * When creating posts and mods, need to be able to select year by game name and release year
     * When creating mods, user needs to be able to make it an add-on, graphical, or unofficial patch mod (or none of the three)

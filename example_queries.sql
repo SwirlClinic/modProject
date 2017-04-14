@@ -397,3 +397,57 @@ WHERE cfp.post_title = p.title
 GROUP BY cfp.username
 HAVING COUNT(DISTINCT p.username) >= 50
 ORDER BY num_comments_on_others_posts DESC, username;
+
+--Query 37: Getting Info About a Specific Game
+SELECT *
+FROM game
+WHERE game_name = 'Game1'
+AND releaseyear = 2000;
+
+--Query 38: Top Visited Posts for a Game
+select p.title, p.date, p.time, COUNT(v.most_recent_visit_date) as visits_count
+FROM post p
+LEFT OUTER JOIN visits v
+ON p.title = v.title
+    AND p.date = v.date
+    AND p.time = v.time
+WHERE p.game_name = 'Game0'
+    AND p.game_release_year = 2000
+GROUP BY p.title, p.date, p.time
+ORDER BY visits_count DESC;
+
+--Query 39: All Add-On Mods for a Game
+select m.*, a.hours_added, a.num_new_items
+FROM add_on_mod a, mod_for_game m
+WHERE a.modid = m.modid
+    AND game_name = 'Game0'
+    AND game_release_year = 2000;
+
+--Query 40: All Graphical Mods for a Game
+select m.*, g.resolution, g.fps
+FROM graphical_mod g, mod_for_game m
+WHERE g.modid = m.modid
+    AND game_name = 'Game0'
+    AND game_release_year = 2000;
+
+--Query 41: All Unofficial Path Mods for a Game
+select m.*, u.version
+FROM unofficial_patch_mod u, mod_for_game m
+WHERE u.modid = m.modid
+    AND game_name = 'Game0'
+    AND game_release_year = 2000;
+
+--Query 42: Mods Without a Type for a game (mods which don't have a type)
+select *
+FROM mod_for_game m
+WHERE game_name = 'Game0'
+	AND game_release_year = 2000
+	AND NOT EXISTS (SELECT 1
+									FROM unofficial_patch_mod u
+									WHERE u.modId = m.modId)
+	AND NOT EXISTS (SELECT 1
+									FROM graphical_mod g
+									WHERE g.modId = m.modId)
+	AND NOT EXISTS (SELECT 1
+									FROM add_on_mod a
+									WHERE a.modId = m.modId);

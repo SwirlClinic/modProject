@@ -111,6 +111,125 @@ router.route('/games')
 
     });
 
+router.route('/gameinfo')
+.post(function(req,res) {
+
+    //Query 30: Get Information About a Game
+    db.any("SELECT * FROM game WHERE name = $1 AND releaseyear = $2", [req.body.game_name,req.body.releaseyear])
+        .then(function (data) {
+            res.json(data);
+    }).catch(function(err){
+            res.json(err);
+    });
+
+
+});
+
+router.route('/topPostsForAGame')
+  .post(function(req,res){
+
+    var query = "select p.title, p.date, p.time, COUNT(v.most_recent_visit_date) as visits_count"
+                +" FROM post p"
+                +" LEFT OUTER JOIN visits v"
+                +" ON p.title = v.title"
+                    +" AND p.date = v.date"
+                    +" AND p.time = v.time"
+                    +" WHERE p.game_name = $1"
+                    +" AND p.game_release_year = $2"
+                    +" GROUP BY p.title, p.date, p.time"
+                    +" ORDER BY visits_count DESC";
+
+    db.any(query, [req.body.game_name,req.body.releaseyear])
+        .then(function (data) {
+            res.json(data);
+    }).catch(function(err){
+            res.json(err);
+    });
+
+  });
+
+router.route('/addOnModsForGame')
+  .post(function(req,res){
+
+  var query = "select m.*, a.hours_added, a.num_new_items"
+              +" FROM add_on_mod a, mod_for_game m"
+              +" WHERE a.modid = m.modid"
+                  +" AND game_name = $1"
+                  +" AND game_release_year = $2";
+
+  db.any(query, [req.body.game_name,req.body.releaseyear])
+      .then(function (data) {
+          res.json(data);
+  }).catch(function(err){
+          res.json(err);
+  });
+
+});
+
+router.route('/graphicalModsForAGame')
+  .post(function(req,res){
+
+  var query = "select m.*, g.resolution, g.fps"
+              +" FROM graphical_mod g, mod_for_game m"
+              +" WHERE g.modid = m.modid"
+                  +" AND game_name = $1"
+                  +" AND game_release_year = $2";
+
+  db.any(query, [req.body.game_name,req.body.releaseyear])
+      .then(function (data) {
+          res.json(data);
+  }).catch(function(err){
+          res.json(err);
+  });
+
+});
+
+router.route('/unofficialPatchModsForAGame')
+  .post(function(req,res){
+
+  var query = "select m.*, u.version"
+              +" FROM unofficial_patch_mod u, mod_for_game m"
+              +" WHERE u.modid = m.modid"
+                  +" AND game_name = $1"
+                  +" AND game_release_year = $2";
+
+  db.any(query, [req.body.game_name,req.body.releaseyear])
+      .then(function (data) {
+          res.json(data);
+  }).catch(function(err){
+          res.json(err);
+  });
+
+});
+
+router.route('/noTypeModsForAGame')
+  .post(function(req,res){
+
+  var query = "select *"
+              +" FROM mod_for_game m"
+              +" WHERE game_name = $1"
+              +" AND game_release_year = $2"
+              +" AND NOT EXISTS (SELECT 1"
+              +" FROM unofficial_patch_mod u"
+              +" WHERE u.modId = m.modId)"
+              +" AND NOT EXISTS (SELECT 1"
+              +" FROM graphical_mod g"
+              +" WHERE g.modId = m.modId)"
+              +" AND NOT EXISTS (SELECT 1"
+              +" FROM add_on_mod a"
+              +" WHERE a.modId = m.modId)";
+
+  db.any(query, [req.body.game_name,req.body.releaseyear])
+      .then(function (data) {
+          res.json(data);
+  }).catch(function(err){
+          res.json(err);
+  });
+
+});
+
+
+
 router.route('/modfor/:game_name')
     .get(function(req,res) {
 
