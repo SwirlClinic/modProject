@@ -151,7 +151,8 @@ WHERE username = 'exampleUsername'
 --TODO
 
 INSERT INTO mod_for_game(game_name, game_release_year, name, link, description)
-    VALUES ('Game2', 1981, 'Cool Mod for Cool People', 'http://example.com/coolmod', 'Example Description');
+    VALUES ('Game2', 1981, 'Cool Mod for Cool People', 'http://example.com/coolmod', 'Example Description')
+		RETURNING modid;
 
 --The MODTYPE is chosen from drop down list (This is not necessary, this is just if user wants
 --to add additional class info to the mod). Below are some examples of inserts into these tables.

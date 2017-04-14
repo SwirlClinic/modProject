@@ -512,14 +512,50 @@ INSERT INTO mod_for_game(game_name, game_release_year, name, link, description)
 router.route('/submitmod')
     .post(function(req, res) {
 
-         var query = "INSERT INTO mod_for_game(game_name, game_release_year, name, link, description) VALUES ($1, $2, $3, $4, $5);"
+         var query = "INSERT INTO mod_for_game(game_name, game_release_year, name, link, description) VALUES ($1, $2, $3, $4, $5) RETURNING modid;"
 
          var params = [req.body.gameinfo.name, req.body.gameinfo.releaseyear, req.body.name, req.body.link, req.body.description];
 
          db.any(query, params)
             .then(function (data) {
+                    var modid = data[0].modid;
+                    var query2 = "";
+                    var params2 = [];
+                    console.log(data);
                     console.log("Submitted mod: " + req.body.name + " for game " + req.body.gameinfo.name);
-                    res.json({message: "Success!"});
+                    console.log("Checking mod type");
+                    if(req.body.type == 'addon'){
+                      console.log("Creating entry for add-on");
+                      var query2 = "INSERT INTO add_on_mod(modid, hours_added, num_new_items)"
+                    		           +" VALUES($1, $2, $3)";
+                      var params2 = [modid,req.body.hoursAdded,req.body.numNewItems];
+                    }
+                    else if(req.body.type == 'graph'){
+                      console.log("Creating entry for graph");
+                      var query2 = "INSERT INTO graphical_mod(modid, resolution, fps)"
+                    		           +" VALUES($1, $2, $3)";
+                      var params2 = [modid,req.body.resolution,req.body.fps];
+                    }
+                    else if(req.body.type == 'un'){
+                      console.log("Creating entry for unofficial");
+                      var query2 = "INSERT INTO unofficial_patch_mod(modid, version)"
+                    		           +" VALUES($1, $2)";
+                      var params2 = [modid,req.body.versionNum];
+                    }
+                    else{
+                      console.log("Mod has no type, done!");
+                      res.json({message: "Success!"});
+                      return;
+                    }
+                    db.any(query2,params2)
+                      .then(function(data){
+                        console.log("Mod Type Added!")
+                        res.json({message: "Success!"});
+                      }).catch(function(err){
+                        console.log("Issue with most visited posts for game")
+                        console.log(err);
+                        res.json({message: "Failure!"});
+                      });
                 }).catch(function(err){
                     console.log(err);
                     console.log('why is this not giving failure');

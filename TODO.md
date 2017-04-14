@@ -2,10 +2,10 @@
   * For Website
     * When creating posts, need to be able to give mods a config_importance_rating from 1 to 10 ----- DONE
     * When creating posts and mods, need to be able to select year by game name and release year ---- DONE
-    * When creating mods, user needs to be able to make it an add-on, graphical, or unofficial patch mod (or none of the three)
-      * And enter data for those extra fields for those types
+    * When creating mods, user needs to be able to make it an add-on, graphical, or unofficial patch mod (or none of the three) ---- DONE
+      * And enter data for those extra fields for those types ---- DONE
     * Delete User Needs to be Implemented
-    * Need to add extra mod info form add-on, graphical, and unofficial patch to post
+    * Need to add extra mod info form add-on, graphical, and unofficial patch to post ---- DONE
     * Clean up (Changing name of css file to something other than gay.css and getting rid of all the console.logs on front end)
 
     * For other stuff

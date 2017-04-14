@@ -21,7 +21,7 @@
 	<!--Angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
-
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
 
 </head>
 
@@ -47,14 +47,13 @@
 
 
 
-			<form ng-submit="savePost(modPost)" ng-show="!errorlogin">
+			<form ng-submit="savePost()" ng-show="!errorlogin">
 	          <div class="form-group">
 
-				<h2>Game:</h2>
+				<h2>Game Name and Release Year:</h2>
 				<div class="input-group input-group-lg fa-lg">
 					<span class="input-group-addon"><i class="fa fa-gamepad"></i></span>
-					<select class="form-control gameSelect" ng-model="modPost.game_name" data-live-search="true">
-						<option ng-repeat="game in games | orderBy: 'name'">{{game.name}}</option>
+					<select ng-options = "game.name group by game.releaseyear for game in games" class="form-control gameSelect" ng-model="gameChosen" data-live-search="true">
 					</select>
 				</div>
 
@@ -62,15 +61,59 @@
 				<h2>Name of Mod:</h2>
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon"><i class="fa fa-pencil fa-lg"></i></span>
-					<input type="text" placeholder="Title of Modlist" ng-model="modPost.name" class="form-control input-group-lg">
+					<input type="text" placeholder="Name" ng-model="modPost.name" class="form-control input-group-lg">
 				</div>
 
 
-				<h2>Link to Mod:</h2>
+				<h2>Link to Mod (Starting with http or https):</h2>
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon"><i class="fa fa-pencil fa-lg"></i></span>
-					<input type="text" placeholder="Title of Modlist" ng-model="modPost.link" class="form-control input-group-lg">
+					<input type="text" placeholder="Link" ng-model="modPost.link" class="form-control input-group-lg">
 				</div>
+
+				<h2>Type of Mod:</h2>
+				<div class="input-group input-group-lg fa-lg">
+					<span class="input-group-addon"><i class="fa fa-puzzle-piece"></i></span>
+					<select ng-init="modType = 'no'" class="form-control" ng-model="modType" data-live-search="true">
+						<option value="no" selected>No Special Type</option>
+						<option value="addon">Add-On Mod</option>
+						<option value="graph">Graphical Mod</option>
+						<option value="un">Un-Official Patch Mod</option>
+					</select>
+				</div>
+
+				<div ng-show="modType == 'addon'">
+					<h2>Hours Added:</h2>
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
+						<input type="text" placeholder="Number of Hours" ng-model="hoursAdded" class="form-control input-group-lg">
+					</div>
+					<h2>Number of New Items:</h2>
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon"><i class="fa fa-shopping-basket fa-lg"></i></span>
+						<input type="text" placeholder="Number of New Items" ng-model="numNewItems" class="form-control input-group-lg">
+					</div>
+				</div>
+				<div ng-show="modType == 'graph'">
+					<h2>Resulotion (In the form "numxnum" i.e. 1600x900, 480x320):</h2>
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon"><i class="fa fa-tv fa-lg"></i></span>
+						<input type="text" placeholder="Resolution" ng-model="resolution" class="form-control input-group-lg">
+					</div>
+					<h2>Frames Per Second:</h2>
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon"><i class="fa fa-automobile fa-lg"></i></span>
+						<input type="text" placeholder="FPS" ng-model="fps" class="form-control input-group-lg">
+					</div>
+				</div>
+				<div ng-show="modType == 'un'">
+					<h2>Version Numebr (in form like x.x i.e. 2.6 or 1.4.8):</h2>
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon"><i class="fa fa-bug fa-lg"></i></span>
+						<input type="text" placeholder="Version" ng-model="versionNum" class="form-control input-group-lg">
+					</div>
+				</div>
+
 
 				<h2>Description:</h2>
 				<div class="input-group input-group-lg">

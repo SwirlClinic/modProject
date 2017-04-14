@@ -66,8 +66,13 @@
 				<div style="word-wrap: break-word;" class = "jumbotron" ng-repeat="post in modposts">
 					<p>Mod: {{post.name}}</p>
 					<p>Link: {{post.link}}</p>
+					<p ng-show="post.hours_added">Hours Added: {{post.hours_added}}</p>
+					<p ng-show="post.num_new_items">Number of New Items: {{post.num_new_items}}</p>
+					<p ng-show="post.fps">Frames per Second: {{post.fps}}</p>
+					<p ng-show="post.resolution">Resolution: {{post.resolution}}</p>
+					<p ng-show="post.version">Version Number: {{post.version}}</p>
 					<p>Description: {{post.description}}</p>
-					<p>Mod ID: {{post.modid}}</p>
+
 
 
 				</div>
