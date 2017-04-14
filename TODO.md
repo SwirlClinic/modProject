@@ -4,7 +4,7 @@
     * When creating posts and mods, need to be able to select year by game name and release year ---- DONE
     * When creating mods, user needs to be able to make it an add-on, graphical, or unofficial patch mod (or none of the three) ---- DONE
       * And enter data for those extra fields for those types ---- DONE
-    * Delete User Needs to be Implemented
+    * Delete User Needs to be Implemented ----- DONE
     * Need to add extra mod info form add-on, graphical, and unofficial patch to post ---- DONE
     * Clean up (Changing name of css file to something other than gay.css and getting rid of all the console.logs on front end)
 

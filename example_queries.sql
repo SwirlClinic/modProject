@@ -137,15 +137,15 @@ INSERT INTO website_user(username, email, password)
 
 
 --Query 7: Login to Website
---Will return a 1 if the login is successful
---Will return a 0 if the login failed (bad username or password isn't correct)
---The query will also check if the account is deleted and return 0 if it is.
+--Will return true if the login is successful
+--Will return false if the login failed (bad username or password isn't correct)
+--The query will also check if the account is deleted and return false if it is.
 
-SELECT COUNT(username)
+SELECT EXISTS(SELECT 1
 FROM website_user
 WHERE username = 'exampleUsername'
 	AND password = '7f9bc6dd66d4c2116beaa73b02593413'
-    AND isdeleted = false;
+		AND isdeleted = false) as result;
 
 --Query 8: Adding a New Mod to the Website
 --TODO

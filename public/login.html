@@ -21,6 +21,7 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
 
 	<script src="/js/login.js"></script>
 </head>
@@ -70,6 +71,27 @@
 				<form ng-submit="logout()" class="logout">
 					<button type="submit" class="btn btn-primary">Log out</button>
 				</form>
+
+				<button ng-click="openDeleteUserModal()" class="btn btn-danger">Delete Account</button>
+		<div id="deleteModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+			<div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Are you sure you want to delete?</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>Enter your correct password to delete your account. All content will still be on the website, but you will not be able to login.</p>
+					<input type="text" placeholder="Password" ng-model="pass" class="form-control input-group-lg">
+	      </div>
+	      <div class="modal-footer">
+					<button class="btn btn-danger" ng-click="attemptDelete(pass)">Delete Account</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+			</div>
+		</div>
+	</div>
+
 			</div>
 		</div>
 	</main>

@@ -1,6 +1,6 @@
 
 angular.module('app', ['ngCookies'])
- 
+
 .controller('mainController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
     //$(".userInfo").hide();
     $scope.userInfo = [];
@@ -23,7 +23,7 @@ angular.module('app', ['ngCookies'])
                 // or server returns response with an error status.
               });
 
-        
+
         console.log($scope.userInfo);
     }
 
@@ -76,6 +76,37 @@ angular.module('app', ['ngCookies'])
 
 
 
+    };
+
+    $scope.openDeleteUserModal = function(){
+      $("#deleteModal").modal({show : 'true'});
+    };
+
+    $scope.attemptDelete = function(pass){
+      var dataToPostForDelete = {};
+      dataToPostForDelete.username = myUser;
+      dataToPostForDelete.password = pass;
+
+      console.log(dataToPostForDelete);
+
+      $http({
+            method: 'POST',
+            url: '/api/deactivateAccount',
+            data: dataToPostForDelete
+          }).then(function successCallback(data) {
+          console.log(data.data);
+          if (data.data.message == "Success!") {
+              $scope.logout();
+              //$window.location.href = '/login.html';
+          }
+          else {
+            $.notify("There was an issue deleting your account. The password may have been incorrect.",'error');
+          }
+        }, function errorCallback(data) {
+              console.log(data);
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+        });
     };
 
     $scope.changeEmail = function(newEmail) {

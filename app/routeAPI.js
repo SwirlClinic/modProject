@@ -250,7 +250,7 @@ router.route('/login')
     .post(function(req, res) {
     	//console.log(req.body.username);
         //Query 28: Get specific user data
-        db.one("SELECT * FROM website_user WHERE username = $1", [req.body.username])
+        db.one("SELECT * FROM website_user WHERE username = $1 AND isdeleted = false", [req.body.username])
             .then(function (data) {
             	//console.log(data.password);
             	if(req.body.password == data.password.trim()) {
@@ -965,7 +965,40 @@ router.route('/postsWrittenBy/:username')
       });
   });
 
-//TODO: Query 26: "Delete" a User from the database
+//Query 26: "Delete" a User from the database
+router.route('/deactivateAccount')
+  .post(function(req,res){
+    var query = "SELECT EXISTS(SELECT 1"
+                +" FROM website_user"
+                +" WHERE username = $1"
+    	          +" AND password = $2"
+                +" AND isdeleted = false) as result";
+
+    var params = [req.body.username, req.body.password];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log(data[0])
+        if(data[0].result){
+          var query2 = "UPDATE website_user"
+                       +" SET isdeleted = true"
+                       +" WHERE username = $1";
+          var params2 = [req.body.username];
+          db.any(query2,params2)
+            .then(function(data){
+              console.log("User "+req.body.username+" has been \"deleted\".");
+              res.json({message: "Success!"});
+            }).catch(function(err){
+              res.json({message: "Failure!"});
+          });
+        }
+        else{
+          res.json({message: "Failure!"});
+        }
+      }).catch(function(err){
+        res.json({message: "Failure!"});
+      });
+  });
 
 //Query 32: Check if one user follows another user
 router.route('/doesFollow')
