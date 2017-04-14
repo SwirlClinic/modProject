@@ -11,8 +11,6 @@ angular.module('app', ['ngCookies'])
         $scope.errorlogin = true;
     }
 
-    var gameSelected = "";
-
     $scope.modsAdded = [];
 
     $(".modsSelected").hide();
@@ -30,15 +28,29 @@ angular.module('app', ['ngCookies'])
 
     $scope.savePost = function(data) {
 
-        for(var i = 0; i < $scope.games.length; i++) {
-            if ($scope.games[i].name == gameSelected) {
-                data.gameinfo = $scope.games[i];
-                break;
-            }
+        var data = {};
+        if(!$scope.postTitle || $scope.postTitle.trim() == ""){
+          $.notify("Please enter a title in order to post.",'error');
+          return;
+        }
+        data.title = $scope.postTitle;
+        if(!$scope.postBody || $scope.postBody.trim() == ""){
+          $.notify("Please add a body to the post.",'error');
+          return;
+        }
+        data.body = $scope.postBody;
+        data.gameinfo = $scope.gameChosen;
+        if(!$scope.gameChosen){
+          $.notify("Please choose a game in order to post.",'error');
+          return;
         }
 
         data.username = myUser;
         data.modsAdded = $scope.modsAdded;
+        if(!($scope.modsAdded.length > 0)){
+          $.notify("Each post needs to have at least one mod.",'error');
+          return;
+        }
         console.log(data);
 
         $http({
@@ -48,26 +60,33 @@ angular.module('app', ['ngCookies'])
         }).then(function successCallback(data) {
             if (data.data.message != "Failed!") {
                 console.log('Success! Saved ' + data);
-                $scope.successpost = true;
+                $.notify("Your post " + $scope.postTitle + " was successfully made!",'success');
             }
             else {
-                $scope.successpost = false;
+              $.notify("Your post was not made. There was an error on the server end or some incorrect input. Please try again.",'error');
             }
 
         }, function errorCallback(data) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
+        $.notify("Your post was not made. There was an error on the server end. Please try again.",'error');
         });
     };
 
-    $( ".gameSelect" ).change(function() {
+    $scope.gameSelectChange = function() {
         $scope.modsAdded = [];
-        gameSelected = this.value;
+        $scope.current_game_name = this.gameChosen.name;
+        $scope.current_game_year = this.gameChosen.releaseyear;
 
-        if (gameSelected) {
+        var gamePacket = {};
+        gamePacket.game_name = $scope.current_game_name;
+        gamePacket.game_release_year = $scope.current_game_year;
+
+        if (gamePacket.game_name && gamePacket.game_release_year) {
             $http({
-              method: 'GET',
-              url: '/api/modfor/' + gameSelected
+              method: 'POST',
+              url: '/api/modfor',
+              data: gamePacket
             }).then(function successCallback(data) {
                     //console.log(data.data);
 
@@ -85,14 +104,13 @@ angular.module('app', ['ngCookies'])
             $(".modsSelected").hide();
         }
 
-    });
+    };
 
-    $( ".modSelect" ).change(function() {
-
-        if (gameSelected) {
+    $scope.modSelectChange = function() {
+        if ($scope.current_game_name && $scope.current_game_year && $scope.modSelected !== null) {
+            $scope.modsAdded.push($scope.modSelected);
             for (var i = 0; i < $scope.modsForGame.length; i++) {
-                if ($scope.modsForGame[i].name == this.value) {
-                    $scope.modsAdded.push($scope.modsForGame[i]);
+                if ($scope.modsForGame[i].modid == $scope.modSelected.modid) {
                     $scope.modsForGame.splice(i,1);
                     break;
                 }
@@ -102,6 +120,6 @@ angular.module('app', ['ngCookies'])
 
 
         //console.log(this.value);
-    });
+    };
 
 }]);

@@ -101,7 +101,7 @@ router.route('/games')
 
         //console.log("Response? : " + db.getUsers());
         //Query 29: Get a list of all games
-        db.any("SELECT * from game")
+        db.any("SELECT * from game ORDER BY releaseyear DESC, name")
             .then(function (data) {
                 res.json(data);
         }).catch(function(err){
@@ -230,13 +230,14 @@ router.route('/noTypeModsForAGame')
 
 
 
-router.route('/modfor/:game_name')
-    .get(function(req,res) {
+router.route('/modfor')
+    .post(function(req,res) {
 
         //console.log("Response? : " + db.getUsers());
         //Query 30: Get a list of mods for a game (needs to include game release year)
-        db.any("SELECT * FROM mod_for_game WHERE game_name = $1", [req.params.game_name])
+        db.any("SELECT * FROM mod_for_game WHERE game_name = $1 AND game_release_year = $2", [req.body.game_name,req.body.game_release_year])
             .then(function (data) {
+                console.log("Got mods for "+ req.body.game_name + " released in the year "+req.body.game_release_year);
                 res.json(data);
         }).catch(function(err){
                 res.json(err);
@@ -328,22 +329,35 @@ router.route('/submitpost')
         var paramidx = 6;
         var i;
 
+
+        if(!(req.body.modsAdded.length > 0)){
+          res.json({message: "Failed!"});
+          console.log(req.body.modsAdded.length);
+          return;
+        }
+
         for (i = 0; i < req.body.modsAdded.length-1; i++) {
             parameters.push(req.body.modsAdded[i].modid);
             parameters.push(req.body.title);
+            parameters.push(req.body.modsAdded[i].config_importance_rating);
 
             query += "($" + paramidx;
             paramidx++;
             query += ", $" + paramidx;
             paramidx++;
-            query += ", current_date, current_time, 10),";
+            query += ", current_date, current_time,"
+            query += " $" + paramidx + "),";
+            paramidx++;
         }
         parameters.push(req.body.modsAdded[i].modid);
         parameters.push(req.body.title);
+        parameters.push(req.body.modsAdded[i].config_importance_rating);
         query += "($" + paramidx;
         paramidx++;
         query += ", $" + paramidx;
-        query += ", current_date, current_time, 10); COMMIT;";
+        paramidx++;
+        query += ", current_date, current_time,"
+        query += " $" + paramidx + "); COMMIT;";
 
 
         db.any(query, parameters)

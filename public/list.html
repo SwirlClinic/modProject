@@ -21,6 +21,7 @@
 	<!--Angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
 
 
 </head>
@@ -50,14 +51,13 @@
 				<h2>Title:</h2>
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon"><i class="fa fa-pencil fa-lg"></i></span>
-					<input type="text" placeholder="Title of Modlist" ng-model="modPost.title" class="form-control input-group-lg">
+					<input type="text" placeholder="Title of Modlist" ng-model="postTitle" class="form-control input-group-lg">
 				</div>
 
-				<h2>Game:</h2>
+				<h2>Game Name and Release Year:</h2>
 				<div class="input-group input-group-lg fa-lg">
 					<span class="input-group-addon"><i class="fa fa-gamepad"></i></span>
-					<select class="form-control gameSelect" ng-model="modPost.game_name" data-live-search="true">
-						<option ng-repeat="game in games | orderBy: 'name'">{{game.name}}</option>
+					<select ng-change="gameSelectChange()" ng-options = "game.name group by game.releaseyear for game in games" class="form-control gameSelect" ng-model="gameChosen" data-live-search="true">
 					</select>
 				</div>
 
@@ -65,21 +65,45 @@
 					<h2>Mods:</h2>
 					<div class="input-group input-group-lg fa-lg">
 						<span class="input-group-addon"><i class="fa fa-puzzle-piece"></i></span>
-						<select class="form-control modSelect" ng-model="modSelected.name" data-live-search="true">
-							<option ng-repeat="mod in modsForGame | orderBy: 'name'" >{{mod.name}}</option>
+						<select ng-change="modSelectChange()" ng-options="mod.name for mod in modsForGame" class="form-control modSelect" ng-model="modSelected" data-live-search="true">
 						</select>
 					</div>
 					<div class="jumbotron">
-						<div class="row">
-							<div class="col" ng-repeat="mods in modsAdded"> {{mods.name}} </div>
+						<table class="table table-hover">
+				      <thead>
+				        <tr>
+				          <th>Name of Mod</th>
+				          <th>Importance to List Rating (Optional, 10 Most Important / 1 Least)</th>
+				        </tr>
+				      </thead>
+				      <tbody ng-repeat="mods in modsAdded">
+				        <td>{{mods.name}}</td>
+				        <td>
+									<select class="col form-control" ng-model="mods.config_importance_rating">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+									</select>
+								</td>
+				      </tbody>
+				    </table>
+
+
+							</div>
+
 						</div>
 
-					</div>
-				</div>
 				<h2>Description:</h2>
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon" id="sizing-addon1"><i class="fa fa-pencil fa-lg"></i></span>
-					<textarea type="text" placeholder="Description" ng-model="modPost.body" class="form-control" aria-describedby="sizing-addon1" id="modDescription"> </textarea>
+					<textarea type="text" placeholder="Description" ng-model="postBody" class="form-control" aria-describedby="sizing-addon1" id="modDescription"> </textarea>
 				</div>
 	          </div>
 
