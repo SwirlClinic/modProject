@@ -689,7 +689,7 @@ router.route('/posts/details')
 
         //var query = "SELECT * FROM post_features_mod WHERE title = $1 AND date = $2 AND time = $3";
         var query = "SELECT m.name, m.link, m.description,ad.hours_added, ad.num_new_items,"
-        + " gm.resolution, gm.fps, uopm.version, m.modid"
+        + " gm.resolution, gm.fps, uopm.version, m.modid, p.config_importance_rating"
         + " FROM mod_for_game m"
         + " LEFT OUTER JOIN add_on_mod ad ON m.modid = ad.modid"
         + " LEFT OUTER JOIN graphical_mod gm ON m.modid = gm.modid"

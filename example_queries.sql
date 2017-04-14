@@ -284,7 +284,7 @@ WHERE title = 'ESJvKqAdKZb'
     AND time = '16:27:29';
 
 SELECT m.name, m.link, m.description,ad.hours_added, ad.num_new_items,
-	   gm.resolution, gm.fps, uopm.version
+	   gm.resolution, gm.fps, uopm.version, p.config_importance_rating
 FROM mod_for_game m
 LEFT OUTER JOIN add_on_mod ad ON m.modid = ad.modid
 LEFT OUTER JOIN graphical_mod gm ON m.modid = gm.modid
