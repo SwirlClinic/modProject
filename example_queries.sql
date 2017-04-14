@@ -63,7 +63,7 @@ SELECT u.username, (SELECT COUNT(wu.username)
         AND f.time = p.time
         AND u.username = wu.username) AS favorite_count
 FROM website_user u
-ORDER BY favorite_count DESC;
+ORDER BY favorite_count DESC, username;
 
 --Query 4: Top Visited Posts for a Game With Genre Filter and Title Search (in Example the game is 'Game1553')
 --So, going off of query 2, let's assume that the most posted about game is 'Game1553'
@@ -385,12 +385,15 @@ NOT EXISTS(
 )
 ORDER BY p.game_name,p.game_release_year DESC, p.username;
 
---Query 36: Devoted to a game
---Users who have only written about one game.
---TODO: MAKE BETTER
-SELECT p.username, COUNT(*) as num_of_posts
-FROM post p
-GROUP BY p.username
-HAVING COUNT(DISTINCT p.game_name) = 1
-       AND COUNT(DISTINCT p.game_release_year) = 1
-ORDER BY num_of_posts DESC, username DESC;
+--Query 36: Talkative Users
+--Gets the users with the most comments on other peoples' posts and who have
+--made comments on at least 50 different peoples' posts
+SELECT cfp.username, COUNT(*) as num_comments_on_others_posts, COUNT(DISTINCT p.username) as num_users_commented_for
+FROM comment_for_post cfp, post p
+WHERE cfp.post_title = p.title
+    AND cfp.post_time = p.time
+    AND cfp.post_date = p.date
+		AND cfp.username <> p.username
+GROUP BY cfp.username
+HAVING COUNT(DISTINCT p.username) >= 50
+ORDER BY num_comments_on_others_posts DESC, username;

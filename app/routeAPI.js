@@ -544,7 +544,7 @@ router.route('/posts/details')
     });
 
 //Query 3: Leaderboard of Users with the Most Favorited Posts
-router.route('/userFavoritesLeaderboard')
+router.route('/userFavoritesLeaderboard/:off')
   .get(function(req,res){
     var query = "SELECT u.username, (SELECT COUNT(wu.username) "
                 + " FROM post p, website_user wu, favorites f "
@@ -554,9 +554,11 @@ router.route('/userFavoritesLeaderboard')
                 + " AND f.time = p.time"
                 + " AND u.username = wu.username) AS favorite_count"
                 + " FROM website_user u"
-                + " ORDER BY favorite_count DESC";
+                + " ORDER BY favorite_count DESC, username"
+                + " LIMIT 25"
+                + " OFFSET $1";
 
-    db.any(query,[])
+    db.any(query,[req.params.off])
       .then(function(data){
         res.json(data);
       }).catch(function(err){
@@ -873,7 +875,32 @@ router.route('/experts')
         });
 });
 
+router.route('/talkative')
+  .post(function(req,res){
 
+    var query = "SELECT cfp.username, COUNT(*) as num_comments_on_others_posts, COUNT(DISTINCT p.username) as num_users_commented_for"
+                +" FROM comment_for_post cfp, post p"
+                +" WHERE cfp.post_title = p.title"
+                +" AND cfp.post_time = p.time"
+                +" AND cfp.post_date = p.date"
+                +" AND cfp.username <> p.username"
+                +" GROUP BY cfp.username"
+                +" HAVING COUNT(DISTINCT p.username) >= $1"
+                +" ORDER BY num_comments_on_others_posts DESC, username"
+                +" LIMIT 25"
+                +" OFFSET $2";
+
+    var params = [req.body.number, req.body.offset];
+
+    db.any(query,params)
+      .then(function(data){
+        console.log("Getting most talkative users");
+        res.json(data);
+      }).catch(function(err){
+        res.json({message: "Failure!"});
+      });
+
+});
 
 
 module.exports = router;

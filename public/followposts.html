@@ -51,8 +51,8 @@
 						</div>
 						<div class="panel-body">
 							<p>Author: <a href="/user.html?username={{post.username}}">{{post.username}}</a></p>
-							<p>Date: {{post.date}}</p>
-							<p>Time: {{post.time}}</p>
+							<p>Date: {{post.date.substring(0,10)}}</p>
+							<p>Time: {{post.time.substring(0,5)}}</p>
 							<p>Game: {{post.game_name}}</p>
 							<p>Description: {{post.body}}</p>
 						</div>

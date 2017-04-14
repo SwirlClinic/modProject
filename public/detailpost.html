@@ -35,9 +35,9 @@
 					<h2>{{details.title}}</h2>
 
 
-					<p>Date: {{details.date}}</p>
+					<p>Date: {{details.date.substring(0,10)}}</p>
 
-					<p>Time: {{details.time}}</p>
+					<p>Time: {{details.time.substring(0,5)}}</p>
 
 
 			</div>
@@ -52,10 +52,12 @@
 			<button ng-click="onClickFavoriteButton()">{{favoritesButtonText}}</button>
 		</div>
 		<div class="container">
-			<h1>Description of Modlist:</h1>
+			<h1>Modlist Details:</h1>
 			<div class="container">
 				<div class = "jumbotron" ng-repeat="content in postMainContent">
-					{{content.body}}
+					<p>Game Name: {{content.game_name}}</p>
+					<p>Game Release Year: {{content.game_release_year}}</p>
+					<p>Modlist Description: {{content.body}}</p>
 				</div>
 			</div>
 

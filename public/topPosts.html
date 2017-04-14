@@ -51,7 +51,7 @@
 	        </tr>
 	      </thead>
 	      <tbody ng-repeat="post in topPosts">
-	        <td>{{post.title}}</td>
+	        <td><a href = "./detailpost.html?title={{post.title}}%26time={{post.time}}%26date={{post.date}}">{{post.title}}</a></td>
 	        <td>{{post.date.substring(0,10)}}</td>
 	        <td>{{post.time.substring(0,5)}}</td>
 					<td>{{post.visit_count}}</td>
