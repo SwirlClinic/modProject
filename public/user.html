@@ -31,6 +31,7 @@
     <div class="container">
       <h1>{{username}}</h1>
       <h3>{{email}}</h3>
+			<button ng-click="onClickFollowButton()">{{followingButtonText}}</button>
     </div>
     <div class="container">
       <ul class="nav nav-pills">
@@ -41,10 +42,10 @@
           <a href="#favoritesbyUser" data-toggle="tab">Posts Favorited by {{username}}</a>
         </li>
         <li>
-          <a href="#following" data-toggle="tab">Following: {{following.length}}</a>
+          <a href="#following" data-toggle="tab">Following: {{followingCount}}</a>
         </li>
         <li>
-          <a href="#followers" data-toggle="tab">Followers: {{followers.length}}</a>
+          <a href="#followers" data-toggle="tab">Followers: {{followersCount}}</a>
         </li>
       </ul>
       <div class="tab-content clearfix">

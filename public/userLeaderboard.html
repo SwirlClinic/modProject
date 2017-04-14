@@ -36,39 +36,17 @@
 	<div class="container">
 		<ul class="nav nav-pills">
 			<li class="active">
-				<a href="#experts" data-toggle="tab">Experts on a Game</a>
-			</li>
-			<li>
 				<a href="#talkative" data-toggle="tab">Most Talkative</a>
 			</li>
 			<li>
 				<a href="#mostFavorites" data-toggle="tab">Most Favorites</a>
 			</li>
+			<li>
+				<a href="#experts" data-toggle="tab">Experts on a Game</a>
+			</li>
 		</ul>
 		<div class="tab-content clearfix">
-			<div class="tab-pane active" id="experts">
-				<h2>Experts of a Game</h2>
-				<h4>Users who have posted about every mod listed for a single game</h4>
-				<p>Search game</p>
-				<input type="text" placeholder="Game Name" ng-model="currentSearchExperts">
-				<button ng-click="searchExperts()">Search</button>
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>Username</th>
-							<th>Game Name</th>
-							<th>Game Release Year</th>
-						</tr>
-					</thead>
-					<tbody ng-repeat="post in userExperts">
-						<td><a href="/user.html?username={{post.username}}">{{post.username}}</a></td>
-						<td><a href="/game.html?name={{post.game_name}}%26year={{post.game_release_year}}">{{post.game_name}}</a></td>
-						<td>{{post.game_release_year}}</td>
-					</tbody>
-				</table>
-				<button id="loadMoreExperts" ng-click="loadMoreExperts()">Load More</button>
-			</div>
-			<div class="tab-pane" id="talkative">
+			<div class="tab-pane active" id="talkative">
 				<h2>Most Talkative Users</h2>
 				<h4>Users who have commented the most on other people's posts and who have
 				commented on at least <input type="text" placeholder="" ng-model="currentUserNum" size="8"> unique
@@ -106,6 +84,28 @@
 					</tbody>
 				</table>
 				<button id="loadMoreFavorites" ng-click="loadMoreFavorties()">Load More</button>
+			</div>
+			<div class="tab-pane" id="experts">
+				<h2>Experts of a Game</h2>
+				<h4>Users who have posted about every mod listed for a single game</h4>
+				<p>Search game</p>
+				<input type="text" placeholder="Game Name" ng-model="currentSearchExperts">
+				<button ng-click="searchExperts()">Search</button>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>Game Name</th>
+							<th>Game Release Year</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="post in userExperts">
+						<td><a href="/user.html?username={{post.username}}">{{post.username}}</a></td>
+						<td><a href="/game.html?name={{post.game_name}}%26year={{post.game_release_year}}">{{post.game_name}}</a></td>
+						<td>{{post.game_release_year}}</td>
+					</tbody>
+				</table>
+				<button id="loadMoreExperts" ng-click="loadMoreExperts()">Load More</button>
 			</div>
 		</div>
 	</div>

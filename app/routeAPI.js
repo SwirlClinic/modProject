@@ -7,24 +7,6 @@ var db = require('./connection');
 var router = express.Router();
 
 
-/*router.use(function(req, res, next) {
-	console.log("something is happenin");
-	next();
-});*/
-/*
-router.get('/secretcookies', function(req,res, next) {
-	console.log(req.cookies.access_token);
-	if (!req.cookies.access_token) {
-		res.redirect('/login.html');
-		//res.json({message: "no cookies?"});
-	}
-	else {
-		res.json({message: req.cookies.access_token});
-	}
-});
-*/
-
-
 router.get('/secretcookies', function(req,res, next) {
 
     var query = "SELECT * from website_user WHERE username = $1";
@@ -427,7 +409,7 @@ router.route('/following/:username')
 //Query 20: Get the Following Count for a user (number of people a user is following)
 router.route('/followingCount/:username')
 	.get(function(req,res){
-		db.any("SELECT COUNT(*) FROM follows WHERE follower = $1 GROUP BY follower",[req.params.username])
+		db.any("SELECT COUNT(*) FROM follows WHERE follower = $1",[req.params.username])
 			.then(function(data){
 				res.json(data);
 			}).catch(function(err){
@@ -449,7 +431,7 @@ router.route('/followers/:username')
 //Query 18: Get the Follower Count for a user.
 router.route('/followersCount/:username')
 	.get(function(req,res){
-		db.any("SELECT COUNT(*) FROM follows WHERE is_followed = $1 GROUP BY is_followed",[req.params.username])
+		db.any("SELECT COUNT(*) FROM follows WHERE is_followed = $1",[req.params.username])
 			.then(function(data){
 				res.json(data);
 			}).catch(function(err){
@@ -738,16 +720,17 @@ router.route('/userFavoritesLeaderboard/:off')
 
 //Example Query 2: Most Posted About Games
 router.route('/mostPostedAboutGames')
-  .get(function(req,res){
+  .post(function(req,res){
     var query = "SELECT g.name, g.releaseyear, (SELECT COUNT(*)"
                 + " FROM post p"
                 + " WHERE g.releaseyear = p.game_release_year"
                 + " AND g.name = p.game_name) AS post_count"
                 + " FROM game g"
-                + " ORDER BY post_count desc"
-                + " limit 25";
+                + " ORDER BY post_count desc, g.releaseyear desc, g.name"
+                + " limit 25"
+                + " OFFSET $1";
 
-    db.any(query,[])
+    db.any(query,[req.body.offset])
       .then(function(data){
         res.json(data);
       }).catch(function(err){
@@ -757,17 +740,18 @@ router.route('/mostPostedAboutGames')
 
 //Example Query 2 (Modified): Most Posted About Games (for a specific genere)
 router.route('/mostPostedAboutGames/:genre')
-  .get(function(req,res){
+  .post(function(req,res){
     var query = "SELECT g.name, g.releaseyear, (SELECT COUNT(*)"
                 + " FROM post p"
                 + " WHERE g.releaseyear = p.game_release_year"
                 + " AND g.name = p.game_name) AS post_count"
                 + " FROM game g"
                 + " WHERE g.genre = $1"
-                + " ORDER BY post_count desc"
-                + " limit 25";
+                + " ORDER BY post_count desc, g.releaseyear desc, g.name"
+                + " limit 25"
+                + " OFFSET $2";
 
-    db.any(query,[req.params.genre])
+    db.any(query,[req.params.genre,req.body.offset])
       .then(function(data){
         res.json(data);
       }).catch(function(err){
