@@ -31,51 +31,38 @@ SELECT g.name, g.releaseyear, (SELECT COUNT(*)
 FROM game g
 WHERE g.genre = 'Comedy'
 ORDER BY post_count desc,g.releaseyear desc, g.name
-LIMIT 25;
+LIMIT 25
+OFFSET 0;
 
 
 --Query 3: Leaderboard of Users with the Most Favorited Posts
 --See the number of favorites each user has for any posts they have
 --created (and still show users even if they haven't made a post)
 
---This query was also used to test how indexes can help to improve
---query performance since favorites had over 100,000 tuples when testing.
-
---Before Index
----------------------------------------
---Planning time: 1.821 ms
---Execution time: 124518.133 ms
-
---After Index
------------------------------
---Planning time: 4.286 ms
---Execution time: 4506.405 ms
-
 CREATE INDEX favorites_index on favorites(title,date,time);
 
---DELETE COMMENT BELOW TO SEE RUNNING TIME AND STEPS
---EXPLAIN ANALYZE
-SELECT u.username, (SELECT COUNT(wu.username)
-    FROM post p, website_user wu, favorites f
-    WHERE wu.username = p.username
-        AND f.title = p.title
-        AND f.date = p.date
-        AND f.time = p.time
-        AND u.username = wu.username) AS favorite_count
+SELECT u.username, COUNT(f.favorite_time) as favorite_count
 FROM website_user u
-ORDER BY favorite_count DESC, username;
+LEFT OUTER JOIN post p ON p.username = u.username
+LEFT OUTER JOIN favorites f ON f.title = p.title
+    AND f.date = p.date
+    AND f.time = p.time
+GROUP BY u.username
+ORDER BY favorite_count DESC, username
+LIMIT 25
+OFFSET 0;
 
---Query 4: Top Visited Posts for a Game With Genre Filter and Title Search (in Example the game is 'Game1553')
---So, going off of query 2, let's assume that the most posted about game is 'Game1553'
---with a 1982 release year and the user clicks on the game name to see all posts about that game.
---This query will return a list of all posts (from most visited to least) and the number of
---visits the post has received. However, it will not give the content of the post (like a search
---result, clicking on post name will give you the post page).
+--Query 4: Most Visited Posts
+--Gets a list of posts that have the most unique user visits on them. Also allows the
+--user to filter by genre of the game the post is about and/or by searching the title of the post.
 
 SELECT p.title, p.date, p.time, COUNT(v.most_recent_visit_date) AS visit_count
 FROM post p
-INNER JOIN game g ON p.game_name = g.name AND p.game_release_year = g.releaseyear
-LEFT JOIN visits v ON p.title = v.title AND p.date = v.date AND p.time = v.time
+INNER JOIN game g ON p.game_name = g.name 
+	AND p.game_release_year = g.releaseyear
+LEFT JOIN visits v ON p.title = v.title 
+	AND p.date = v.date 
+	AND p.time = v.time
 WHERE p.title LIKE '%%' AND g.genre = 'Comedy'
 GROUP BY p.title, p.date, p.time
 ORDER BY visit_count DESC, p.date DESC, p.time DESC, p.title
@@ -96,39 +83,6 @@ AND follower = 'Username0'
 ORDER BY post.date DESC, post.time DESC, post.title DESC
 LIMIT 10 OFFSET 0;
 
---Now we'll improve the news feed by also getting the mod data for each post.
---As with the above info, we will only get the 10 most recent posts (until
---more are requested) and the example user is 'Username0'. The web server will handle
---combining the post data with the mod data in order to get the complete news feed.
-
-SELECT x.title as post_title, x.date as post_date, x.time as post_time, x.name as mod_name, x.link as link_to_mod,
-       x.description as mod_description, x.config_importance_rating, x.hours_added, x.num_new_items,
-       x.resolution, x.fps, x.version
-FROM
-(
-SELECT pfm.title, pfm.date, pfm.config_importance_rating, pfm.time, mod_for_game.name,
-	   mod_for_game.link, mod_for_game.description, ad.hours_added, ad.num_new_items,
-       gm.resolution, gm.fps, uopm.version
-FROM mod_for_game
-LEFT JOIN add_on_mod ad ON mod_for_game.modid = ad.modid
-LEFT JOIN graphical_mod gm ON mod_for_game.modid = gm.modid
-LEFT JOIN unofficial_patch_mod uopm ON mod_for_game.modid = uopm.modid
-INNER JOIN post_features_mod pfm ON pfm.modid = mod_for_game.modid
-) as x
-INNER JOIN
-(
-    SELECT post.title, post.date, post.time
-    FROM post, follows
-    WHERE post.username = follows.is_followed
-    AND follower = 'Username0'
-    ORDER BY post.date DESC, post.time DESC, post.title DESC
-    LIMIT 10 OFFSET 0
-) as sub
-ON sub.title = x.title
-AND sub.date = x.date
-AND sub.time = x.time
-ORDER BY x.date DESC, x.time DESC, x.title DESC;
-
 
 --Query 6: Creating a New User on the Website
 --simply try and insert into the website user table, if successful then they can now log in. If it fails, then the username is already taken.
@@ -137,18 +91,15 @@ INSERT INTO website_user(username, email, password)
 
 
 --Query 7: Login to Website
---Will return true if the login is successful
---Will return false if the login failed (bad username or password isn't correct)
---The query will also check if the account is deleted and return false if it is.
+--We use this query to get the user information from the database
+--and we check the login information on the server side.
 
-SELECT EXISTS(SELECT 1
+SELECT *
 FROM website_user
-WHERE username = 'exampleUsername'
-	AND password = '7f9bc6dd66d4c2116beaa73b02593413'
-		AND isdeleted = false) as result;
+WHERE username = 'Username1'
+	AND isdeleted = false;
 
 --Query 8: Adding a New Mod to the Website
---TODO
 
 INSERT INTO mod_for_game(game_name, game_release_year, name, link, description)
     VALUES ('Game2', 1981, 'Cool Mod for Cool People', 'http://example.com/coolmod', 'Example Description')
@@ -246,8 +197,7 @@ ORDER BY most_recent_visit_date DESC;
 --Query 18: Get the Follower Count for a user.
 SELECT COUNT(*)
 FROM follows
-WHERE is_followed = 'Username0'
-GROUP BY is_followed;
+WHERE is_followed = 'Username0';
 
 --Query 19: Get a list of followers for the user.
 SELECT follower
@@ -257,8 +207,7 @@ WHERE is_followed = 'Username0';
 --Query 20: Get the Following Count for a user (number of people a user is following)
 SELECT COUNT(*)
 FROM follows
-WHERE follower = 'Username0'
-GROUP BY follower;
+WHERE follower = 'Username0';
 
 --Query 21: Get the list of users a person is following
 SELECT is_followed
@@ -305,44 +254,48 @@ ORDER BY date DESC, time DESC;
 --Query 26: "Delete" a User from the Database
 --Since we don't want to delete users (since they are connected to a lot
 --of data), set isdeleted to true for a user who wants to delete their account
+
+SELECT EXISTS(SELECT 1
+FROM website_user
+WHERE username = 'exampleUsername'
+	AND password = '7f9bc6dd66d4c2116beaa73b02593413'
+		AND isdeleted = false) as result;
+		
 UPDATE website_user
 SET isdeleted = true
 WHERE username = 'Username9';
 
---Query 27: Get all user data
-SELECT *
-FROM website_user;
-
---Query 28: Get specific user data
-SELECT *
+--Query 27: Getting user data for a specific user
+SELECT username, email
 FROM website_user
 WHERE username = 'Username1';
 
---Query 29: Get a list of all games
+--Query 28: Get a list of all games
 SELECT *
 FROM game;
 
---Query 30: Get a list of mods for a game
+--Query 29: Get a list of mods for a game
 SELECT *
 FROM mod_for_game
 WHERE game_name = 'Game1553'
 AND game_release_year = 1982;
 
---Query 31: List of the most recent posts
+--Query 30: List of the most recent posts
 SELECT *
 FROM post
 ORDER BY date DESC,time DESC
-LIMIT 10;
+LIMIT 10
+OFFSET 0;
 
---Query 32: Check if user is following another user
-CREATE INDEX following_index on follows(is_followed,follower);
+--Query 31: Check if user is following another user
+--CREATE INDEX following_index on follows(is_followed,follower);
 
 SELECT EXISTS(SELECT 1
 	from follows
 	where is_followed = 'Username1'
 	and follower = 'Username0') AS result;
 
---Query 33: Check if user has favorited something
+--Query 32: Check if user has favorited something
 SELECT EXISTS(SELECT 1
 	from favorites
 	WHERE username = 'Username1'
@@ -351,18 +304,18 @@ SELECT EXISTS(SELECT 1
 	    AND time = '16:27:29') AS result;
 
 
---Query 34: Get a list of genres in the database
+--Query 33: Get a list of genres in the database
 SELECT DISTINCT genre
 FROM game;
 
---Query 35: Experts for a game
+--Query 34: Experts for a game
 --Users who have written about all the mods for a certain game
 --with their posts. Game search with it (so it uses user input)
 
-CREATE INDEX mod_for_game_index_for_game on mod_for_game(game_name,game_release_year);
-CREATE INDEX pfm_index_for_post on post_features_mod(title,date,time);
-CREATE INDEX post_username_index on post(username);
-CREATE INDEX post_game_index on post(game_name,game_release_year);
+--CREATE INDEX mod_for_game_index_for_game on mod_for_game(game_name,game_release_year);
+--CREATE INDEX pfm_index_for_post on post_features_mod(title,date,time);
+--CREATE INDEX post_username_index on post(username);
+--CREATE INDEX post_game_index on post(game_name,game_release_year);
 
 SELECT DISTINCT p.username, p.game_name, p.game_release_year
 FROM post p
@@ -384,9 +337,11 @@ NOT EXISTS(
         AND p2.game_release_year = p.game_release_year
     )
 )
-ORDER BY p.game_name,p.game_release_year DESC, p.username;
+ORDER BY p.game_name,p.game_release_year DESC, p.username
+LIMIT 25
+OFFSET 0;
 
---Query 36: Talkative Users
+--Query 35: Talkative Users
 --Gets the users with the most comments on other peoples' posts and who have
 --made comments on at least 50 different peoples' posts
 SELECT cfp.username, COUNT(*) as num_comments_on_others_posts, COUNT(DISTINCT p.username) as num_users_commented_for
@@ -399,13 +354,13 @@ GROUP BY cfp.username
 HAVING COUNT(DISTINCT p.username) >= 50
 ORDER BY num_comments_on_others_posts DESC, username;
 
---Query 37: Getting Info About a Specific Game
+--Query 36: Getting Info About a Specific Game
 SELECT *
 FROM game
 WHERE game_name = 'Game1'
 AND releaseyear = 2000;
 
---Query 38: Top Visited Posts for a Game
+--Query 37: Top Visited Posts for a Game
 select p.title, p.date, p.time, COUNT(v.most_recent_visit_date) as visits_count
 FROM post p
 LEFT OUTER JOIN visits v
@@ -417,38 +372,38 @@ WHERE p.game_name = 'Game0'
 GROUP BY p.title, p.date, p.time
 ORDER BY visits_count DESC;
 
---Query 39: All Add-On Mods for a Game
+--Query 38: All Add-On Mods for a Game
 select m.*, a.hours_added, a.num_new_items
 FROM add_on_mod a, mod_for_game m
 WHERE a.modid = m.modid
     AND game_name = 'Game0'
     AND game_release_year = 2000;
 
---Query 40: All Graphical Mods for a Game
+--Query 39: All Graphical Mods for a Game
 select m.*, g.resolution, g.fps
 FROM graphical_mod g, mod_for_game m
 WHERE g.modid = m.modid
     AND game_name = 'Game0'
     AND game_release_year = 2000;
 
---Query 41: All Unofficial Path Mods for a Game
+--Query 40: All Unofficial Path Mods for a Game
 select m.*, u.version
 FROM unofficial_patch_mod u, mod_for_game m
 WHERE u.modid = m.modid
     AND game_name = 'Game0'
     AND game_release_year = 2000;
 
---Query 42: Mods Without a Type for a game (mods which don't have a type)
+--Query 41: Mods Without a Type for a game (mods which don't have a type)
 select *
 FROM mod_for_game m
 WHERE game_name = 'Game0'
 	AND game_release_year = 2000
 	AND NOT EXISTS (SELECT 1
-									FROM unofficial_patch_mod u
-									WHERE u.modId = m.modId)
+						FROM unofficial_patch_mod u
+						WHERE u.modId = m.modId)
 	AND NOT EXISTS (SELECT 1
-									FROM graphical_mod g
-									WHERE g.modId = m.modId)
+						FROM graphical_mod g
+						WHERE g.modId = m.modId)
 	AND NOT EXISTS (SELECT 1
-									FROM add_on_mod a
-									WHERE a.modId = m.modId);
+						FROM add_on_mod a
+						WHERE a.modId = m.modId);
