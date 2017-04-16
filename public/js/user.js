@@ -187,12 +187,12 @@ angular.module('app', ['ngCookies']).controller('mainController', ['$scope', '$h
                       $scope.follows = !$scope.follows;
                       if($scope.follows){
                         $.notify("You are now following "+$scope.username,'success');
-                        $scope.followersCount += 1;
+                        $scope.followersCount = parseInt($scope.followersCount) + 1;
                         $scope.followers.push({'follower': myUser});
                       }
                       else{
                         $.notify("You have unfollowed "+$scope.username,'success');
-                        $scope.followersCount -= 1;
+                        $scope.followersCount = parseInt($scope.followersCount) - 1;
                         $scope.followers.splice($scope.followers.indexOf({'follower': myUser}),1);
                       }
                       $scope.assignButton();
