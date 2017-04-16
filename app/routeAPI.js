@@ -1061,7 +1061,7 @@ router.route('/experts')
                   +" LIMIT 25"
                   +" OFFSET $2";
 
-      var params = ["%"+req.body.name+"%",req.body.offset]
+      var params = ["%"+req.body.name+"%",req.body.offset];
 
       db.any(query,params)
         .then(function(data){

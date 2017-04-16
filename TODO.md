@@ -9,8 +9,8 @@
     * Clean up (Changing name of css file to something other than gay.css and getting rid of all the console.logs on front end)
 
     * For other stuff
-      * Turn in all scripts (Which are all same from part 2 except queries and indexes which are on github)
-      * Database Dump
+      * Turn in all scripts (Which are all same from part 2 except queries and indexes which are on github) ---- DONE
+      * Database Dump ---- DONE
       * Report with: --need to format
         * Simple Description of queries (what they do, what input is taken in)
         * A description of one index (justify reason for it), effect, and possible updates that are effected by it

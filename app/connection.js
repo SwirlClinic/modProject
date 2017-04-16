@@ -1,5 +1,5 @@
 var pgp = require('pg-promise')();
-var db = pgp('postgres://cse412proj:ericbilljakesriley@forums.swirlclinic.com:5432/modproject');
+var db = pgp('postgres://postgres:cse412@localhost:5432/modproject');
 
 
 module.exports = db;
