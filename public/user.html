@@ -29,10 +29,13 @@
 	<header ng-include="'/header.html'"></header>
   <main>
     <div class="container">
-      <h1>{{username}}</h1>
-      <h3>{{email}}</h3>
-			<button ng-click="onClickFollowButton()">{{followingButtonText}}</button>
+      <div class="jumbotron">
+        <h1>{{username}}</h1>
+        <h3>{{email}}</h3>
+  			<button ng-click="onClickFollowButton()" class="button btn btn-primary">{{followingButtonText}}</button>
+      </div>
     </div>
+
     <div class="container">
       <ul class="nav nav-pills">
         <li class="active">
@@ -129,7 +132,7 @@
   </main>
 
   <footer>
-	<p>hi</p>
+
 	</footer>
 
 

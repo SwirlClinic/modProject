@@ -3,7 +3,7 @@
 <html lang="en" ng-app="app">
 <head>
 	<meta charset="UTF-8">
-	<title>Getting Started</title>
+	<title>Posts by your following list</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
@@ -27,14 +27,16 @@
 
 	<header ng-include="'/header.html'"></header>
 
-	<section class="kaboom">
-		<div class='content'>
-			<h2>Welcome to Mods R Us</h2>
-			<p>Please enjoy your stay!</p>
-		</div>
-	</section>
+	
 
 	<main>
+
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Posts by your following list</h1>
+			<p>View latest posts by people you're following!</p>
+		</div>
+	</div>
 
 		<div class="container">
 
@@ -63,13 +65,13 @@
 
 
 				</div>
-				<button id="loadMore" class="button" ng-click="onClickLoadMore()">Load More</button>
+				<button id="loadMore" class="button btn btn-primary" ng-click="onClickLoadMore()">Load More</button>
 			</div>
 		</div>
 	</main>
 
 	<footer>
-	<p>hi</p>
+
 	</footer>
 
 	<!-- start javascript -->

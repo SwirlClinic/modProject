@@ -3,7 +3,7 @@
 <html lang="en" ng-app="app">
 <head>
 	<meta charset="UTF-8">
-	<title>Getting Started</title>
+	<title>Most Posted Games</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
@@ -31,13 +31,17 @@
 
 <main>
   <div class="container">
-    <h1>Most Posted About Games</h1>
-    <h4>Genres: </h4>
 
-    <select ng-model="select.genre" ng-change="onSelectChange()">
-      <option></option>
-      <option ng-repeat="genre in genres" value="{{genre.genre}}">{{genre.genre}}</option>
-    </select>
+    <div class="page-header">
+      <h1>Most Posted About Games</h1>
+      <h4>Genres: </h4>
+      <select ng-model="select.genre" ng-change="onSelectChange()">
+        <option></option>
+        <option ng-repeat="genre in genres" value="{{genre.genre}}">{{genre.genre}}</option>
+      </select>
+    </div>
+
+    
 
   </div>
   <div class="container">
@@ -55,13 +59,13 @@
         <td>{{game.post_count}}</td>
       </tbody>
     </table>
-		<button ng-click="loadMore()">Load More</button>
+		<button ng-click="loadMore()" class="button btn btn-primary">Load More</button>
   </div>
 
 </main>
 
 <footer>
-<p>hi</p>
+
 </footer>
 
 <!-- start javascript -->
