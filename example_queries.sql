@@ -51,7 +51,7 @@ LIMIT 25;
 --Planning time: 4.286 ms
 --Execution time: 4506.405 ms
 
-CREATE INDEX favorites_index on favorites(title,date,time);
+--CREATE INDEX favorites_index on favorites(title,date,time);
 
 --DELETE COMMENT BELOW TO SEE RUNNING TIME AND STEPS
 --EXPLAIN ANALYZE
@@ -64,6 +64,16 @@ SELECT u.username, (SELECT COUNT(wu.username)
         AND u.username = wu.username) AS favorite_count
 FROM website_user u
 ORDER BY favorite_count DESC, username;
+
+SELECT u.username, COUNT(f.favorite_time) as favorite_count
+FROM website_user u
+LEFT OUTER JOIN post p ON p.username = u.username
+LEFT OUTER JOIN favorites f ON f.title = p.title
+    AND f.date = p.date
+    AND f.time = p.time
+GROUP BY u.username
+ORDER BY favorite_count DESC, username;
+
 
 --Query 4: Top Visited Posts for a Game With Genre Filter and Title Search (in Example the game is 'Game1553')
 --So, going off of query 2, let's assume that the most posted about game is 'Game1553'

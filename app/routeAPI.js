@@ -9,7 +9,7 @@ var router = express.Router();
 
 router.route('/users/:username')
     .get(function(req,res) {
-        //Query 28: Get specific user data
+        //Query 27: Get specific user data
         db.any("SELECT username,email FROM website_user WHERE username = $1", [req.params.username])
             .then(function (data) {
             res.json(data);
@@ -35,7 +35,7 @@ router.route('/users')
     .get(function(req,res) {
 
     	//console.log("Response? : " + db.getUsers());
-      //Query 27: Get all user data
+      //Query unused: Get all user data
     	db.any("SELECT * FROM website_user")
 			.then(function (data) {
 				res.json(data);
@@ -68,7 +68,7 @@ router.route('/games')
     .get(function(req,res) {
 
         //console.log("Response? : " + db.getUsers());
-        //Query 29: Get a list of all games
+        //Query 28: Get a list of all games
         db.any("SELECT * from game ORDER BY releaseyear DESC, name")
             .then(function (data) {
                 res.json(data);
@@ -82,7 +82,7 @@ router.route('/games')
 router.route('/gameinfo')
 .post(function(req,res) {
 
-    //Query 30: Get Information About a Game
+    //Query 36: Get Information About a Game
     db.any("SELECT * FROM game WHERE name = $1 AND releaseyear = $2", [req.body.game_name,req.body.releaseyear])
         .then(function (data) {
             res.json(data);
@@ -93,6 +93,8 @@ router.route('/gameinfo')
 
 });
 
+
+//Query 37
 router.route('/topPostsForAGame')
   .post(function(req,res){
 
@@ -116,6 +118,7 @@ router.route('/topPostsForAGame')
 
   });
 
+//Query 38
 router.route('/addOnModsForGame')
   .post(function(req,res){
 
@@ -134,6 +137,8 @@ router.route('/addOnModsForGame')
 
 });
 
+
+//Query 39
 router.route('/graphicalModsForAGame')
   .post(function(req,res){
 
@@ -152,6 +157,8 @@ router.route('/graphicalModsForAGame')
 
 });
 
+
+//Query 40
 router.route('/unofficialPatchModsForAGame')
   .post(function(req,res){
 
@@ -170,6 +177,7 @@ router.route('/unofficialPatchModsForAGame')
 
 });
 
+//Query 41
 router.route('/noTypeModsForAGame')
   .post(function(req,res){
 
@@ -202,7 +210,7 @@ router.route('/modfor')
     .post(function(req,res) {
 
         //console.log("Response? : " + db.getUsers());
-        //Query 30: Get a list of mods for a game (needs to include game release year)
+        //Query 29: Get a list of mods for a game (needs to include game release year)
         db.any("SELECT * FROM mod_for_game WHERE game_name = $1 AND game_release_year = $2", [req.body.game_name,req.body.game_release_year])
             .then(function (data) {
                 console.log("Got mods for "+ req.body.game_name + " released in the year "+req.body.game_release_year);
@@ -425,7 +433,7 @@ router.route('/followersCount/:username')
 			});
 	});
 
-
+//Query 30
 router.route('/posts/latest')
     .get(function(req,res){
         db.any("SELECT * FROM post ORDER BY date DESC,time DESC LIMIT 10")
@@ -689,7 +697,7 @@ router.route('/posts/details')
 //Query 3: Leaderboard of Users with the Most Favorited Posts
 router.route('/userFavoritesLeaderboard/:off')
   .get(function(req,res){
-    var query = "SELECT u.username, (SELECT COUNT(p.username) "
+    /*var query = "SELECT u.username, (SELECT COUNT(p.username) "
                 + " FROM post p, favorites f "
                 + " WHERE u.username = p.username"
                 + " AND f.title = p.title"
@@ -699,7 +707,18 @@ router.route('/userFavoritesLeaderboard/:off')
                 + " FROM website_user u"
                 + " ORDER BY favorite_count DESC, username"
                 + " LIMIT 25"
-                + " OFFSET $1";
+                + " OFFSET $1";*/
+
+    var query =  "SELECT u.username, COUNT(f.favorite_time) as favorite_count "
+                 + " FROM website_user u "
+                 + " LEFT OUTER JOIN post p ON p.username = u.username "
+                 + " LEFT OUTER JOIN favorites f ON f.title = p.title "
+                 + "     AND f.date = p.date "
+                 + "     AND f.time = p.time "
+                 + " GROUP BY u.username "
+                 + " ORDER BY favorite_count DESC, username "
+                 + " LIMIT 25 "
+                 + " OFFSET $1; ";
 
     db.any(query,[req.params.off])
       .then(function(data){
@@ -791,7 +810,7 @@ router.route('/comments')
       });
   });
 
-//Query 34:
+//Query 33:
 router.route('/genres')
 .get(function(req,res){
   db.any("select DISTINCT genre from game",[])
@@ -976,7 +995,7 @@ router.route('/deactivateAccount')
       });
   });
 
-//Query 32: Check if one user follows another user
+//Query 31: Check if one user follows another user
 router.route('/doesFollow')
   .post(function(req,res){
     var query = "SELECT EXISTS(SELECT 1"
@@ -994,7 +1013,7 @@ router.route('/doesFollow')
       });
   });
 
-//Query 33: Check if user has favorited something
+//Query 32: Check if user has favorited something
 router.route('/doesFavorite')
   .post(function(req,res){
     var query = "SELECT EXISTS(SELECT 1"
@@ -1015,7 +1034,7 @@ router.route('/doesFavorite')
       });
   });
 
-//Query 35: Experts for a game
+//Query 34: Experts for a game
 router.route('/experts')
   .post(function(req,res){
       var query = "SELECT DISTINCT p.username, p.game_name, p.game_release_year"
@@ -1053,6 +1072,9 @@ router.route('/experts')
         });
 });
 
+
+
+//Query 35
 router.route('/talkative')
   .post(function(req,res){
 
