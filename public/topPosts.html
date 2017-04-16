@@ -30,15 +30,28 @@
 
   <main>
 		<div class="container">
-			<h1>Most Unique User Visits on Posts</h1>
-      <h4>Search by Title</h4>
-			<input type="text" placeholder="Title" ng-model="currentSearch">
-      <h4>Search by Game Genre</h4>
-      <select ng-model="currentGenre">
-        <option></option>
-        <option ng-repeat="genre in genres" value="{{genre.genre}}">{{genre.genre}}</option>
-      </select>
-			<button ng-click="searchPosts()">Search</button>
+			
+			<div class="page-header">
+				<h1>Most Unique User Visits on Posts</h1>
+			</div>
+
+			<h3>Filters</h3>
+			<div class="input-group">
+			  <span class="input-group-addon" id="sizing-addon2">Search by Title</span>
+			  <input type="text" class="form-control" placeholder="Title" ng-model="currentSearch">
+			</div>
+
+			
+			<div class="input-group">
+			<span class="input-group-addon" id="sizing-addon2">Search by Game Genre</span>
+				<select ng-model="currentGenre" class="form-control">
+					<option></option>
+					<option ng-repeat="genre in genres" value="{{genre.genre}}">{{genre.genre}}</option>
+				</select>
+				
+			</div>
+			<button ng-click="searchPosts()" class="button btn btn-primary">Search</button>
+		      
 		</div>
 		<div class="container">
 			<table class="table table-hover">
@@ -57,12 +70,13 @@
 					<td>{{post.visit_count}}</td>
 	      </tbody>
 	    </table>
+	    <button id="loadMore" ng-click="loadMore()" class="button btn btn-primary">Load More</button>
 		</div>
-    <button id="loadMore" ng-click="loadMore()">Load More</button>
+    
   </main>
 
   <footer>
-	<p>hi</p>
+
 	</footer>
 
 	<!-- start javascript -->

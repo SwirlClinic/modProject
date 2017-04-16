@@ -3,7 +3,7 @@
 <html lang="en" ng-app="app">
 <head>
 	<meta charset="UTF-8">
-	<title>Getting Started</title>
+	<title>Home</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
@@ -23,8 +23,8 @@
 
 	<section class="kaboom">
 		<div class='content'>
-			<h2>Welcome to Mods R Us</h2>
-			<p>Please enjoy your stay!</p>
+			<h2>Welcome to Mods4Me</h2>
+			<p>Share your mod list!</p>
 		</div>
 	</section>
 
@@ -37,7 +37,7 @@
 
 			<!-- <div class="card card-outline-primary mb-3" ng-repeat="post in modposts"> -->
 			<div class="container">
-				<h2>Latest Mod Posts:</h2>
+				<h1>Latest Mod Posts:</h1>
 				<div class="panel panel-default" ng-repeat="post in modposts">
 
 						<div class="panel-heading">
@@ -57,13 +57,12 @@
 
 
 				</div>
-				<button id="loadMore" class="button" ng-click="onClickLoadMore()">Load More</button>
+				<button id="loadMore" class="button btn btn-primary" ng-click="onClickLoadMore()">Load More</button>
 			</div>
 		</div>
 	</main>
 
 	<footer>
-	<p>hi</p>
 	</footer>
 
 	<!-- start javascript -->

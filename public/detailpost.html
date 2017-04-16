@@ -48,12 +48,15 @@
 	<main>
 
 		<div class="container">
-			<h1>Modlist Details:</h1>
+			
 			<div class="container">
-				<div class = "jumbotron" ng-repeat="content in postMainContent">
-					<p><a href="/user.html?username={{postMainContent[0].username}}">{{postMainContent[0].username}}</a></p>
-					<button ng-click="onClickFollowButton()">{{followingButtonText}}</button>
-					<button ng-click="onClickFavoriteButton()">{{favoritesButtonText}}</button>
+				<div class="page-header">
+					<h2>Modlist Details:</h2>
+				</div>
+				<div ng-repeat="content in postMainContent" class="bs-callout bs-callout-primary">
+					<p>Author: <a href="/user.html?username={{postMainContent[0].username}}">{{postMainContent[0].username}}</a></p>
+					<button ng-click="onClickFollowButton()" class="button btn btn-primary">{{followingButtonText}}</button>
+					<button ng-click="onClickFavoriteButton()" class="button btn btn-primary">{{favoritesButtonText}}</button>
 					<p>Game Name: <a href="/game.html?name={{content.game_name}}%26year={{content.game_release_year}}">{{content.game_name}}</a></p>
 					<p>Game Release Year: {{content.game_release_year}}</p>
 					<p>Modlist Description: {{content.body}}</p>
@@ -61,32 +64,55 @@
 			</div>
 
 
-			<h1>Modlist:</h1>
+			
 			<div class="container" >
-				<div style="word-wrap: break-word;" class = "jumbotron" ng-repeat="post in modposts">
+				<div class="page-header">
+					<h2>Modlist:</h2>
+				</div>
+				<div style="word-wrap: break-word;" class = "panel panel-default" ng-repeat="post in modposts">
+					<div class="panel-heading">
 					<p>Mod: {{post.name}}</p>
-					<p>Link: {{post.link}}</p>
-					<p ng-show="post.config_importance_rating">Importance to Modlist Rating: {{post.config_importance_rating}}</p>
-					<p ng-show="post.hours_added">Hours Added: {{post.hours_added}}</p>
-					<p ng-show="post.num_new_items">Number of New Items: {{post.num_new_items}}</p>
-					<p ng-show="post.fps">Frames per Second: {{post.fps}}</p>
-					<p ng-show="post.resolution">Resolution: {{post.resolution}}</p>
-					<p ng-show="post.version">Version Number: {{post.version}}</p>
-					<p>Description: {{post.description}}</p>
+					
+					</div>
+					<div class="panel-body">
+						<p>Link: <a href="{{post.link}}">{{post.link}}</a></p>
+						<p ng-show="post.config_importance_rating">Importance to Modlist Rating: {{post.config_importance_rating}}</p>
+						<p ng-show="post.hours_added">Hours Added: {{post.hours_added}}</p>
+						<p ng-show="post.num_new_items">Number of New Items: {{post.num_new_items}}</p>
+						<p ng-show="post.fps">Frames per Second: {{post.fps}}</p>
+						<p ng-show="post.resolution">Resolution: {{post.resolution}}</p>
+						<p ng-show="post.version">Version Number: {{post.version}}</p>
+						<p>Description: {{post.description}}</p>
+					</div>
 
 
 
 				</div>
 			</div>
-
-			<h1>Comments:</h1>
+			
+			
+				
+			
 			<div class="container">
+				<div class="page-header">
+					<h2>Leave a comment!</h2>
+				</div>
+
 				<textarea type="text" placeholder="Make a Comment" ng-model="userPostComment.comment_body" class="form-control" aria-describedby="sizing-addon1"></textarea>
-				<button ng-click="postComment(userPostComment)">Post Comment</button>
-				<div style="word-wrap: break-word;" class = "jumbotron" ng-repeat="comment in comments track by $index">
+				<div class="btn-group btn-group-justified">
+					<div class="btn-group" role="group">
+						<button ng-click="postComment(userPostComment)" class="button btn btn-primary ">Post Comment</button>
+					</div>
+				</div>
+
+				<div class="page-header">
+					<h2>Comments</h2>
+				</div>
+
+				<div style="word-wrap: break-word;" class = "bs-callout bs-callout-info" ng-repeat="comment in comments track by $index">
 					<p>Username: {{comment.username}}</p>
-					<p>Date of Comment: {{comment.comment_date}}</p>
-					<p>Time of Comment: {{comment.comment_time}}</p>
+					<p>Date of Comment: {{comment.comment_date.substring(0,10)}}</p>
+					<p>Time of Comment: {{comment.comment_time.substring(0,5)}}</p>
 					<p>Comment: {{comment.comment_body}}</p>
 				</div>
 			</div>

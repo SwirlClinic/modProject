@@ -29,9 +29,11 @@
 	<header ng-include="'/header.html'"></header>
   <main>
     <div class="container" style="word-wrap: break-word;">
-      <h1>{{game_name}}</h1>
-      <h3><em>{{genre}} - {{releaseyear}}</em></h3>
-      <p><strong>Description:</strong> {{description}}</p>
+      <div class="jumbotron">
+        <h1>{{game_name}}</h1>
+        <h3><em>{{genre}} - {{releaseyear}}</em></h3>
+        <p><strong>Description:</strong> {{description}}</p>
+      </div>
     </div>
     <div class="container">
     <ul class="nav nav-pills">

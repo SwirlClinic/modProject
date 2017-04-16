@@ -2,7 +2,7 @@
 <html lang="en" ng-app="app">
 <head>
 	<meta charset="UTF-8">
-	<title>Login :D</title>
+	<title>Login</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/gay.css">
@@ -57,22 +57,33 @@
 			</form>
 
 			<div ng-repeat="info in userInfo" class="userInfo">
-				<p>Hello {{info.username}}!</p>
-				<p>Here's your email: {{info.email}}</p>
-				<form ng-submit="changeEmail(newEmail)">
-					<div class="input-group input-group-lg" >
+				<div class="logout bs-callout">
+					<h4>Account information</h4>
+					<p>Hello {{info.username}}!</p>
+					<p>Here's your email: {{info.email}}</p>
+				</div>
+				
+				<form ng-submit="changeEmail(newEmail)" class="bs-callout bs-callout-primary">
+					<h4>Change your Email</h4>
+					<div class="input-group input-group-lg " >
 						<span class="input-group-addon"><i class="fa fa-envelope-o fa-lg"></i></span>
-						<input type="text" placeholder="Change email" ng-model="newEmail.email" class="form-control input-group-lg">
+						<input type="text" placeholder="Input New Email" ng-model="newEmail.email" class="form-control input-group-lg">
 
 					</div>
-					<button type="submit" class="btn btn-primary">Change email</button>
+					<p></p>
+					<button type="submit" class="btn btn-primary">Change Email</button>
 				</form>
 
-				<form ng-submit="logout()" class="logout">
-					<button type="submit" class="btn btn-primary">Log out</button>
+				<form ng-submit="logout()" class="logout bs-callout bs-callout-info">
+					<h4>Log out of account</h4>
+					<button type="submit" class="btn btn-primary" ng-submit="logout()">Log out</button>
 				</form>
-
-				<button ng-click="openDeleteUserModal()" class="btn btn-danger">Delete Account</button>
+				
+				<div class="logout bs-callout bs-callout-danger">
+					<h4>Deactivate your account</h4>
+					<p>Warning: once done you will no longer be able to login once done</p>
+					<button ng-click="openDeleteUserModal()" class="btn btn-danger">Delete Account</button>
+				</div>
 		<div id="deleteModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 			<div class="modal-content">
@@ -97,7 +108,6 @@
 	</main>
 
 	<footer>
-	<p>hi</p>
 	</footer>
 </body>
 </html>

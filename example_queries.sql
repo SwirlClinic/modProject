@@ -38,7 +38,6 @@ OFFSET 0;
 --Query 3: Leaderboard of Users with the Most Favorited Posts
 --See the number of favorites each user has for any posts they have
 --created (and still show users even if they haven't made a post)
-
 CREATE INDEX favorites_index on favorites(title,date,time);
 
 SELECT u.username, COUNT(f.favorite_time) as favorite_count
@@ -48,20 +47,23 @@ LEFT OUTER JOIN favorites f ON f.title = p.title
     AND f.date = p.date
     AND f.time = p.time
 GROUP BY u.username
-ORDER BY favorite_count DESC, username
-LIMIT 25
-OFFSET 0;
+ORDER BY favorite_count DESC, username;
 
---Query 4: Most Visited Posts
---Gets a list of posts that have the most unique user visits on them. Also allows the
---user to filter by genre of the game the post is about and/or by searching the title of the post.
+
+--Query 4: Top Visited Posts for a Game With Genre Filter and Title Search (in Example the game is 'Game1553')
+--So, going off of query 2, let's assume that the most posted about game is 'Game1553'
+--with a 1982 release year and the user clicks on the game name to see all posts about that game.
+--This query will return a list of all posts (from most visited to least) and the number of
+--visits the post has received. However, it will not give the content of the post (like a search
+--result, clicking on post name will give you the post page).
+
 
 SELECT p.title, p.date, p.time, COUNT(v.most_recent_visit_date) AS visit_count
 FROM post p
-INNER JOIN game g ON p.game_name = g.name 
+INNER JOIN game g ON p.game_name = g.name
 	AND p.game_release_year = g.releaseyear
-LEFT JOIN visits v ON p.title = v.title 
-	AND p.date = v.date 
+LEFT JOIN visits v ON p.title = v.title
+	AND p.date = v.date
 	AND p.time = v.time
 WHERE p.title LIKE '%%' AND g.genre = 'Comedy'
 GROUP BY p.title, p.date, p.time
@@ -260,7 +262,7 @@ FROM website_user
 WHERE username = 'exampleUsername'
 	AND password = '7f9bc6dd66d4c2116beaa73b02593413'
 		AND isdeleted = false) as result;
-		
+
 UPDATE website_user
 SET isdeleted = true
 WHERE username = 'Username9';
