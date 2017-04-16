@@ -62,22 +62,22 @@
 				</div>
 
 				<div class="modsSelected">
-					<h2>Mods:</h2>
+					<h2>Mods (name - modid):</h2>
 					<div class="input-group input-group-lg fa-lg">
 						<span class="input-group-addon"><i class="fa fa-puzzle-piece"></i></span>
-						<select ng-change="modSelectChange()" ng-options="mod.name for mod in modsForGame" class="form-control modSelect" ng-model="modSelected" data-live-search="true">
+						<select ng-change="modSelectChange()" ng-options="mod.name + ' - ' + mod.modid for mod in modsForGame" class="form-control modSelect" ng-model="modSelected" data-live-search="true">
 						</select>
 					</div>
 					<div class="jumbotron">
 						<table class="table table-hover">
 				      <thead>
 				        <tr>
-				          <th>Name of Mod</th>
+				          <th>Name of Mod - Modid</th>
 				          <th>Importance to List Rating (Optional, 10 Most Important / 1 Least)</th>
 				        </tr>
 				      </thead>
 				      <tbody ng-repeat="mods in modsAdded">
-				        <td>{{mods.name}}</td>
+				        <td>{{mods.name}} - {{mods.modid}}</td>
 				        <td>
 									<select class="col form-control" ng-model="mods.config_importance_rating">
 										<option value="1">1</option>

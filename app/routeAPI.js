@@ -7,20 +7,6 @@ var db = require('./connection');
 var router = express.Router();
 
 
-router.get('/secretcookies', function(req,res, next) {
-
-    var query = "SELECT * from website_user WHERE username = $1";
-    //Query 28: Get specific user data
-    db.any(query, "Fullsteel")
-        .then(function (data) {
-            res.json(data);
-    }).catch(function(err){
-            res.json(err);
-    });
-
-});
-
-
 router.route('/users/:username')
     .get(function(req,res) {
         //Query 28: Get specific user data
@@ -697,13 +683,13 @@ router.route('/posts/details')
 //Query 3: Leaderboard of Users with the Most Favorited Posts
 router.route('/userFavoritesLeaderboard/:off')
   .get(function(req,res){
-    var query = "SELECT u.username, (SELECT COUNT(wu.username) "
-                + " FROM post p, website_user wu, favorites f "
-                + " WHERE wu.username = p.username"
+    var query = "SELECT u.username, (SELECT COUNT(p.username) "
+                + " FROM post p, favorites f "
+                + " WHERE u.username = p.username"
                 + " AND f.title = p.title"
                 + " AND f.date = p.date"
                 + " AND f.time = p.time"
-                + " AND u.username = wu.username) AS favorite_count"
+                + " ) AS favorite_count"
                 + " FROM website_user u"
                 + " ORDER BY favorite_count DESC, username"
                 + " LIMIT 25"
