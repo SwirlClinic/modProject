@@ -155,6 +155,15 @@ angular.module('app', ['ngCookies']).controller('mainController', ['$scope', '$h
                   // or server returns response with an error status.
                 });
 
+          $http({
+            method: 'GET',
+            url: '/api/postsVisited/' + username
+          }).then(function successCallback(data) {
+            $scope.visitedPostsByUser = data.data;
+          }, function errorCallback(data) {
+            console.log("Issue getting favorite posts.");
+          });
+
           $scope.onClickFollowButton = function(){
             if($scope.errorlogin){
               $.notify('You need to login in order to follow a user','error');

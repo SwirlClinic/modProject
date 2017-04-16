@@ -217,7 +217,7 @@ router.route('/modfor')
 router.route('/login')
     .post(function(req, res) {
     	//console.log(req.body.username);
-        //Query 28: Get specific user data
+        //Query 7: Get specific user data
         db.one("SELECT * FROM website_user WHERE username = $1 AND isdeleted = false", [req.body.username])
             .then(function (data) {
             	//console.log(data.password);
@@ -451,6 +451,12 @@ router.route('/submitGame')
       .post(function(req,res){
         var query = "INSERT INTO game(name,releaseyear,description,genre)"
                     + " VALUES($1, $2, $3, $4)";
+
+        if (!req.body.genre || req.body.genre.trim() == "") {
+          res.json({message: "Failure!"});
+          return;
+        }
+
         if(parseInt(req.body.releaseyear,10)){
           var params = [req.body.name, parseInt(req.body.releaseyear,10), req.body.description, req.body.genre];
         }

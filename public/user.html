@@ -47,6 +47,9 @@
         <li>
           <a href="#followers" data-toggle="tab">Followers: {{followersCount}}</a>
         </li>
+        <li>
+          <a href="#visitedPostsByUser" data-toggle="tab">Visited posts by {{username}}</a>
+        </li>
       </ul>
       <div class="tab-content clearfix">
         <div class="tab-pane active" id="postsbyuser">
@@ -102,6 +105,22 @@
             </thead>
             <tbody ng-repeat="user in followers">
               <td><a href="/user.html?username={{user.follower}}">{{user.follower}}</a></td>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-pane" id="visitedPostsByUser">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Post Title</th>
+                <th>Date</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody ng-repeat="post in visitedPostsByUser">
+              <td><a href="/detailpost.html?title={{post.title}}%26time={{post.time}}%26date={{post.date}}">{{post.title}}</a></td>
+              <td>{{post.date.substring(0,10)}}</td>
+              <td>{{post.time.substring(0,5)}}</td>
             </tbody>
           </table>
         </div>
