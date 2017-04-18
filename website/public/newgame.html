@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Submit a Game</title>
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/mainstyle.css">
+
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<!--Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+
+	<!--Angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+
+
+</head>
+
+<body ng-controller="mainController">
+
+	<header ng-include="'/header.html'"></header>
+
+	<main>
+		<div class="container">
+		<div class="jumbotron text-center">
+			<h1>Submit a Game</h1>
+		</div>
+
+		<div class="alert alert-danger alert-dismissable" role="alert" ng-show="errorlogin">
+       <button href="#" class="close" data-dismiss="alert" aria-label="close">&times;</button>
+			 <strong>You must be logged in first!</strong> Please login <a href="/login.html" class="btn btn-primary"> HERE </a>
+		</div>
+		<div class="alert alert-success alert-dismissable" role="alert" ng-show="successpost">
+       <button href="#" class="close" data-dismiss="alert" aria-label="close">&times;</button>
+			 <strong>Success!</strong> You have submitted a new game!
+		</div>
+		<div class="alert alert-danger alert-dismissable" role="alert" ng-show="submiterror">
+       <button href="#" class="close" data-dismiss="alert" aria-label="close">&times;</button>
+			 <strong>Failed to add the game!</strong> Check if the game already exists or try again.
+		</div>
+
+
+
+			<form ng-submit="saveGame(gamePost)" ng-show="!errorlogin">
+	          <div class="form-group">
+
+				<h2>Name of Game:</h2>
+				<div class="input-group input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-gamepad fa-lg"></i></span>
+					<input type="text" placeholder="Name of Game" ng-model="gamePost.name" class="form-control input-group-lg">
+				</div>
+
+
+				<h2>Release Year of Game:</h2>
+				<div class="input-group input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span>
+					<input type="text" placeholder="Release Year of Game" ng-model="gamePost.releaseyear" class="form-control input-group-lg">
+				</div>
+
+
+				<h2>Genre:</h2>
+				<div class="input-group input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-star fa-lg"></i></span>
+					<input type="text" placeholder="Genre" ng-model="gamePost.genre" class="form-control input-group-lg">
+				</div>
+
+				<h2>Description:</h2>
+				<div class="input-group input-group-lg">
+					<span class="input-group-addon" id="sizing-addon1"><i class="fa fa-pencil fa-lg"></i></span>
+					<textarea type="text" placeholder="Description" ng-model="gamePost.description" class="form-control" aria-describedby="sizing-addon1" id="modDescription"> </textarea>
+				</div>
+	          </div>
+
+
+
+
+	          <button type="submit" class="btn btn-primary">Submit</button>
+	        </form>
+
+		</div>
+
+
+	</main>
+
+	<footer>
+
+	</footer>
+
+	<!-- start javascript -->
+	<script src="/js/newgame.js"></script>
+
+
+
+</body>
+
+</html>

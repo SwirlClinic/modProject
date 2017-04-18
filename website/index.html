@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Home</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/mainstyle.css">
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+	<!--Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+</head>
+
+<body ng-controller="mainController">
+
+
+<header ng-include="'/header.html'"></header>
+
+	<section class="kaboom">
+		<div class='content'>
+			<h2>Welcome to Mods4Me</h2>
+			<p>Share your mod list!</p>
+		</div>
+	</section>
+
+	<main>
+
+		<div class="container">
+
+
+
+
+			<!-- <div class="card card-outline-primary mb-3" ng-repeat="post in modposts"> -->
+			<div class="container">
+				<h1>Latest Mod Posts:</h1>
+				<div class="panel panel-default" ng-repeat="post in modposts">
+
+						<div class="panel-heading">
+							<a href = "./detailpost.html?title={{post.title}}%26time={{post.time}}%26date={{post.date}}">{{post.title}}</a>
+						</div>
+						<div class="panel-body">
+							<p>Author: <a href="/user.html?username={{post.username}}">{{post.username}}</a></p>
+							<p>Date: {{post.date.substring(0,10)}}</p>
+							<p>Time: {{post.time.substring(0,5)}}</p>
+							<p>Game: <a href="/game.html?name={{post.game_name}}%26year={{post.game_release_year}}">{{post.game_name}}</a></p>
+							<p>Game Release Year: {{post.game_release_year}}</p>
+							<p>Description: {{post.body}}</p>
+						</div>
+
+
+
+
+
+				</div>
+				<button id="loadMore" class="button btn btn-primary" ng-click="onClickLoadMore()">Load More</button>
+			</div>
+		</div>
+	</main>
+
+	<footer>
+	</footer>
+
+	<!-- start javascript -->
+	<script src="/js/index.js"></script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Getting Started</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/mainstyle.css">
+
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+  <!--Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+
+	<!--Angular -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+</head>
+
+<body ng-controller="mainController">
+
+	<header ng-include="'/header.html'"></header>
+  <main>
+    <div class="container" style="word-wrap: break-word;">
+      <div class="jumbotron">
+        <h1>{{game_name}}</h1>
+        <h3><em>{{genre}} - {{releaseyear}}</em></h3>
+        <p><strong>Description:</strong> {{description}}</p>
+      </div>
+    </div>
+    <div class="container">
+    <ul class="nav nav-pills">
+      <li class="active">
+        <a href="#postsAboutGame" data-toggle="tab">Posts for {{game_name}}</a>
+      </li>
+      <li>
+        <a href="#ModsWithoutType" data-toggle="tab">Mods Without a Type for {{game_name}}</a>
+      </li>
+      <li>
+        <a href="#addOn" data-toggle="tab">Add-On Mods for {{game_name}}</a>
+      </li>
+      <li>
+        <a href="#graphic" data-toggle="tab">Graphical Mods for {{game_name}}</a>
+      </li>
+      <li>
+        <a href="#patch" data-toggle="tab">Unofficial Patch Mods for {{game_name}}</a>
+      </li>
+    </ul>
+    <div class="tab-content clearfix">
+      <div class="tab-pane active" id="postsAboutGame">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Post Title</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Unique User Visits</th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="post in topPosts">
+            <td><a href="/detailpost.html?title={{post.title}}%26time={{post.time}}%26date={{post.date}}">{{post.title}}</a></td>
+            <td>{{post.date.substring(0,10)}}</td>
+            <td>{{post.time.substring(0,5)}}</td>
+            <td>{{post.visits_count}}</td>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane" id="ModsWithoutType">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Mod Name</th>
+              <th>Download URL</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="mod in noType">
+            <td>{{mod.name}}</td>
+            <td>{{mod.link}}</td>
+            <td style="word-wrap: break-word; max-width: 400px;">{{mod.description}}</td>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane" id="addOn">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Mod Name</th>
+              <th>Download URL</th>
+              <th>Hours Added</th>
+              <th>Number of New Items</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="mod in addOnMod">
+            <td style="word-wrap: break-word; max-width: 200px;">{{mod.name}}</td>
+            <td style="word-wrap: break-word; max-width: 200px;">{{mod.link}}</td>
+            <td>{{mod.hours_added}}</td>
+            <td>{{mod.num_new_items}}</td>
+            <td style="word-wrap: break-word; max-width: 400px;">{{mod.description}}</td>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane" id="graphic">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Mod Name</th>
+              <th>Download URL</th>
+              <th>Resolution</th>
+              <th>Frames Per Second</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="mod in graphical">
+            <td style="word-wrap: break-word; max-width: 200px;">{{mod.name}}</td>
+            <td style="word-wrap: break-word; max-width: 200px;">{{mod.link}}</td>
+            <td>{{mod.resolution}}</td>
+            <td>{{mod.fps}}</td>
+            <td style="word-wrap: break-word; max-width: 400px;">{{mod.description}}</td>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane" id="patch">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Mod Name</th>
+              <th>Download URL</th>
+              <th>Patch Version</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="mod in patchMods">
+            <td style="word-wrap: break-word; max-width: 200px;">{{mod.name}}</td>
+            <td style="word-wrap: break-word; max-width: 200px;">{{mod.link}}</td>
+            <td>{{mod.version}}</td>
+            <td style="word-wrap: break-word; max-width: 400px;">{{mod.description}}</td>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+	<p>hi</p>
+	</footer>
+
+
+  <!-- start javascript -->
+  <script src="/js/game.js"></script>
+
+</body>
+
+
+</html>

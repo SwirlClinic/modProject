@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Getting Started</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/mainstyle.css">
+
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+	<!--Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+
+	<!--Angular -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+</head>
+
+<body ng-controller="mainController">
+
+	<header ng-include="'/header.html'"></header>
+	<div class='notifications bottom-right'></div>
+	<section class="kaboom">
+		<div class='content'>
+			<div ng-repeat="details in modinfo">
+
+					<h2>{{details.title}}</h2>
+
+
+					<p>Date: {{details.date.substring(0,10)}}</p>
+
+					<p>Time: {{details.time.substring(0,5)}}</p>
+
+
+			</div>
+
+		</div>
+	</section>
+
+	<main>
+
+		<div class="container">
+			
+			<div class="container">
+				<div class="page-header">
+					<h2>Modlist Details:</h2>
+				</div>
+				<div ng-repeat="content in postMainContent" class="bs-callout bs-callout-primary">
+					<p>Author: <a href="/user.html?username={{postMainContent[0].username}}">{{postMainContent[0].username}}</a></p>
+					<button ng-click="onClickFollowButton()" class="button btn btn-primary">{{followingButtonText}}</button>
+					<button ng-click="onClickFavoriteButton()" class="button btn btn-primary">{{favoritesButtonText}}</button>
+					<p>Game Name: <a href="/game.html?name={{content.game_name}}%26year={{content.game_release_year}}">{{content.game_name}}</a></p>
+					<p>Game Release Year: {{content.game_release_year}}</p>
+					<p>Modlist Description: {{content.body}}</p>
+				</div>
+			</div>
+
+
+			
+			<div class="container" >
+				<div class="page-header">
+					<h2>Modlist:</h2>
+				</div>
+				<div style="word-wrap: break-word;" class = "panel panel-default" ng-repeat="post in modposts">
+					<div class="panel-heading">
+					<p>Mod: {{post.name}}</p>
+					
+					</div>
+					<div class="panel-body">
+						<p>Link: <a href="{{post.link}}">{{post.link}}</a></p>
+						<p ng-show="post.config_importance_rating">Importance to Modlist Rating: {{post.config_importance_rating}}</p>
+						<p ng-show="post.hours_added">Hours Added: {{post.hours_added}}</p>
+						<p ng-show="post.num_new_items">Number of New Items: {{post.num_new_items}}</p>
+						<p ng-show="post.fps">Frames per Second: {{post.fps}}</p>
+						<p ng-show="post.resolution">Resolution: {{post.resolution}}</p>
+						<p ng-show="post.version">Version Number: {{post.version}}</p>
+						<p>Description: {{post.description}}</p>
+					</div>
+
+
+
+				</div>
+			</div>
+			
+			
+				
+			
+			<div class="container">
+				<div class="page-header">
+					<h2>Leave a comment!</h2>
+				</div>
+
+				<textarea type="text" placeholder="Make a Comment" ng-model="userPostComment.comment_body" class="form-control" aria-describedby="sizing-addon1"></textarea>
+				<div class="btn-group btn-group-justified">
+					<div class="btn-group" role="group">
+						<button ng-click="postComment(userPostComment)" class="button btn btn-primary ">Post Comment</button>
+					</div>
+				</div>
+
+				<div class="page-header">
+					<h2>Comments</h2>
+				</div>
+
+				<div style="word-wrap: break-word;" class = "bs-callout bs-callout-info" ng-repeat="comment in comments track by $index">
+					<p>Username: {{comment.username}}</p>
+					<p>Date of Comment: {{comment.comment_date.substring(0,10)}}</p>
+					<p>Time of Comment: {{comment.comment_time.substring(0,5)}}</p>
+					<p>Comment: {{comment.comment_body}}</p>
+				</div>
+			</div>
+
+		</div>
+	</main>
+
+	<footer>
+	<p>hi</p>
+	</footer>
+
+	<!-- start javascript -->
+	<script src="/js/detailpost.js"></script>
+
+
+
+
+</body>
+
+</html>

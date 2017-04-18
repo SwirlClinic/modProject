@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Getting Started</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/mainstyle.css">
+
+
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+	<!--Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+</head>
+
+<body ng-controller="mainController">
+
+	<header ng-include="'/header.html'"></header>
+
+	<main>
+
+		<div class="container">
+
+			<div class="jumbotron text-center">
+				<h1>Register Account</h1>
+			</div>
+			<div class="alert alert-success" role="alert" ng-show="errorlogin">
+				  <strong>Done!</strong> Please login now <a href="/login.html" class="btn btn-primary">Login</a>
+			</div>
+
+			<form ng-submit="saveBear(bear)">
+	          <div class="form-group">
+	          		<div class="input-group input-group-lg" >
+						<span class="input-group-addon"><i class="fa fa-user fa-lg"></i></span>
+						<input type="text" placeholder="Username" ng-model="bear.username" class="form-control input-group-lg">
+					</div>
+
+					<div class="input-group input-group-lg" >
+						<span class="input-group-addon"><i class="fa fa-envelope-o fa-lg"></i></span>
+						<input type="text" placeholder="Email" ng-model="bear.email" class="form-control input-group-lg">
+					</div>
+
+					<div class="input-group input-group-lg" >
+						<span class="input-group-addon"><i class="fa fa-key fa-lg"></i></span>
+						<input type="text" placeholder="Password" ng-model="bear.password" class="form-control input-group-lg">
+					</div>
+	          </div>
+	          <button type="submit" class="btn btn-primary">Submit</button>
+	        </form>
+		</div>
+	</main>
+
+	<footer>
+	<p>hi</p>
+	</footer>
+
+	<!-- start javascript -->
+	<script src="/js/signup.js"></script>
+
+
+
+
+</body>
+
+</html>

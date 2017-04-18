@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>User Leaderboard</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/mainstyle.css">
+
+	<!--jQuery-->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+  <!--Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	<!--FontAwesome -->
+	<script src="https://use.fontawesome.com/5bc16d66f8.js"></script>
+
+	<!--Angular -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.js"></script>
+	<script src="	https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+</head>
+
+<body ng-controller="mainController">
+
+
+<header ng-include="'/header.html'"></header>
+
+<main>
+	<div class="container">
+		<div class="jumbotron">
+			<h1>User Leaderboards</h1>
+		</div>
+	</div>
+	<div class="container">
+		<ul class="nav nav-pills">
+			<li class="active">
+				<a href="#talkative" data-toggle="tab">Most Talkative</a>
+			</li>
+			<li>
+				<a href="#mostFavorites" data-toggle="tab">Most Favorites</a>
+			</li>
+			<li>
+				<a href="#experts" data-toggle="tab">Experts on a Game</a>
+			</li>
+		</ul>
+		<div class="tab-content clearfix">
+			<div class="tab-pane active" id="talkative">
+				<h2>Most Talkative Users</h2>
+				<h4>Users who have commented the most on other people's posts and who have
+				commented on at least <input type="text" placeholder="" ng-model="currentUserNum" size="8"> unique
+				different users' posts</h4>
+				<button ng-click="changeTalk()" class="button btn btn-primary">Change Number</button>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>Number of Comments on Other People's Posts</th>
+							<th>Number of Unique Users Who Made a Post This User has Commented On</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="user in talkativeUsers">
+						<td><a href="/user.html?username={{user.username}}">{{user.username}}</a></td>
+						<td>{{user.num_comments_on_others_posts}}</td>
+						<td>{{user.num_users_commented_for}}</td>
+					</tbody>
+				</table>
+				<button id="loadMoreTalkative" ng-click="loadMoreTalkative()" class="button btn btn-primary">Load More</button>
+			</div>
+			<div class="tab-pane" id="mostFavorites">
+				<h2>Most Favorites</h2>
+				<h4>Users who have the most favorites on their posts.</h4>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>Number of Favorites</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="user in userFavorites">
+						<td><a href="/user.html?username={{user.username}}">{{user.username}}</a></td>
+						<td>{{user.favorite_count}}</td>
+					</tbody>
+				</table>
+				<button id="loadMoreFavorites" ng-click="loadMoreFavorties()" class="button btn btn-primary">Load More</button>
+			</div>
+			<div class="tab-pane" id="experts">
+				<h2>Experts of a Game</h2>
+				<h4>Users who have posted about every mod listed for a single game</h4>
+				<h3>Search game</h3>
+				<div class="input-group">
+					<span class="input-group-btn">
+						<button ng-click="searchExperts()" class="button btn btn-primary">Search</button>
+					</span>
+					<input type="text" placeholder="Game Name" ng-model="currentSearchExperts" class="form-control">
+					
+				</div>
+
+
+				
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>Game Name</th>
+							<th>Game Release Year</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="post in userExperts">
+						<td><a href="/user.html?username={{post.username}}">{{post.username}}</a></td>
+						<td><a href="/game.html?name={{post.game_name}}%26year={{post.game_release_year}}">{{post.game_name}}</a></td>
+						<td>{{post.game_release_year}}</td>
+					</tbody>
+				</table>
+				<button id="loadMoreExperts" ng-click="loadMoreExperts()" class="button btn btn-primary">Load More</button>
+			</div>
+		</div>
+	</div>
+</main>
+
+<footer>
+
+</footer>
+
+<!-- start javascript -->
+<script src="/js/userLeaderboard.js"></script>
+
+
+
+
+</body>
+
+</html>

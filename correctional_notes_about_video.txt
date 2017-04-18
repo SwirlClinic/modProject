@@ -1,0 +1,15 @@
+Video Link: https://www.youtube.com/watch?v=k15Cl0mngU8&feature=youtu.be
+
+We did a couple of takes for the video, and we submitted our best one. However,
+there were a couple of things that we would like to clarify:
+
+0:39 - The "delete" query is actually an update query that stops the user
+       from being able to login again (by setting an attribute named isdeleted
+       to true). All content for the user is kept on the website. We do use
+       delete queries however for un-favoriting posts and unfollowing users.
+3:38 - There were actually 4 indexes that contributed to the speed up mentioned
+       in the video (from 2 minutes to .250 seconds). These indexes can be found
+       in the report.
+4:33 - The search on that page is actually searching for the title of the post
+       and the first column in the table represents the title of the post (not
+       the title of the game).
